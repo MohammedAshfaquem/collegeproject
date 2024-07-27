@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Forgetpage extends StatefulWidget {
  const Forgetpage({super.key});
@@ -45,28 +46,28 @@ class _ForgetpageState extends State<Forgetpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0).w,
         child: Column(
           children: [
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: 50.h,
             ),
             TextField(
               controller: resetcontroller,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12).w,
                 ),
                 hintText: "Enter your email",
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12).w,
                   borderSide: const BorderSide(color: Colors.deepPurple),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: 10.h,
             ),
             MaterialButton(
               color: Colors.deepPurpleAccent.shade100,

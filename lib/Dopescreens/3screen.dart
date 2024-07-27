@@ -1,37 +1,79 @@
+import 'package:college_project/Login/lofinpage.dart';
+import 'package:college_project/Login/registerpage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ThirdScreen extends StatelessWidget {
-  const ThirdScreen({super.key});
-
+class Secoundscreen extends StatelessWidget {
+  Secoundscreen({super.key});
+  bool islastpage = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-              top: 200,
-              left: 100,
-              child: Image.asset(
-                "lib/images/epidemiology.png",
-                height: 200,
-              )),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              height: 280,
-              width: 393,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("TOGETHER \nWE'LL CREATE ",style: TextStyle(color: Colors.white,fontSize: 25),),
-                  Text("   A HUNGER FREE \n   WORLD",style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold))
-                ],
+      backgroundColor: Colors.white,
+      body: Container(
+        height: 800.h,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 420.h,
+              right: 121.w,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => loginpage(),
+                      ));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xff247D7F),
+                      borderRadius: BorderRadius.circular(7)),
+                  height: 50.h,
+                  width: 150.w,
+                  child: Center(
+                      child: Text(
+                    "LOGIN",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+                ),
               ),
-              color: Color(0xff247D7F),
             ),
-          )
-        ],
+            Positioned(
+              bottom: 350.h,
+              right: 121.w,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Registerpage(),
+                      ));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.purple[100],
+                      borderRadius: BorderRadius.circular(7)),
+                  height: 50.h,
+                  width: 150.w,
+                  child: Center(
+                      child: Text(
+                    "SIGN UP",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -50.h,
+              left: -10.w,
+              child: Image.asset(
+                  "lib/images/sammy-line-bicycle-courier-delivering-food.png"),
+            ),
+          ],
+        ),
       ),
     );
   }

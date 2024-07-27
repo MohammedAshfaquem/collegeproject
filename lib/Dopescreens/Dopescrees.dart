@@ -1,6 +1,7 @@
 import 'package:college_project/Dopescreens/1screen.dart';
-import 'package:college_project/Dopescreens/2.dart';
 import 'package:college_project/Dopescreens/3screen.dart';
+import 'package:college_project/Dopescreens/2screen.dart';
+import 'package:college_project/Login/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -22,8 +23,8 @@ class _DopescreensState extends State<Dopescreens> {
             controller: _controller,
           children: [
             firstscreen(),
+            Secound(),
             ThirdScreen(),
-            Secoundscreen(),
           ],
         ),
         Container(

@@ -45,17 +45,36 @@ dependencies:
   firebase_core: ^3.2.0
   flutter_phone_direct_caller: ^2.1.1
   url_launcher: ^6.3.0
+  flutter_screenutil: ^5.9.3
+  line_awesome_flutter: ^3.0.1
+  google_nav_bar: ^5.0.6
+  animate_do: ^3.3.4
+  quickalert: ^1.1.0
+  carousel_slider: ^4.2.1
+  awesome_notifications: ^0.9.3+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+  flutter_native_splash:
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/images/foodelivary.png"
+  adaptive_icon_background: "0xff247D7F"
+
+flutter_native_splash:
+  image: lib/images/loginpage.png
+  color: "0xff247D7F"
+  android: false 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

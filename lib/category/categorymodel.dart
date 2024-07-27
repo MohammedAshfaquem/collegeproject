@@ -1,0 +1,63 @@
+import 'package:college_project/category/categorydetailsapge.dart';
+import 'package:college_project/donatepage/donatecontroller.dart';
+import 'package:college_project/donatepage/donatepage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+class categorymodels extends StatelessWidget {
+  const categorymodels({super.key, required this.category, required this.categoryno, required this.image,});
+  final String category;
+  final String categoryno;
+  final String image;
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap:() {
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>cdetails(category: category),));
+        
+      },
+      child: Container(
+        width: 350.w,
+        height: 160.h,
+        margin: EdgeInsets.symmetric(horizontal: 24, vertical: 10).w,
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.circular(25).r),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  categoryno,
+                  style: TextStyle(color: Color(0xff247D7F), fontSize: 17.sp,fontWeight: FontWeight.w500),
+                ),
+                Text(category,
+                    style: TextStyle(
+                      color: Color(0xff247D7F),
+                       fontSize: 24.sp,fontWeight: FontWeight.bold)
+                    ),
+                SizedBox(
+                  height: 10.h,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 250.h,
+              child: Image.asset(
+                image,
+                fit: BoxFit.fitWidth,
+                
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

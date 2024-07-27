@@ -1,24 +1,31 @@
+import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // ignore: must_be_immutable
 class Detailspage extends StatelessWidget {
-  var itemname;
+  var foodname;
   var itemdes;
   var user;
   var cntctno;
   var course;
   var imageurl;
+  var option;
+  var lname;
 
   Detailspage(
       {super.key,
-      required this.itemname,
-      required this.itemdes,
-      required this.user,
-      required this.cntctno,
-      required this.course,
+      required this.lname,
+       this.option,
+       this.foodname,
+      this.itemdes,
+      this.user,
+      this.cntctno,
+      this.course,
       this.imageurl});
 
   @override
@@ -27,69 +34,73 @@ class Detailspage extends StatelessWidget {
     String fotmatter = DateFormat.yMd().add_jm().format(now);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Item Details"),
+        title: Text("Item Details",style: TextStyle(fontWeight: FontWeight.w500),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(20),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Container(
-                  child: Image.asset(
-                    "lib/images/sadya.jpg",
-                    fit: BoxFit.cover,
+              padding: EdgeInsets.all(20).w,
+              child: Consumer<Donatecontroler>(
+                builder: (context, value, child) => ClipRRect(
+                  borderRadius: BorderRadius.circular(30).w,
+                  child: Container(
+                    child: Image.file(
+                      value.savedimage!,
+                      fit: BoxFit.cover,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(30)),
+                    height: 150.h,
+                    width: 500.w,
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(30)),
-                  height: 150,
-                  width: 500,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 20),
+              padding:  EdgeInsets.only(left: 20.r, top: 20.h),
               child: ListTile(
-                title: Text('$itemname'),
+                title: Text(foodname.toString(),style: TextStyle(fontWeight: FontWeight.w500),),
                 subtitle: Text(fotmatter),
                 trailing: Text(
-                  "free",
-                  style: TextStyle(color: Colors.blue),
+                  "$option",
+                  style: TextStyle(color: Colors.blue,fontSize: 15),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0).w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CircleAvatar(
-                    child: Icon(Icons.person),
-                    radius: 30,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: CircleAvatar(
+                      child: Image.asset('lib/images/avtar.avif'),
+                      radius: 30.r,
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("$user"),
+                    Text('${user} ${lname}',style: TextStyle(fontWeight: FontWeight.w500),),
                       Text("$cntctno"),
                     ],
                   ),
                   SizedBox(
-                    width: 100,
+                    width: 100.w,
                   ),
                   Text(
                     "$course",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
                   )
                 ],
               ),
             ),
-            
             Padding(
-              padding: const EdgeInsets.only(left: 35, top: 10),
+              padding: EdgeInsets.only(left: 35.r, top: 10.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -98,8 +109,8 @@ class Detailspage extends StatelessWidget {
                     children: [
                       Text(
                         "About details",
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       Text("$itemdes"),
                     ],
@@ -108,14 +119,15 @@ class Detailspage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 170,
+              height: 170.h,
             ),
-           
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30.h,
+            ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(30.0).w,
               child: Container(
-                height: 60,
+                height: 60.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -128,28 +140,29 @@ class Detailspage extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: 18.sp),
                     ),
-                                      SizedBox(width: 40,),
-        
+                    SizedBox(
+                      width: 40.w,
+                    ),
                     TextButton(
                         style: ButtonStyle(
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white)),
                         onPressed: () {
-                      FlutterPhoneDirectCaller.callNumber("$cntctno");
+                          FlutterPhoneDirectCaller.callNumber("$cntctno");
                         },
                         child: Text(
                           "call",
                           style: TextStyle(
                               color: Color(0xff247D7F),
                               fontWeight: FontWeight.bold,
-                              fontSize: 17),
+                              fontSize: 17.sp),
                         ))
                   ],
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
+                    borderRadius: BorderRadius.circular(27).w,
                     color: Color(0xff247D7F)),
               ),
             ),
