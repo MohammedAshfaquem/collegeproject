@@ -25,10 +25,9 @@ class Donatecontroler extends ChangeNotifier {
   List<String> freeornot = ['Free', 'Price'];
   String? currentvalue;
   String _email = '';
-  String get email=>_email;
+  String get email => _email;
   String _editname = '';
-  String get eeditname=>_editname;
-  
+  String get eeditname => _editname;
 
   void addtile(
     Itemmodel itemmodel,
@@ -40,7 +39,6 @@ class Donatecontroler extends ChangeNotifier {
     _itemlist.removeAt(removeitem);
 
     notifyListeners();
-    
   }
 
   void coursecontroll(newvalue) {
@@ -63,21 +61,24 @@ class Donatecontroler extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editprofile(String name,String email){
-   _email = email;
-   _editname= name;
-   notifyListeners();
+  void editprofile(
+      {required String name, required String email, required File image}) {
+    _email = email;
+    _editname = name;
+    savedimage = image;
+    notifyListeners();
   }
 
   void showimagepicker(BuildContext context) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          
-          
-           content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+        return Card(
+          semanticContainer: true,
+          margin: EdgeInsets.all(25),
+          child: Container(
+            height: 160,
+            child: Column(
               children: [
                 GestureDetector(
                   onTap: () {
@@ -85,31 +86,39 @@ class Donatecontroler extends ChangeNotifier {
                     Navigator.of(context).pop();
                     notifyListeners();
                   },
-                  child: Container(
-                    height: 180.h,
-                    width: 130.w,
-                    decoration: BoxDecoration(
-                        color: Color(0xff247D7F),
-                        borderRadius: BorderRadius.circular(22)),
-                    
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'lib/images/gallery.png',
-                          height: 150.h,
+                  child: Row(
+                  
+                    children: [
+                      Container(
+                        height: 70.h,
+                        width: 350.w,
+                        decoration: BoxDecoration(
+                            color: Color(0xff247D7F),
+                            borderRadius: BorderRadius.circular(22)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image.asset(
+                              'lib/images/gallery.png',
+                              height: 50.h,
+                            ),
+                            Text(
+                              "Choose image",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(width: 70,),
+                          ],
                         ),
-                        Text(
-                          "Gallery",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(
+                  height: 20,
+                ),
                 GestureDetector(
                   onTap: () {
                     imagefromcamera();
@@ -117,31 +126,33 @@ class Donatecontroler extends ChangeNotifier {
                     notifyListeners();
                   },
                   child: Container(
-                    height: 180.h,
-                     width: 130.w,
+                    height: 70.h,
+                    width: 350.w,
                     decoration: BoxDecoration(
                         color: Color(0xff247D7F),
                         borderRadius: BorderRadius.circular(22)),
-                   
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Image.asset(
-                          'lib/images/camera.png',
-                          height: 150.h,
+                           'lib/images/camerapick.png',
+                          height: 50.h,
                         ),
                         Text(
-                          "Camera",
+                          "Take photo",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 17.sp,
                               fontWeight: FontWeight.w600),
                         ),
+                        SizedBox(width: 90,),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
+          ),
         );
       },
     );

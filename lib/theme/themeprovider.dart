@@ -4,18 +4,31 @@ import 'package:flutter/material.dart';
 class Themeprovider with ChangeNotifier {
   ThemeData _themdata = lightmode;
   ThemeData get themedata => _themdata;
-  late bool theme;
+   bool _theme = true ;
+   bool get theme => _theme;
+   bool _isselected = false;
+   bool get isselected => _isselected;
   set themdata(ThemeData themdata) {
     _themdata = themdata;
     notifyListeners();
   }
 
-  void toggletheme() {
+  void toggletheme(bool value,) {
     if (_themdata == lightmode) {
+    
       themdata = darkmode;
+      _isselected =value;
     } else {
       themdata = lightmode;
+        _isselected =value;
     }
+    notifyListeners();
   
   }
+  void changetext(){
+    _theme =! _theme;
+    notifyListeners();
+  }
+
+
 }

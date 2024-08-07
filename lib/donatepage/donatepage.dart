@@ -1,6 +1,5 @@
 import 'package:college_project/donatepage/donateDetailspage.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
-import 'package:college_project/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 
 class Donatepage extends StatelessWidget {
-  const Donatepage({super.key,  this.showbackbutton = false});
+  const Donatepage({super.key,  this.showbackbutton = false, required this.onpressed});
   final bool showbackbutton;
+  final VoidCallback onpressed;
+
   @override
   Widget build(BuildContext context) {
 
@@ -19,16 +20,14 @@ class Donatepage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xff247D7F),
         leading: IconButton(
-          onPressed: () {
-            Navigator.maybePop(context);
-          },
+          onPressed: onpressed,
           icon:showbackbutton?Icon(
             LineAwesomeIcons.angle_left_solid,
           ):SizedBox(),
         ),
         title: Text(
           'Available Donations',
-          style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1,color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1,color: Theme.of(context).colorScheme.surface),
         ),
         centerTitle: true,
       ),
@@ -132,8 +131,11 @@ class Donatepage extends StatelessWidget {
                           showCancelBtn: true,
                           onCancelBtnTap: () => Navigator.pop(context),
                           title: 'Are you sure',
-                          onConfirmBtnTap: () =>
-                              value.deleteitem(index, context),
+                          onConfirmBtnTap: () {
+                            value.deleteitem(index, context);
+                            Navigator.pop(context);
+                          }
+                              
                         );
                       },
                       icon: const Icon(Icons.delete),

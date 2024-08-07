@@ -1,9 +1,6 @@
 import 'package:college_project/category/categorydetailsapge.dart';
-import 'package:college_project/donatepage/donatecontroller.dart';
-import 'package:college_project/donatepage/donatepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 class categorymodels extends StatelessWidget {
   const categorymodels({super.key, required this.category, required this.categoryno, required this.image,});

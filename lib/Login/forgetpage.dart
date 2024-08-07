@@ -60,6 +60,7 @@ class _ForgetpageState extends State<Forgetpage> {
                   borderRadius: BorderRadius.circular(12).w,
                 ),
                 hintText: "Enter your email",
+                hintStyle: TextStyle(color: Colors.black),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12).w,
                   borderSide: const BorderSide(color: Colors.deepPurple),

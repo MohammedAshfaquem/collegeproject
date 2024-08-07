@@ -3,8 +3,9 @@ import 'package:college_project/Login/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ThirdScreen extends StatelessWidget {
-  ThirdScreen({super.key});
+// ignore: must_be_immutable
+class loginorsignup extends StatelessWidget {
+ loginorsignup({super.key});
   bool islastpage = false;
   @override
   Widget build(BuildContext context) {

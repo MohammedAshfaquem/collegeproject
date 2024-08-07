@@ -1,8 +1,9 @@
-import 'package:college_project/Dopescreens/1screen.dart';
-import 'package:college_project/Dopescreens/3screen.dart';
-import 'package:college_project/Dopescreens/2screen.dart';
-import 'package:college_project/Login/loginpage.dart';
+import 'package:college_project/Dopescreens/1dope.dart';
+import 'package:college_project/Dopescreens/2dope.dart';
+import 'package:college_project/Dopescreens/3dope.dart';
+import 'package:college_project/Dopescreens/dopcontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Dopescreens extends StatefulWidget {
@@ -13,23 +14,29 @@ class Dopescreens extends StatefulWidget {
 }
 
 class _DopescreensState extends State<Dopescreens> {
-  PageController _controller=PageController();
   @override
   Widget build(BuildContext context) {
+    final dopecontroller = Provider.of<Dopecontroller>(context, listen: false);
+
     return Scaffold(
       body: Stack(
         children: [
           PageView(
-            controller: _controller,
-          children: [
-            firstscreen(),
-            Secound(),
-            ThirdScreen(),
-          ],
-        ),
-        Container(
-          alignment: Alignment(0, 0.85),
-          child: SmoothPageIndicator(controller: _controller, count: 3,))
+            onPageChanged: (value) => dopecontroller.updateindex(value),
+            controller: dopecontroller.controller,
+            children: [firstdope(), secounddope(), thirddope()],
+          ),
+          Container(
+              alignment: Alignment(0, 0.55),
+              child: SmoothPageIndicator(
+                controller: dopecontroller.controller,
+                count: 3,
+                effect: ExpandingDotsEffect(
+                    dotWidth: 15,
+                    dotHeight: 10,
+                    dotColor: Colors.grey,
+                    activeDotColor: Color(0xff247D7F)),
+              ))
         ],
       ),
     );

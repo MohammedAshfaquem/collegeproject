@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 // ignore: must_be_immutable
 class Detailspage extends StatelessWidget {
@@ -20,8 +20,8 @@ class Detailspage extends StatelessWidget {
   Detailspage(
       {super.key,
       required this.lname,
-       this.option,
-       this.foodname,
+      this.option,
+      this.foodname,
       this.itemdes,
       this.user,
       this.cntctno,
@@ -33,8 +33,25 @@ class Detailspage extends StatelessWidget {
     final now = new DateTime.now();
     String fotmatter = DateFormat.yMd().add_jm().format(now);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text("Item Details",style: TextStyle(fontWeight: FontWeight.w500),),
+        leading: IconButton(
+          onPressed:(){
+            Navigator.maybePop(context);
+          } ,
+          
+          icon:Icon(
+            color: Theme.of(context).colorScheme.primary,
+            LineAwesomeIcons.angle_left_solid,
+          ),
+        ),
+        title: Text(
+          "Item Details",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -60,13 +77,22 @@ class Detailspage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(left: 20.r, top: 20.h),
+              padding: EdgeInsets.only(left: 20.r, top: 20.h),
               child: ListTile(
-                title: Text(foodname.toString(),style: TextStyle(fontWeight: FontWeight.w500),),
-                subtitle: Text(fotmatter),
+                title: Text(
+                  foodname.toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+                subtitle: Text(
+                  fotmatter,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
                 trailing: Text(
                   "$option",
-                  style: TextStyle(color: Colors.blue,fontSize: 15),
+                  style: TextStyle(color: Colors.blue, fontSize: 15),
                 ),
               ),
             ),
@@ -85,8 +111,13 @@ class Detailspage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    Text('${user} ${lname}',style: TextStyle(fontWeight: FontWeight.w500),),
-                      Text("$cntctno"),
+                      Text(
+                        '${user} ${lname}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      Text("$cntctno",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                     ],
                   ),
                   SizedBox(
@@ -94,7 +125,8 @@ class Detailspage extends StatelessWidget {
                   ),
                   Text(
                     "$course",
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500,color: Theme.of(context).colorScheme.primary),
                   )
                 ],
               ),
@@ -110,9 +142,9 @@ class Detailspage extends StatelessWidget {
                       Text(
                         "About details",
                         style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            fontSize: 18.sp, fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),
                       ),
-                      Text("$itemdes"),
+                      Text("$itemdes",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                     ],
                   )
                 ],
@@ -125,7 +157,7 @@ class Detailspage extends StatelessWidget {
               height: 30.h,
             ),
             Padding(
-              padding: const EdgeInsets.all(30.0).w,
+              padding: const EdgeInsets.all(20.0).w,
               child: Container(
                 height: 60.h,
                 child: Row(
@@ -138,7 +170,7 @@ class Detailspage extends StatelessWidget {
                     Text(
                       '$cntctno',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.surface,
                           fontWeight: FontWeight.bold,
                           fontSize: 18.sp),
                     ),

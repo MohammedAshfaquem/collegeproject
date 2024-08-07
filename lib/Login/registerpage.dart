@@ -1,11 +1,13 @@
-import 'package:college_project/Login/forgetpage.dart';
+
 import 'package:college_project/Login/lofinpage.dart';
-import 'package:college_project/mainpage.dart';
+import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: camel_case_types
+final _formkey = GlobalKey<FormState>();
+
 class Registerpage extends StatefulWidget {
   const Registerpage({
     super.key,
@@ -19,7 +21,17 @@ class Registerpage extends StatefulWidget {
 class _RegisterpageState extends State<Registerpage> {
   final textcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
-  final _formkey = GlobalKey<FormState>();
+
+  String? validatemail(String? email) {
+    RegExp emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    final isemailvalid = emailRegex.hasMatch(email ?? '');
+    if (!isemailvalid) {
+      return 'Please Enter a valid email';
+    }
+    return null;
+  }
+
   Future signup() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: textcontroller.text.trim(),
@@ -33,67 +45,57 @@ class _RegisterpageState extends State<Registerpage> {
     passwordcontroller.dispose();
   }
 
-  String? validatemail(String? email) {
-    RegExp emailRegex = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    final isemailvalid = emailRegex.hasMatch(email ?? '');
-    if (!isemailvalid) {
-      return 'Please Enter a valid email';
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Form(
         key: _formkey,
         child: Stack(
           children: [
+            Container(
+              height: 825.h,
+              width: 400.w,
+            ),
             Image.asset(
               "lib/images/main_top.png",
               height: 150.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,).r,
-              child: Container(
+              padding: const EdgeInsets.only(top: 30, left: 20),
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(
-                      height: 50.h,
+                      height: 80.h,
                     ),
-                    Image.asset(
-                      'lib/images/sign UP.png',
-                      height: 300,
-                    ),
+                   Image.asset("lib/images/sign.png"),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20).r,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.green.shade100,
-                            borderRadius: BorderRadius.circular(35).w),
-                        child: TextFormField(
-                          style: TextStyle(color: Colors.black),
-                          validator: validatemail,
-                          controller: textcontroller,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Colors.green,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xff247D7F)),
-                              borderRadius: BorderRadius.circular(35).w,
-                            ),
-                            hintText: "Your Email",
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(35).w,
-                              borderSide:
-                                  const BorderSide(color: Color(0xff247D7F)),
-                            ),
+                      padding: const EdgeInsets.only(right: 20),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        validator: validatemail,
+                        controller: textcontroller,
+                        decoration: InputDecoration(
+                          fillColor: Colors.green.shade100,
+                          filled: true,
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.green,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Color(0xff247D7F)),
+                            borderRadius: BorderRadius.circular(35).r,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(35).r),
+                          hintText: "Your Email",
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(35).r,
+                            borderSide:
+                                const BorderSide(color: Color(0xff247D7F)),
                           ),
                         ),
                       ),
@@ -102,33 +104,34 @@ class _RegisterpageState extends State<Registerpage> {
                       height: 10.h,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20).r,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.green.shade100,
-                            borderRadius: BorderRadius.circular(35).w),
-                        child: TextFormField(
-                          style: TextStyle(color: Colors.black),
-                          validator: (value) =>
-                              value!.isEmpty ? 'Please enter you password' : null,
-                          obscureText: true,
-                          controller: passwordcontroller,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              color: Colors.green,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Color(0xff247D7F)),
-                              borderRadius: BorderRadius.circular(35).w,
-                            ),
-                            hintText: "passwords",
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(35),
-                              borderSide:
-                                  const BorderSide(color: Color(0xff247D7F)),
-                            ),
+                      padding: const EdgeInsets.only(right: 20),
+                      child: TextFormField(
+                        style: TextStyle(color: Colors.black),
+                        validator: (value) => value!.length < 3
+                            ? 'Password should be atleast 3 characters'
+                            : null,
+                        obscureText: true,
+                        controller: passwordcontroller,
+                        decoration: InputDecoration(
+                          fillColor: Colors.green.shade100,
+                          filled: true,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.green,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Color(0xff247D7F)),
+                            borderRadius: BorderRadius.circular(35).r,
+                          ),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(35).r),
+                          hintText: "passwords",
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(35).r,
+                            borderSide:
+                                const BorderSide(color: Color(0xff247D7F)),
                           ),
                         ),
                       ),
@@ -142,10 +145,11 @@ class _RegisterpageState extends State<Registerpage> {
                         SizedBox(
                           width: 5.h,
                         ),
+                      
                       ],
                     ),
                     SizedBox(
-                      height: 15.h,
+                      height: 5.h,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -154,12 +158,12 @@ class _RegisterpageState extends State<Registerpage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    mainpage(names: textcontroller.text),
+                                    mainpage(names: 'ASHFAQUE'),
                               ));
                         }
                       },
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 20).r,
+                        padding: const EdgeInsets.only(right: 20),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Color(0xff247D7F),
@@ -169,9 +173,10 @@ class _RegisterpageState extends State<Registerpage> {
                           width: 390.w,
                           child: const Center(
                             child: Text(
-                              "LOGIN",
+                              "SIGNUP",
                               style: TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.w700),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
@@ -184,7 +189,7 @@ class _RegisterpageState extends State<Registerpage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          "Already have an account ?",
+                          "Already have an account?",
                           style: TextStyle(
                               fontWeight: FontWeight.w500, color: Colors.black),
                         ),
@@ -195,10 +200,10 @@ class _RegisterpageState extends State<Registerpage> {
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => loginpage(),
+                                builder: (context) =>loginpage(),
                               )),
                           child: Text(
-                            "Sign In",
+                            "LOGIN",
                             style: TextStyle(
                                 color: Color(0xff247D7F),
                                 fontWeight: FontWeight.w700,
@@ -207,51 +212,46 @@ class _RegisterpageState extends State<Registerpage> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text("OR")],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.grey),
-                          height: 50.h,
-                          width: 50.w,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100).w,
-                              child: Image.asset('lib/images/google.png')),
+                    SizedBox(height: 20,),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.grey),
+                              height: 50.h,
+                              width: 50.w,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                  child: Image.asset('lib/images/google.png')),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                  color: const Color.fromARGB(255, 234, 29, 29)),
+                              height: 50.h,
+                              width: 50.w,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100).r,
+                                  child: Image.asset('lib/images/email1.png')),
+                            ),
+                          ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100).w,
-                              color: const Color.fromARGB(255, 234, 29, 29)),
-                          height: 50.h,
-                          width: 50.w,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100).r,
-                              child: Image.asset('lib/images/email1.png')),
-                        ),
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.bottomRight,
+                      child: Image.asset(
+                        "lib/images/login_bottom.png",
+                        color: Colors.lightGreen[200],
+                        height: 120.h,
+                      ),
                     ),
-                     Padding(
-                       padding: const EdgeInsets.only(left: 240,bottom: 10),
-                       child: Image.asset(
-                                     "lib/images/login_bottom.png",
-                                     color: Colors.lightGreen[200],
-                                     height: 100.h,
-                                   ),
-                     ),
+                    
                   ],
                 ),
               ),
             ),
-           
           ],
         ),
       ),

@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
-import 'package:college_project/homepage.dart';
-import 'package:college_project/mainpage.dart';
+import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -73,12 +71,20 @@ class persondetails extends StatelessWidget {
                           hintText: 'First Name',
                           hintStyle: TextStyle(color: Colors.grey),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary), // When the field is focused
                           ),
                           focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
+                            borderSide: BorderSide(
+                                color: Colors
+                                    .grey), // When the field is not focused
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Colors
                                     .grey), // When the field is not focused
@@ -101,12 +107,20 @@ class persondetails extends StatelessWidget {
                           hintText: 'Last Name',
                           hintStyle: TextStyle(color: Colors.grey),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary), // When the field is focused
                           ),
                           focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
+                            borderSide: BorderSide(
+                                color: Colors
+                                    .grey), // When the field is not focused
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Colors
                                     .grey), // When the field is not focused
@@ -126,6 +140,8 @@ class persondetails extends StatelessWidget {
                             height: 60,
                             width: 300,
                             child: DropdownButton<String>(
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
                               isExpanded: true,
                               borderRadius: BorderRadius.circular(25),
                               underline: SizedBox(),
@@ -143,6 +159,8 @@ class persondetails extends StatelessWidget {
                             )),
                       ),
                       TextFormField(
+                        maxLength: 10,
+                        keyboardType: TextInputType.number,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         validator: (name) => name!.isEmpty || name.length < 10
@@ -153,6 +171,7 @@ class persondetails extends StatelessWidget {
                           hintText: 'Phone no',
                           hintStyle: TextStyle(color: Colors.grey),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Theme.of(context)
                                     .colorScheme
@@ -164,6 +183,12 @@ class persondetails extends StatelessWidget {
                                     .grey), // When the field is not focused
                           ),
                           enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors
+                                    .grey), // When the field is not focused
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
                                 color: Colors
                                     .grey), // When the field is not focused
@@ -189,7 +214,7 @@ class persondetails extends StatelessWidget {
                         QuickAlert.show(
                           context: context,
                           type: QuickAlertType.confirm,
-                          title: 'Thanks you for your Donation',
+                          title: 'Thankyou for your Donation',
                           animType: QuickAlertAnimType.scale,
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
@@ -211,7 +236,21 @@ class persondetails extends StatelessWidget {
                             Lnamecontroller.clear();
                             value.selectedvalue = null;
                             value.currentvalue = null;
-                            Navigator.maybePop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Donatepage(
+                                    showbackbutton: true,
+                                    onpressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                mainpage(names: ''),
+                                          ));
+                                    },
+                                  ),
+                                ));
                           },
                         ); // That's it to display an alert, use other properties to customize.
                       }

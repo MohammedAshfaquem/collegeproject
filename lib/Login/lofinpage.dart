@@ -1,6 +1,6 @@
 import 'package:college_project/Login/forgetpage.dart';
 import 'package:college_project/Login/registerpage.dart';
-import 'package:college_project/mainpage.dart';
+import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,7 +62,7 @@ class _loginpageState extends State<loginpage> {
               height: 150.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20),
+              padding:  EdgeInsets.only(top: 30.h, left: 20.r),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -71,7 +71,7 @@ class _loginpageState extends State<loginpage> {
                     ),
                     Image.asset('lib/images/loginpage.png'),
                     Padding(
-                      padding: const EdgeInsets.only(right: 20),
+                      padding:  EdgeInsets.only(right: 20.r),
                       child: TextFormField(
                         style: TextStyle(color: Colors.black),
                         validator: validatemail,
@@ -91,6 +91,7 @@ class _loginpageState extends State<loginpage> {
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(35).r),
                           hintText: "Your Email",
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(35).r,
                             borderSide:
@@ -126,6 +127,7 @@ class _loginpageState extends State<loginpage> {
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(35).r),
                           hintText: "passwords",
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(35).r,
                             borderSide:
@@ -176,11 +178,11 @@ class _loginpageState extends State<loginpage> {
                         }
                       },
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                        padding: EdgeInsets.only(right: 20.w),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Color(0xff247D7F),
-                            borderRadius: BorderRadius.circular(32),
+                            borderRadius: BorderRadius.circular(32.r),
                           ),
                           height: 55.h,
                           width: 390.w,

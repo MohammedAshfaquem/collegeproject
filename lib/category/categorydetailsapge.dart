@@ -1,8 +1,6 @@
 import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +26,7 @@ class cdetails extends StatelessWidget {
                     color: Color(0xff247D7F),
                   ),
                   Container(
-                    height: 550.h,
+                    height: 600.h,
                     width: 550.w,
                     color: Colors.grey[200],
                   ),
@@ -58,6 +56,7 @@ class cdetails extends StatelessWidget {
                             hintText: 'Food Name',
                             hintStyle: TextStyle(color: Colors.grey),
                             focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(23),
                               borderSide: BorderSide(
                                   color: Colors
                                       .black), // When the field is focused
@@ -67,7 +66,14 @@ class cdetails extends StatelessWidget {
                                   color: Colors
                                       .grey), // When the field is not focused
                             ),
+                             errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(23),
+                              borderSide: BorderSide(
+                                  color: Colors
+                                      .black), // When the field is focused
+                            ),
                           ),
+                          
                         ),
                         Container(
                             decoration: BoxDecoration(
@@ -106,17 +112,21 @@ class cdetails extends StatelessWidget {
                           decoration: InputDecoration(
                             hintText: 'Description About Food',
                             hintStyle: TextStyle(color: Colors.grey),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15).w,
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
+                           
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15).w,
-                              borderSide: BorderSide(color:Theme.of(context).colorScheme.surface),
+                                borderRadius: BorderRadius.circular(23),
+                              borderSide: BorderSide(
+                                  color: Colors
+                                      .black), // When the field is focused
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors
+                                      .grey), // When the field is not focused
                             ),
                           ),
                         ),
-                        Text("pictures"),
+                        Text("pictures",style: TextStyle(color: Colors.black),),
                         value.image == null
                             ? GestureDetector(
                                 onTap: () async {
@@ -167,7 +177,7 @@ class cdetails extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 10.h,
+                bottom: 40.h,
                 left: 40.r,
                 child: Consumer<Donatecontroler>(
                   builder: (context, value, child) => GestureDetector(

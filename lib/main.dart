@@ -1,9 +1,9 @@
+import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Dopescreens/Dopescrees.dart';
-import 'package:college_project/category/category_page.dart';
-import 'package:college_project/category/categorydetailsapge.dart';
+import 'package:college_project/Dopescreens/dopcontroller.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
+import 'package:college_project/editr.dart';
 import 'package:college_project/imagecontroller.dart';
-import 'package:college_project/mainpage.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +21,16 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (context) => imagecontroller(),
-        )
+        ),
+         ChangeNotifierProvider(
+          create: (context) => Dopecontroller(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => edit(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => imgcontroller(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(412, 824),

@@ -1,12 +1,11 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:college_project/category/categorydetailsapge.dart';
 import 'package:college_project/category/categorymodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryDonate extends StatelessWidget {
-  const CategoryDonate({super.key});
-
+  const CategoryDonate({super.key,  this.cheight = true});
+final bool cheight;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class CategoryDonate extends StatelessWidget {
           Positioned(
               bottom: 0,
               child: Container(
-                height: 510.h,
+                height:cheight? 590.h:490,
                 width: 550.w,
                 color: Theme.of(context).colorScheme.secondary,
               )),
@@ -29,7 +28,7 @@ class CategoryDonate extends StatelessWidget {
             child: Text(
               "Select the category",
               style: TextStyle(
-                  color: Colors.white,
+                  color:  Theme.of(context).colorScheme.surface,
                   fontSize: 32.sp,
                   fontWeight: FontWeight.bold),
             ),
@@ -38,8 +37,8 @@ class CategoryDonate extends StatelessWidget {
             top: 120.h,
             left: 30.r,
             child: Text(
-              "Which category deos the food belongs to?",
-              style: TextStyle(color: Colors.white, fontSize: 13),
+             "Which category deos the food belongs to?",
+              style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 13),
             ),
           ),
 
