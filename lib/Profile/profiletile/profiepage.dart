@@ -1,14 +1,11 @@
-import 'package:college_project/Login/loginpage.dart';
 import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
-import 'package:college_project/Theme/theme.dart';
 import 'package:college_project/editr.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -166,12 +163,9 @@ class Profilepage extends StatelessWidget {
                 headerBackgroundColor: Colors.red.shade400,
                 onCancelBtnTap: () => Navigator.pop(context),
                 onConfirmBtnTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => loginorsignup(),
-                    ),
-                  );
+                  //
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pop(context);
                 },
               );
             },

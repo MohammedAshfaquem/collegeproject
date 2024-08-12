@@ -1,6 +1,7 @@
 
 import 'package:college_project/Login/lofinpage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -216,15 +217,20 @@ class _RegisterpageState extends State<Registerpage> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Colors.grey),
-                              height: 50.h,
-                              width: 50.w,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100).w,
-                                  child: Image.asset('lib/images/google.png')),
+                            GestureDetector(
+                              onTap: (){
+                                AuthMethods().signInWithGoogle(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.grey),
+                                height: 50.h,
+                                width: 50.w,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100).w,
+                                    child: Image.asset('lib/images/google.png')),
+                              ),
                             ),
                             Container(
                               decoration: BoxDecoration(

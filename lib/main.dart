@@ -4,12 +4,17 @@ import 'package:college_project/Dopescreens/dopcontroller.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/editr.dart';
 import 'package:college_project/imagecontroller.dart';
+import 'package:college_project/main_page.dart';
 import 'package:college_project/theme/themeprovider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(
     MultiProvider(
       providers: [
@@ -22,13 +27,13 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => imagecontroller(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => Dopecontroller(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => edit(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => imgcontroller(),
         ),
       ],
@@ -37,7 +42,7 @@ void main() {
         builder: (context, child) => MaterialApp(
             theme: Provider.of<Themeprovider>(context).themedata,
             debugShowCheckedModeBanner: false,
-            home: Dopescreens()),
+            home:MainPage()),
       ),
     ),
   );

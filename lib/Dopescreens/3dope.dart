@@ -1,4 +1,4 @@
-import 'package:college_project/Login/loginpage.dart';
+import 'package:college_project/Login/loginorsignup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
