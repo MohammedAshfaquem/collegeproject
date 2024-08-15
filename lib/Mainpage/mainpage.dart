@@ -7,8 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class mainpage extends StatefulWidget {
-  mainpage({super.key, required this.names});
-  final String names;
+  mainpage({super.key,});
+  
   
 
   @override
@@ -21,7 +21,7 @@ class _mainpageState extends State<mainpage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetlist = [
-      Homepage(name: widget.names),
+      Homepage(),
       CategoryDonate(cheight: false,),
       Donatepage(showbackbutton: false,onpressed: () {
         Navigator.maybePop(context);

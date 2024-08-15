@@ -1,6 +1,7 @@
-import 'package:college_project/Login/forgetpage.dart';
-import 'package:college_project/Login/registerpage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Login/login.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,19 +9,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: camel_case_types
 final _formkey = GlobalKey<FormState>();
 
-class loginpage extends StatefulWidget {
-  const loginpage({
+class Registerpage extends StatefulWidget {
+  const Registerpage({
     super.key,
   });
 
   @override
-  State<loginpage> createState() => _loginpageState();
+  State<Registerpage> createState() => _RegisterpageState();
 }
 
 // ignore: camel_case_types
-class _loginpageState extends State<loginpage> {
-  final textcontroller = TextEditingController();
-  final passwordcontroller = TextEditingController();
+class _RegisterpageState extends State<Registerpage> {
+  final regemailcontroller = TextEditingController();
+  final regpasswordcontroller = TextEditingController();
+  final regnamecontroller = TextEditingController();
 
   String? validatemail(String? email) {
     RegExp emailRegex = RegExp(
@@ -32,17 +34,26 @@ class _loginpageState extends State<loginpage> {
     return null;
   }
 
-  Future signInemail() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: textcontroller.text.trim(),
-        password: passwordcontroller.text.trim());
+  Future signupemail() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: regemailcontroller.text.trim(),
+      password: regpasswordcontroller.text.trim(),
+    );
+    adduserdetails(regemailcontroller.text.trim(),
+        regnamecontroller.text.trim(), regpasswordcontroller.text.trim());
+  }
+
+  Future adduserdetails(String email, String name, String password) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .add({'email': email, 'name': name, 'password': password});
   }
 
   @override
   void dispose() {
     super.dispose();
-    textcontroller.dispose();
-    passwordcontroller.dispose();
+    regemailcontroller.dispose();
+    regpasswordcontroller.dispose();
   }
 
   @override
@@ -60,20 +71,54 @@ class _loginpageState extends State<loginpage> {
             height: 150.h,
           ),
           Padding(
-            padding:  EdgeInsets.only(top: 30.h, left: 20.r),
+            padding: const EdgeInsets.only(top: 30, left: 20),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(
                     height: 80.h,
                   ),
-                  Image.asset('lib/images/loginpage.png'),
+                  Image.asset("lib/images/sign.png"),
                   Padding(
-                    padding:  EdgeInsets.only(right: 20.r),
+                    padding: const EdgeInsets.only(right: 20),
                     child: TextField(
                       style: TextStyle(color: Colors.black),
-                     // validator: validatemail,
-                      controller: textcontroller,
+                      // validator: validatemail,
+                      controller: regnamecontroller,
+                      decoration: InputDecoration(
+                        fillColor: Colors.green.shade100,
+                        filled: true,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.green,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Color(0xff247D7F)),
+                          borderRadius: BorderRadius.circular(35).r,
+                        ),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(35).r),
+                        hintText: "Your name",
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(35).r,
+                          borderSide:
+                              const BorderSide(color: Color(0xff247D7F)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: TextField(
+                      style: TextStyle(color: Colors.black),
+                      // validator: validatemail,
+                      controller: regemailcontroller,
                       decoration: InputDecoration(
                         fillColor: Colors.green.shade100,
                         filled: true,
@@ -89,7 +134,8 @@ class _loginpageState extends State<loginpage> {
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(35).r),
                         hintText: "Your Email",
-                        hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(35).r,
                           borderSide:
@@ -105,11 +151,11 @@ class _loginpageState extends State<loginpage> {
                     padding: const EdgeInsets.only(right: 20),
                     child: TextField(
                       style: TextStyle(color: Colors.black),
-                     // validator: (value) => value!.length < 3
-                    //      ? 'Password should be atleast 3 characters'
-                     //     : null,
+                      // validator: (value) => value!.length < 3
+                      //     ? 'Password should be atleast 3 characters'
+                      //     : null,
                       obscureText: true,
-                      controller: passwordcontroller,
+                      controller: regpasswordcontroller,
                       decoration: InputDecoration(
                         fillColor: Colors.green.shade100,
                         filled: true,
@@ -125,7 +171,8 @@ class _loginpageState extends State<loginpage> {
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(35).r),
                         hintText: "passwords",
-                        hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(35).r,
                           borderSide:
@@ -143,41 +190,25 @@ class _loginpageState extends State<loginpage> {
                       SizedBox(
                         width: 5.h,
                       ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Forgetpage(),
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8, right: 25).w,
-                          child: const Text(
-                            "Forget password?",
-                            style: TextStyle(
-                                color: Color(0xff247D7F),
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
                   GestureDetector(
-                    onTap: signInemail,
+                    onTap: signupemail,
                     child: Padding(
-                      padding: EdgeInsets.only(right: 20.w),
+                      padding: const EdgeInsets.only(right: 20),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Color(0xff247D7F),
-                          borderRadius: BorderRadius.circular(32.r),
+                          borderRadius: BorderRadius.circular(32),
                         ),
                         height: 55.h,
                         width: 390.w,
                         child: const Center(
                           child: Text(
-                            "LOGIN",
+                            "SIGNUP",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700),
@@ -193,7 +224,7 @@ class _loginpageState extends State<loginpage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't have an Account ?",
+                        "Already have an account?",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, color: Colors.black),
                       ),
@@ -204,16 +235,49 @@ class _loginpageState extends State<loginpage> {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Registerpage(),
+                              builder: (context) => loginpage(),
                             )),
                         child: Text(
-                          "Sign Up",
+                          "LOGIN",
                           style: TextStyle(
                               color: Color(0xff247D7F),
                               fontWeight: FontWeight.w700,
                               fontSize: 15.sp),
                         ),
                       )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          AuthMethods().signInWithGoogle(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: Colors.grey),
+                          height: 50.h,
+                          width: 50.w,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100).w,
+                              child: Image.asset('lib/images/google.png')),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100).w,
+                            color: const Color.fromARGB(255, 234, 29, 29)),
+                        height: 50.h,
+                        width: 50.w,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100).r,
+                            child: Image.asset('lib/images/email1.png')),
+                      ),
                     ],
                   ),
                   Container(

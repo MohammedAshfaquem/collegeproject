@@ -1,8 +1,7 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Dopescreens/Dopescrees.dart';
 import 'package:college_project/Dopescreens/dopcontroller.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
-import 'package:college_project/editr.dart';
+import 'package:college_project/edit.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/main_page.dart';
 import 'package:college_project/theme/themeprovider.dart';
@@ -25,13 +24,13 @@ void main() async {
           create: (context) => Themeprovider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => imagecontroller(),
+          create: (context) => Slideimagecontroller(),
         ),
         ChangeNotifierProvider(
           create: (context) => Dopecontroller(),
         ),
         ChangeNotifierProvider(
-          create: (context) => edit(),
+          create: (context) => editcontroller(),
         ),
         ChangeNotifierProvider(
           create: (context) => imgcontroller(),
@@ -42,7 +41,7 @@ void main() async {
         builder: (context, child) => MaterialApp(
             theme: Provider.of<Themeprovider>(context).themedata,
             debugShowCheckedModeBanner: false,
-            home:MainPage()),
+            home:AuthGate()),
       ),
     ),
   );

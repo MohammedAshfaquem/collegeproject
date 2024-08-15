@@ -1,7 +1,7 @@
 import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
-import 'package:college_project/editr.dart';
+import 'package:college_project/edit.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +41,7 @@ class Profilepage extends StatelessWidget {
               width: 130,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Consumer<edit>(
+                child: Consumer<editcontroller>(
                     builder: (context, value, child) => value.image != null
                         ? Image.file(
                             value.image!,
@@ -52,7 +52,7 @@ class Profilepage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Consumer<edit>(
+          Consumer<editcontroller>(
             builder: (context, value, child) => Text(
               value.name,
               style: TextStyle(
@@ -63,7 +63,7 @@ class Profilepage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Consumer<edit>(
+          Consumer<editcontroller>(
             builder: (context, value, child) => Text(
               value.email,
               style: TextStyle(

@@ -246,7 +246,7 @@ class persondetails extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                mainpage(names: ''),
+                                                mainpage(),
                                           ));
                                     },
                                   ),

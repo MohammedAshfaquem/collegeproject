@@ -1,8 +1,6 @@
-import 'package:college_project/Homepage/homepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/service/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -33,7 +31,7 @@ class AuthMethods {
         "id":userDetails.uid
       };
       await DatabaseMethods().addUser(userDetails.uid,userInfoMap).then((value) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>mainpage(names: userDetails.displayName!) ,));
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>mainpage() ,));
       },);
   }
   }

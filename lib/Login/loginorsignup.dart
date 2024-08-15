@@ -1,5 +1,5 @@
-import 'package:college_project/Login/lofinpage.dart';
-import 'package:college_project/Login/registerpage.dart';
+import 'package:college_project/Login/login.dart';
+import 'package:college_project/Login/register.dart';
 import 'package:college_project/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +31,7 @@ class loginorsignup extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(),
+                        builder: (context) => loginpage(),
                       ));
                 },
                 child: Container(

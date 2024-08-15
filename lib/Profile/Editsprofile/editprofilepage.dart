@@ -1,7 +1,7 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Donatepage/donatecontroller.dart';
-import 'package:college_project/editr.dart';
+import 'package:college_project/edit.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +17,7 @@ class EditProfilePage extends StatelessWidget {
     final imagcontroller = Provider.of<imgcontroller>(
       context,
     );
-    final controller = Provider.of<edit>(
+    final controller = Provider.of<editcontroller>(
       context,
     );
     TextEditingController fullnameController = TextEditingController();

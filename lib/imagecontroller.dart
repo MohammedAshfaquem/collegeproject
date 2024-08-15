@@ -23,6 +23,11 @@ class imgcontroller extends ChangeNotifier {
     // }
   }
 
+  void clearImageCache() {
+    savedimage = null;
+    notifyListeners();
+  }
+
   imagefromcamera() async {
     final PickedFile = await picker.pickImage(source: ImageSource.camera);
 
@@ -32,10 +37,6 @@ class imgcontroller extends ChangeNotifier {
     } else {
       print("no image picked");
     }
-    notifyListeners();
-  }
-  void clearImageCache() {
-    savedimage = null;
     notifyListeners();
   }
 }
