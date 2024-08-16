@@ -132,7 +132,7 @@ class persondetails extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Consumer<Donatecontroler>(
+                      Consumer<DonateController>(
                         builder: (context, value, child) => Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -207,7 +207,7 @@ class persondetails extends StatelessWidget {
               Positioned(
                 bottom: 120.h,
                 left: 40.r,
-                child: Consumer<Donatecontroler>(
+                child: Consumer<DonateController>(
                   builder: (context, value, child) => GestureDetector(
                     onTap: () {
                       if (_formkey.currentState!.validate()) {
@@ -246,7 +246,7 @@ class persondetails extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                mainpage(),
+                                                MainPage(),
                                           ));
                                     },
                                   ),

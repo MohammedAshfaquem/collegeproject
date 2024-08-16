@@ -59,7 +59,7 @@ class Detailspage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(20).w,
-              child: Consumer<Donatecontroler>(
+              child: Consumer<DonateController>(
                 builder: (context, value, child) => ClipRRect(
                   borderRadius: BorderRadius.circular(30).w,
                   child: Container(

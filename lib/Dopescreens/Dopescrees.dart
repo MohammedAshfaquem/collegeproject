@@ -16,7 +16,7 @@ class Dopescreens extends StatefulWidget {
 class _DopescreensState extends State<Dopescreens> {
   @override
   Widget build(BuildContext context) {
-    final dopecontroller = Provider.of<Dopecontroller>(context, listen: false);
+    final dopecontroller = Provider.of<DopeController>(context, listen: false);
 
     return Scaffold(
       body: Stack(

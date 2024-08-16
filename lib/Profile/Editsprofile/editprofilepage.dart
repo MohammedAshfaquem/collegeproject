@@ -1,7 +1,4 @@
-import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Donatepage/donatecontroller.dart';
-import 'package:college_project/edit.dart';
+import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,10 +11,10 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imagcontroller = Provider.of<imgcontroller>(
+    final imagcontroller = Provider.of<ImgController>(
       context,
     );
-    final controller = Provider.of<editcontroller>(
+    final controller = Provider.of<EditController>(
       context,
     );
     TextEditingController fullnameController = TextEditingController();
@@ -151,7 +148,7 @@ class EditProfilePage extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
-                      Consumer<imgcontroller>(
+                      Consumer<ImgController>(
                         builder: (context, value, child) => Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),

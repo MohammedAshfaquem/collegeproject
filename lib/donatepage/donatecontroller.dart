@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Donatecontroler extends ChangeNotifier {
+class DonateController extends ChangeNotifier {
   List<Itemmodel> _itemlist = [];
   List<Itemmodel> get itemlist => _itemlist;
   String _dropdownvalue = 'Free';

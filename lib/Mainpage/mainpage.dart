@@ -6,16 +6,17 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class mainpage extends StatefulWidget {
-  mainpage({super.key,});
+class MainPage extends StatefulWidget {
+  
+  MainPage({super.key,});
   
   
 
   @override
-  State<mainpage> createState() => _mainpageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _mainpageState extends State<mainpage> {
+class _MainPageState extends State<MainPage> {
   int page = 0;
 //  final user = FirebaseAuth.instance.currentUser;
   @override
@@ -26,7 +27,7 @@ class _mainpageState extends State<mainpage> {
       Donatepage(showbackbutton: false,onpressed: () {
         Navigator.maybePop(context);
       },),
-      Profilepage(),
+      ProfilePage(),
       
     ];
     return Scaffold(

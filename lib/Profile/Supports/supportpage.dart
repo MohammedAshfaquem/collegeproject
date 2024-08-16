@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class supportPage extends StatelessWidget {
-  supportPage({
+class SupportPage extends StatelessWidget {
+  SupportPage({
     super.key,
   });
 

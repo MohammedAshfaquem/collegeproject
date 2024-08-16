@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
-import 'package:college_project/edit.dart';
+import 'package:college_project/editcontroller.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,11 +12,34 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:college_project/Profile/profiletile/profiletile.dart';
 
-class Profilepage extends StatelessWidget {
-  Profilepage();
+class ProfilePage extends StatelessWidget {
+  ProfilePage();
 
   @override
   Widget build(BuildContext context) {
+     Future<String> getusername()async{
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DocumentSnapshot userdoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  if(userdoc.exists){
+    var data = userdoc.data() as Map<String, dynamic>;
+    return data['name'] as String;
+
+  }else{
+    return "No user";
+  }
+  }
+    Future<String> getemail()async{
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DocumentSnapshot userdoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  if(userdoc.exists){
+    var data = userdoc.data() as Map<String, dynamic>;
+    return data['email'] as String;
+
+  }else{
+    return "No user";
+  }
+  }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -41,7 +65,7 @@ class Profilepage extends StatelessWidget {
               width: 130,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Consumer<editcontroller>(
+                child: Consumer<EditController>(
                     builder: (context, value, child) => value.image != null
                         ? Image.file(
                             value.image!,
@@ -52,29 +76,31 @@ class Profilepage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Consumer<editcontroller>(
-            builder: (context, value, child) => Text(
-              value.name,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.primary,
+          FutureBuilder(
+            future: getusername(),
+            builder: (context, snapshot) => Text(
+               snapshot.data.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
-            ),
           ),
           SizedBox(height: 10),
-          Consumer<editcontroller>(
-            builder: (context, value, child) => Text(
-              value.email,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-                color: Theme.of(context).colorScheme.primary,
+          FutureBuilder(
+            future: getemail(),
+            builder: (context, snapshot) => Text(
+               snapshot.data.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
-            ),
           ),
           SizedBox(height: 35),
-          profilepagemodel(
+          ProfilePageModel(
             onTap: () {
               Navigator.push(
                 context,
@@ -87,12 +113,12 @@ class Profilepage extends StatelessWidget {
             colors: Theme.of(context).colorScheme.surface,
             icon: Icons.person,
           ),
-          profilepagemodel(
+          ProfilePageModel(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => passresetpage(),
+                  builder: (context) => PassResetPage(),
                 ),
               );
             },
@@ -127,7 +153,7 @@ class Profilepage extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       fontSize: 17),
                 ),
-                trailing: Consumer<Themeprovider>(
+                trailing: Consumer<ThemeProvider>(
                     builder: (context, value, child) => CupertinoSwitch(
                           trackColor: Theme.of(context).colorScheme.primary,
                           value: value.isselected,
@@ -137,12 +163,12 @@ class Profilepage extends StatelessWidget {
                           focusColor: Colors.white,
                         ))),
           ),
-          profilepagemodel(
+          ProfilePageModel(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => supportPage(),
+                  builder: (context) => SupportPage(),
                 ),
               );
             },
@@ -150,7 +176,7 @@ class Profilepage extends StatelessWidget {
             colors: Theme.of(context).colorScheme.surface,
             icon: Icons.call,
           ),
-          profilepagemodel(
+          ProfilePageModel(
             onTap: () {
               QuickAlert.show(
                 context: context,

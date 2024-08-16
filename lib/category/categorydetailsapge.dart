@@ -38,7 +38,7 @@ class cdetails extends StatelessWidget {
                 child: Container(
                   
                   padding: EdgeInsets.all(18).w,
-                  child: Consumer<Donatecontroler>(
+                  child: Consumer<DonateController>(
                     builder: (context, value, child) => Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +179,7 @@ class cdetails extends StatelessWidget {
               Positioned(
                 bottom: 40.h,
                 left: 40.r,
-                child: Consumer<Donatecontroler>(
+                child: Consumer<DonateController>(
                   builder: (context, value, child) => GestureDetector(
                     onTap: () {
                       if (_formkey.currentState!.validate()) {

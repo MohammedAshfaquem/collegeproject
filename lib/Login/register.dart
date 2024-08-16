@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Login/login.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
-import 'package:college_project/service/auth.dart';
+import 'package:college_project/service/googlesign.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,20 +9,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: camel_case_types
 final _formkey = GlobalKey<FormState>();
 
-class Registerpage extends StatefulWidget {
-  const Registerpage({
+class RegisterPage extends StatefulWidget {
+  final VoidCallback showloginpage;
+  const RegisterPage({
     super.key,
+    required this.showloginpage,
   });
 
   @override
-  State<Registerpage> createState() => _RegisterpageState();
+  State<RegisterPage> createState() => _RegisterpageState();
 }
 
 // ignore: camel_case_types
-class _RegisterpageState extends State<Registerpage> {
+class _RegisterpageState extends State<RegisterPage> {
   final regemailcontroller = TextEditingController();
   final regpasswordcontroller = TextEditingController();
   final regnamecontroller = TextEditingController();
+  final regconfirmpasscontroller = TextEditingController();
 
   String? validatemail(String? email) {
     RegExp emailRegex = RegExp(
@@ -34,19 +37,46 @@ class _RegisterpageState extends State<Registerpage> {
     return null;
   }
 
-  Future signupemail() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: regemailcontroller.text.trim(),
-      password: regpasswordcontroller.text.trim(),
-    );
-    adduserdetails(regemailcontroller.text.trim(),
-        regnamecontroller.text.trim(), regpasswordcontroller.text.trim());
+  bool passwordconfirmed() {
+    if (regpasswordcontroller.text.trim() ==
+        regconfirmpasscontroller.text.trim()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  Future adduserdetails(String email, String name, String password) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .add({'email': email, 'name': name, 'password': password});
+  Future signupemail() async {
+    if (passwordconfirmed()) {
+      try {
+        // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        //   email: regemailcontroller.text.trim(),
+        //   password: regpasswordcontroller.text.trim(),
+        // );
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: regemailcontroller.text,
+                password: regpasswordcontroller.text);
+        String uid = userCredential.user!.uid;
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'email': regemailcontroller.text,
+          'name': regnamecontroller.text,
+          'password':regpasswordcontroller.text,
+          'confirm pass':regconfirmpasscontroller.text,
+        });
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(
+              e.toString(),
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+      }
+     
+    }
   }
 
   @override
@@ -54,6 +84,7 @@ class _RegisterpageState extends State<Registerpage> {
     super.dispose();
     regemailcontroller.dispose();
     regpasswordcontroller.dispose();
+
   }
 
   @override
@@ -76,7 +107,7 @@ class _RegisterpageState extends State<Registerpage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 80.h,
+                    height: 0.h,
                   ),
                   Image.asset("lib/images/sign.png"),
                   Padding(
@@ -99,7 +130,7 @@ class _RegisterpageState extends State<Registerpage> {
                         ),
                         errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(35).r),
-                        hintText: "Your name",
+                        hintText: "Name",
                         hintStyle: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         focusedBorder: OutlineInputBorder(
@@ -123,7 +154,7 @@ class _RegisterpageState extends State<Registerpage> {
                         fillColor: Colors.green.shade100,
                         filled: true,
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.email,
                           color: Colors.green,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -182,6 +213,43 @@ class _RegisterpageState extends State<Registerpage> {
                     ),
                   ),
                   SizedBox(
+                    height: 10.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: TextField(
+                      style: TextStyle(color: Colors.black),
+                      // validator: (value) => value!.length < 3
+                      //     ? 'Password should be atleast 3 characters'
+                      //     : null,
+                      obscureText: true,
+                      controller: regconfirmpasscontroller,
+                      decoration: InputDecoration(
+                        fillColor: Colors.green.shade100,
+                        filled: true,
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Colors.green,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Color(0xff247D7F)),
+                          borderRadius: BorderRadius.circular(35).r,
+                        ),
+                        errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(35).r),
+                        hintText: "confirm passwords",
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(35).r,
+                          borderSide:
+                              const BorderSide(color: Color(0xff247D7F)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
                     height: 5.h,
                   ),
                   Row(
@@ -196,7 +264,7 @@ class _RegisterpageState extends State<Registerpage> {
                     height: 5.h,
                   ),
                   GestureDetector(
-                    onTap: signupemail,
+                    onTap: () => signupemail(),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: Container(
@@ -232,11 +300,7 @@ class _RegisterpageState extends State<Registerpage> {
                         width: 5.w,
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => loginpage(),
-                            )),
+                        onTap: widget.showloginpage,
                         child: Text(
                           "LOGIN",
                           style: TextStyle(
@@ -248,45 +312,46 @@ class _RegisterpageState extends State<Registerpage> {
                     ],
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          AuthMethods().signInWithGoogle(context);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.grey),
-                          height: 50.h,
-                          width: 50.w,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100).w,
-                              child: Image.asset('lib/images/google.png')),
+                 
+                  GestureDetector(
+                    onTap: () {
+                      GoogleSignin().signInWithGoogle(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xff247D7F),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        height: 55.h,
+                        width: 350.w,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                  child: Image.asset(
+                                    'lib/images/google.png',
+                                    height: 35,
+                                  )),
+                              Text(
+                                "Continue With Google",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100).w,
-                            color: const Color.fromARGB(255, 234, 29, 29)),
-                        height: 50.h,
-                        width: 50.w,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100).r,
-                            child: Image.asset('lib/images/email1.png')),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.bottomRight,
-                    child: Image.asset(
-                      "lib/images/login_bottom.png",
-                      color: Colors.lightGreen[200],
-                      height: 120.h,
                     ),
                   ),
                 ],

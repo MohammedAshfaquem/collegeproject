@@ -6,16 +6,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: camel_case_types
 
-class loginpage extends StatefulWidget {
-  const loginpage({
-    super.key,
+class LoginPage extends StatefulWidget {
+  final VoidCallback showRegisterpage;
+  const LoginPage({
+    super.key, required this.showRegisterpage,
   });
 
   @override
-  State<loginpage> createState() => _loginpageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _loginpageState extends State<loginpage> {
+class _LoginPageState extends State<LoginPage> {
   final textcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
 
@@ -210,11 +211,7 @@ class _loginpageState extends State<loginpage> {
                         width: 5.w,
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Registerpage(),
-                            )),
+                        onTap:widget.showRegisterpage,
                         child: Text(
                           "Sign Up",
                           style: TextStyle(

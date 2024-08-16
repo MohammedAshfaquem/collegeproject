@@ -9,7 +9,7 @@ class firstdope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dopecontroller = Provider.of<Dopecontroller>(context, listen: false);
+    final dopecontroller = Provider.of<DopeController>(context, listen: false);
 
     return Scaffold(
       body: Container(

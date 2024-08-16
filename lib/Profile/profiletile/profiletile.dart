@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class profilepagemodel extends StatelessWidget {
-  const profilepagemodel(
+class ProfilePageModel extends StatelessWidget {
+  const ProfilePageModel(
       {super.key,
       required this.onTap,
       required this.text,

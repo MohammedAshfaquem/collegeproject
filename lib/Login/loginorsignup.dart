@@ -1,6 +1,6 @@
 import 'package:college_project/Login/login.dart';
 import 'package:college_project/Login/register.dart';
-import 'package:college_project/main_page.dart';
+import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,11 +28,11 @@ class loginorsignup extends StatelessWidget {
               right: 31.w,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => loginpage(),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => LoginPage(),
+                  //     ));
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -54,11 +54,11 @@ class loginorsignup extends StatelessWidget {
               right: 31.w,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Registerpage(),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => RegisterPage(),
+                  //     ));
                 },
                 child: Container(
                   decoration: BoxDecoration(

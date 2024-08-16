@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthMethods {
+class GoogleSignin {
   final FirebaseAuth auth = FirebaseAuth.instance;
   getCurreuser() async {
     return await auth.currentUser;
@@ -23,16 +23,17 @@ class AuthMethods {
     UserCredential result = await firebaseAuth.signInWithCredential(credential);
     User? userDetails = result.user;
 
-    if(result != null){
+    if(userDetails != null){
       Map<String,dynamic> userInfoMap = {
         "email":userDetails!.email,
         "name":userDetails.displayName,
         "imgurl":userDetails.photoURL,
         "id":userDetails.uid
       };
-      await DatabaseMethods().addUser(userDetails.uid,userInfoMap).then((value) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>mainpage() ,));
+      await DataBaseMethods().addUser(userDetails.uid,userInfoMap).then((value) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>MainPage() ,));
       },);
   }
   }
+ 
 }

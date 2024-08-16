@@ -1,9 +1,9 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Dopescreens/dopcontroller.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
-import 'package:college_project/edit.dart';
+import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
-import 'package:college_project/main_page.dart';
+import 'package:college_project/auth/auth_gate.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,28 +18,28 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => Donatecontroler(),
+          create: (context) => DonateController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Themeprovider(),
+          create: (context) => ThemeProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Slideimagecontroller(),
+          create: (context) => SlideImageController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Dopecontroller(),
+          create: (context) => DopeController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => editcontroller(),
+          create: (context) => EditController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => imgcontroller(),
+          create: (context) => ImgController(),
         ),
       ],
       child: ScreenUtilInit(
         designSize: Size(412, 824),
         builder: (context, child) => MaterialApp(
-            theme: Provider.of<Themeprovider>(context).themedata,
+            theme: Provider.of<ThemeProvider>(context).themedata,
             debugShowCheckedModeBanner: false,
             home:AuthGate()),
       ),

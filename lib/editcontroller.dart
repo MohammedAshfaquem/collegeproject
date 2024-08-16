@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final emailuser = FirebaseAuth.instance.currentUser;
-class editcontroller extends ChangeNotifier {
-  String _name = 'ashfaque';
+class EditController extends ChangeNotifier {
+  String _name = emailuser!.displayName!;
   String get name => _name;
   String _email = emailuser!.email!;
   String get email => _email;

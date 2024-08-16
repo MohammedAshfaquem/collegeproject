@@ -32,7 +32,7 @@ class Donatepage extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor:Theme.of(context).colorScheme.surface,
-      body: Consumer<Donatecontroler>(
+      body: Consumer<DonateController>(
         builder: (context, value, child) => ListView.builder(
           itemCount: value.itemlist.length,
           itemBuilder: (context, index) => Padding(

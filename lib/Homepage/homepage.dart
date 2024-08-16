@@ -1,13 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Editimage/editprovider.dart';
 import 'package:college_project/category/category_page.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/About%20us/feedbackmodel.dart';
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Carousalslider2/imagemovingmodel.dart';
 import 'package:college_project/Profile/profiletile/profiepage.dart';
-import 'package:college_project/edit.dart';
+import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,23 +16,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({
+class Homepage extends StatelessWidget {
+
+
+   Homepage({
     super.key,
   });
 
-  @override
-  State<Homepage> createState() => _HomepageState();
-}
+  // Future<String?> getusername() async {
+  Future<String> getdata()async{
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DocumentSnapshot userdoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  if(userdoc.exists){
+    var data = userdoc.data() as Map<String, dynamic>;
+    return data['name'] as String;
 
-class _HomepageState extends State<Homepage> {
-  Future<String?> getusername() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return user.displayName;
-    } else {
-      return null;
-    }
+  }else{
+    return "No user";
+  }
   }
 
   @override
@@ -48,11 +50,8 @@ class _HomepageState extends State<Homepage> {
         image: 'lib/images/foodhelpda.jpg',
       ),
     ];
-    final slideimagecontroller =
-        Provider.of<Slideimagecontroller>(listen: false, context);
-    final imagecontroller = Provider.of<imgcontroller>(listen: false, context);
-    final emailedit = Provider.of<editcontroller>(listen: false, context);
-
+    bool username;
+    final imagecontroller = Provider.of<ImgController>(listen: false, context);   
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
@@ -84,14 +83,15 @@ class _HomepageState extends State<Homepage> {
                               fontWeight: FontWeight.w400),
                         ),
                         FutureBuilder(
-                          future: getusername(),
+                          future: getdata(),
                           builder: (context, snapshot) => Text(
-                            snapshot.data.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.sp,
-                                color: Color(0xff247D7F)),
-                          ),
+                           snapshot.data.toString(),
+                           //value.name,
+                           style: TextStyle(
+                               fontWeight: FontWeight.bold,
+                               fontSize: 25.sp,
+                               color: Color(0xff247D7F)),
+                                                      ),
                         ),
                       ],
                     ),
@@ -105,7 +105,7 @@ class _HomepageState extends State<Homepage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Profilepage(),
+                                builder: (context) => ProfilePage(),
                               ));
                         },
                         child: Container(
@@ -153,7 +153,7 @@ class _HomepageState extends State<Homepage> {
                           enlargeCenterPage: true,
                           viewportFraction: 0.99,
                           onPageChanged: (index, reason) {
-                            Provider.of<Slideimagecontroller>(
+                            Provider.of<SlideImageController>(
                                     listen: false, context)
                                 .updateindex(index);
                           },
@@ -198,7 +198,7 @@ class _HomepageState extends State<Homepage> {
                     child: FadeInRightBig(
                       duration: Duration(milliseconds: 600),
                       delay: Duration(milliseconds: 400),
-                      child: Consumer<Slideimagecontroller>(
+                      child: Consumer<SlideImageController>(
                         builder: (context, value, child) =>
                             AnimatedSmoothIndicator(
                                 effect: ExpandingDotsEffect(

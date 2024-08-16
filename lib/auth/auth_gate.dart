@@ -1,8 +1,8 @@
-import 'package:college_project/Homepage/homepage.dart';
+
 import 'package:college_project/Login/login.dart';
-import 'package:college_project/Login/loginorsignup.dart';
 import 'package:college_project/Login/register.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/auth/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +16,9 @@ class AuthGate extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return mainpage();
+            return MainPage();
           } else {
-            return loginorsignup();
+            return AuthPage();
           }
         },
       ),

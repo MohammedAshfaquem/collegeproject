@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class passresetpage extends StatefulWidget {
-  const passresetpage({super.key});
+class PassResetPage extends StatefulWidget {
+  const PassResetPage({super.key});
 
   @override
-  State<passresetpage> createState() => _passresetpageState();
+  State<PassResetPage> createState() => _PassResetPageState();
 }
 
-class _passresetpageState extends State<passresetpage> {
+class _PassResetPageState extends State<PassResetPage> {
   final resetcontroller = TextEditingController();
 
   @override

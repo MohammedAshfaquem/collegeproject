@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Slideimagecontroller extends ChangeNotifier {
+class SlideImageController extends ChangeNotifier {
  int _selectedindex = 0;
   int get selectedindex => _selectedindex;
 

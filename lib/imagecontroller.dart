@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class imgcontroller extends ChangeNotifier {
+class ImgController extends ChangeNotifier {
   File? image;
   File? savedimage;
   final picker = ImagePicker();
