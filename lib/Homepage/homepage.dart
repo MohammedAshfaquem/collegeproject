@@ -68,7 +68,6 @@ class Homepage extends StatelessWidget {
               child: Container(
                 height: 60,
                 width: 350,
-               
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +85,7 @@ class Homepage extends StatelessWidget {
                         FutureBuilder(
                           future: getdata(),
                           builder: (context, snapshot) => Container(
-                            width:200,
-                           
+                            width: 200,
                             child: Text(
                               overflow: TextOverflow.ellipsis,
                               snapshot.data.toString(),

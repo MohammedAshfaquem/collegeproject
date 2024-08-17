@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class persondetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FireStoreServivce fireStoreServivce = FireStoreServivce();
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
@@ -218,6 +220,13 @@ class persondetails extends StatelessWidget {
                           animType: QuickAlertAnimType.scale,
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
+                            fireStoreServivce.addNote(
+                                
+                                fnamecontroller.text,
+                                Lnamecontroller.text,
+                                Contactnocontroller.text,
+                                
+                                );
                             value.addtile(Itemmodel(
                               image: images!,
                               Category: category,
@@ -245,8 +254,7 @@ class persondetails extends StatelessWidget {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                MainPage(),
+                                            builder: (context) => MainPage(),
                                           ));
                                     },
                                   ),
