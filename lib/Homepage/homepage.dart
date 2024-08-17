@@ -17,23 +17,21 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Homepage extends StatelessWidget {
-
-
-   Homepage({
+  Homepage({
     super.key,
   });
 
   // Future<String?> getusername() async {
-  Future<String> getdata()async{
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  DocumentSnapshot userdoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  if(userdoc.exists){
-    var data = userdoc.data() as Map<String, dynamic>;
-    return data['name'] as String;
-
-  }else{
-    return "No user";
-  }
+  Future<String> getdata() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userdoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userdoc.exists) {
+      var data = userdoc.data() as Map<String, dynamic>;
+      return data['name'] as String;
+    } else {
+      return "No user";
+    }
   }
 
   @override
@@ -51,7 +49,7 @@ class Homepage extends StatelessWidget {
       ),
     ];
     bool username;
-    final imagecontroller = Provider.of<ImgController>(listen: false, context);   
+    final imagecontroller = Provider.of<ImgController>(listen: false, context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
@@ -68,6 +66,9 @@ class Homepage extends StatelessWidget {
               duration: Duration(milliseconds: 100),
               delay: Duration(milliseconds: 100),
               child: Container(
+                height: 60,
+                width: 350,
+               
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,19 +85,23 @@ class Homepage extends StatelessWidget {
                         ),
                         FutureBuilder(
                           future: getdata(),
-                          builder: (context, snapshot) => Text(
-                           snapshot.data.toString(),
-                           //value.name,
-                           style: TextStyle(
-                               fontWeight: FontWeight.bold,
-                               fontSize: 25.sp,
-                               color: Color(0xff247D7F)),
-                                                      ),
+                          builder: (context, snapshot) => Container(
+                            width:200,
+                           
+                            child: Text(
+                              overflow: TextOverflow.ellipsis,
+                              snapshot.data.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.sp,
+                                  color: Color(0xff247D7F)),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      width: 100.w,
+                      width: 60.w,
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(50).w,
