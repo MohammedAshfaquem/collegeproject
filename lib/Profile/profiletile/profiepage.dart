@@ -78,14 +78,16 @@ class ProfilePage extends StatelessWidget {
           SizedBox(height: 20),
           FutureBuilder(
             future: getusername(),
-            builder: (context, snapshot) => Text(
-               snapshot.data.toString(),
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                  color: Theme.of(context).colorScheme.primary,
+            builder: (context, snapshot) => Consumer<EditController>(
+              builder: (context, value, child) =>Text(
+                 snapshot.data.toString(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-              ),
+            ),
           ),
           SizedBox(height: 10),
           FutureBuilder(
