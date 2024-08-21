@@ -221,12 +221,16 @@ class persondetails extends StatelessWidget {
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
                             fireStoreServivce.addNote(
-                                
-                                fnamecontroller.text,
-                                Lnamecontroller.text,
-                                Contactnocontroller.text,
-                                
-                                );
+                              fnamecontroller.text,
+                              Lnamecontroller.text,
+                              Contactnocontroller.text,
+                              foodname,
+                              value.selectedvalue.toString(),
+                              value.currentvalue.toString(),
+                              description,
+                              value.imageurl.toString(),
+                              DateTime.now(),
+                            );
                             value.addtile(Itemmodel(
                               image: images!,
                               Category: category,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FireStoreServivce {
@@ -9,24 +10,24 @@ class FireStoreServivce {
       String fname,
       String lname,
       String number,
-      // File? image,
-      // String foodname,
-      // String decsription,
-      // String category,
-      // String option
-      // String course,
-      ) {
+      String foodname,
+      // String category
+      String course,
+      String option,
+      String decsription,
+      String image,
+      DateTime time) {
     return notes.add({
-      // 'course': course,
-      'time': Timestamp.now(),
+      'course': course,
       'first name': fname,
       'last name': lname,
       'number': number,
-      //  'image': image,
-      // 'food name': foodname,
-      // 'decsription': decsription,
+      'food name': foodname,
       // 'category': category,
-      // 'option': option,
+      'option': option,
+      'decsription': decsription,
+      'image': image,
+      'time': Timestamp.now(),
     });
   }
 

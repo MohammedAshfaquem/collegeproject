@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/donatepage/donateDetailspage.dart';
@@ -5,15 +6,22 @@ import 'package:college_project/donatepage/donateDetailspage.dart';
 import 'package:college_project/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-
-class Donatepage extends StatelessWidget {
-  const Donatepage(
-      {super.key, this.showbackbutton = false, required this.onpressed});
+class Donatepage extends StatefulWidget {
+  Donatepage({super.key, this.showbackbutton = false, required this.onpressed});
   final bool showbackbutton;
   final VoidCallback onpressed;
 
+  @override
+  State<Donatepage> createState() => _DonatepageState();
+}
+
+class _DonatepageState extends State<Donatepage> {
+  var now = DateTime.now();
+  bool _isloading = true;
   @override
   Widget build(BuildContext context) {
     final FireStoreServivce fireStoreServivce = FireStoreServivce();
@@ -21,8 +29,8 @@ class Donatepage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xff247D7F),
         leading: IconButton(
-          onPressed: onpressed,
-          icon: showbackbutton
+          onPressed: widget.onpressed,
+          icon: widget.showbackbutton
               ? Icon(
                   LineAwesomeIcons.angle_left_solid,
                 )
@@ -48,18 +56,17 @@ class Donatepage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     DocumentSnapshot document = noteslist[index];
                     String docID = document.id;
-              
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
                     String fname = data['first name'];
                     String lname = data['last name'];
                     String number = data['number'];
-                    // String course = data['course'];
-                    //  File? imageurl = data['image'];
-                    // String foodname = data['food name'];
-                    // String option = data['option'];
-                    // String itemdes = data['decsription'];
-                    
+                    String course = data['course'];
+                    String foodname = data['food name'];
+                    String option = data['option'];
+                    String itemdes = data['decsription'];
+                    String imageurl = data['image'];
+
                     return Padding(
                       padding: const EdgeInsets.all(28.0).w,
                       child: GestureDetector(
@@ -68,14 +75,14 @@ class Donatepage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Detailspage(
-                                  // imageurl: imageurl,
                                   cntctno: number,
-                                  // course: course,
+                                  course: course,
                                   lname: lname,
-                                  // foodname: foodname,
+                                  foodname: foodname,
                                   user: fname,
-                                  // option: option,
-                                  // itemdes: itemdes,
+                                  option: option,
+                                  itemdes: itemdes,
+                                  imageurl: imageurl,
                                 ),
                               ));
                         },
@@ -94,31 +101,41 @@ class Donatepage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              // ClipRRect(
-                              //   borderRadius: BorderRadius.circular(5).w,
-                              //   child: Container(
-                              //     child: imageurl != null
-                              //         ? ClipRRect(
-                              //             borderRadius:
-                              //                 BorderRadius.circular(15),
-                              //             child: Image.file(
-                              //                 imageurl))
-                              //         : CircleAvatar(),
-                              //     decoration: BoxDecoration(
-                              //         color: Colors.red,
-                              //         borderRadius: BorderRadius.circular(7)),
-                              //     height: 70.h,
-                              //     width: 70.w,
-                              //   ),
-                              // ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20).w,
+                                child: Container(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      imageurl,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Skeletonizer(
+                                          enabled: true,
+                                            child: Container(
+                                              color: Colors.grey.shade100,
+                                          height: 100,
+                                          width: 80,
+                                        ));
+                                      },
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7)),
+                                  height: 80.h,
+                                  width: 100.w,
+                                ),
+                              ),
                               SizedBox(
                                 width: 10.w,
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
@@ -126,26 +143,24 @@ class Donatepage extends StatelessWidget {
                                       height: 10,
                                     ),
                                     Text(
-                                      fname,
+                                      foodname,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 19.sp),
                                     ),
                                     Text(
-                                      'course',
+                                      course,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.grey.shade200),
                                     ),
-                                    // Text(
-                                    //   DateFormat.yMd()
-                                    //       .add_jm()
-                                    //       .format(time),
-                                    //   style: TextStyle(
-                                    //       fontWeight: FontWeight.bold,
-                                    //       fontSize: 15.sp),
-                                    // ),
+                                    Text(
+                                      DateFormat.yMd().add_jm().format(now),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.sp),
+                                    ),
                                     SizedBox(
                                       height: 10,
                                     )
@@ -178,7 +193,11 @@ class Donatepage extends StatelessWidget {
                     );
                   });
             } else {
-              return Center(child: Text("No Recoreds",style: TextStyle(color: Colors.black,fontSize: 20),));
+              return Center(
+                  child: Text(
+                "No Recoreds",
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ));
             }
           }),
     );

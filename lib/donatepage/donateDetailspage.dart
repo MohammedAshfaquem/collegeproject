@@ -36,11 +36,10 @@ class Detailspage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         leading: IconButton(
-          onPressed:(){
+          onPressed: () {
             Navigator.maybePop(context);
-          } ,
-          
-          icon:Icon(
+          },
+          icon: Icon(
             color: Theme.of(context).colorScheme.primary,
             LineAwesomeIcons.angle_left_solid,
           ),
@@ -63,8 +62,8 @@ class Detailspage extends StatelessWidget {
                 builder: (context, value, child) => ClipRRect(
                   borderRadius: BorderRadius.circular(30).w,
                   child: Container(
-                    child: Image.file(
-                      value.savedimage!,
+                    child: Image.network(
+                      imageurl.toString(),
                       fit: BoxFit.cover,
                     ),
                     decoration: BoxDecoration(
@@ -117,7 +116,11 @@ class Detailspage extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.primary),
                       ),
-                      Text("$cntctno",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                      Text(
+                        "$cntctno",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -125,8 +128,10 @@ class Detailspage extends StatelessWidget {
                   ),
                   Text(
                     "$course",
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500,color: Theme.of(context).colorScheme.primary),
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.primary),
                   )
                 ],
               ),
@@ -142,9 +147,15 @@ class Detailspage extends StatelessWidget {
                       Text(
                         "About details",
                         style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary),
                       ),
-                      Text("$itemdes",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                      Text(
+                        "$itemdes",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
                     ],
                   )
                 ],

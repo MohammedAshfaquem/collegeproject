@@ -192,8 +192,8 @@ class cdetails extends StatelessWidget {
                             option: value.currentvalue.toString(),
                             images: value.savedimage,
                             foodname: foodnamecontroller.text,
-                            description: descriptioncontroller.text,
                             category: value.selectedvalue.toString(),
+                            description: descriptioncontroller.text,
                           );
                         }));
                       }

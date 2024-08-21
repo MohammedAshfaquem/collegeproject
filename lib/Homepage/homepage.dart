@@ -1,27 +1,30 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Editimage/editprovider.dart';
 import 'package:college_project/category/category_page.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/About%20us/feedbackmodel.dart';
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Carousalslider2/imagemovingmodel.dart';
 import 'package:college_project/Profile/profiletile/profiepage.dart';
-import 'package:college_project/editcontroller.dart';
-import 'package:college_project/imagecontroller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   Homepage({
     super.key,
   });
 
-  // Future<String?> getusername() async {
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  bool _isloading = true;
   Future<String> getdata() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot userdoc =
@@ -37,6 +40,46 @@ class Homepage extends StatelessWidget {
   @override
   @override
   Widget build(BuildContext context) {
+    Future<Widget> getimage() async {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot userdoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (userdoc.exists) {
+        var data = userdoc.data() as Map<String, dynamic>;
+        return Skeletonizer(
+          enabled: _isloading,
+          child: Image.network(
+            data['image'] as String,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                Future.microtask(
+                  () {
+                    if (mounted) {
+                      setState(() {
+                        _isloading = false;
+                      });
+                    }
+                  },
+                );
+
+                return child;
+              } else {
+                return Container(
+                  color: Colors.grey.shade100,
+                );
+              }
+            },
+            fit: BoxFit.fill,
+          ),
+        );
+      } else {
+        return Image.asset(
+          "lib/images/avtar.avif",
+          color: Colors.red,
+        );
+      }
+    }
+
     List<imagemovingmodel> imagelist = [
       imagemovingmodel(
         image: 'lib/images/foodimage.jpg',
@@ -48,8 +91,6 @@ class Homepage extends StatelessWidget {
         image: 'lib/images/foodhelpda.jpg',
       ),
     ];
-    bool username;
-    final imagecontroller = Provider.of<ImgController>(listen: false, context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
@@ -60,11 +101,11 @@ class Homepage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 10,
+              height: 15,
             ),
             FadeInDown(
-              duration: Duration(milliseconds: 100),
-              delay: Duration(milliseconds: 100),
+              duration: Duration(milliseconds: 600),
+              delay: Duration(milliseconds: 600),
               child: Container(
                 height: 60,
                 width: 350,
@@ -83,52 +124,83 @@ class Homepage extends StatelessWidget {
                               fontWeight: FontWeight.w400),
                         ),
                         FutureBuilder(
-                          future: getdata(),
-                          builder: (context, snapshot) => Container(
-                            width: 200,
-                            child: Text(
-                              overflow: TextOverflow.ellipsis,
-                              snapshot.data.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.sp,
-                                  color: Color(0xff247D7F)),
-                            ),
-                          ),
-                        ),
+                            future: getdata(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Container(
+                                  width: 200,
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    snapshot.data.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.sp,
+                                        color: Color(0xff247D7F)),
+                                  ),
+                                );
+                              } else {
+                                return Skeletonizer(
+                                  enabled: true,
+                                  child: Container(
+                                    width: 200,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      'Loading',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.sp,
+                                          color: Color(0xff247D7F)),
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
                       ],
                     ),
                     SizedBox(
                       width: 60.w,
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50).w,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilePage(),
-                              ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100).w,
-                          ),
-                          height: 60.h,
-                          width: 60.w,
-                          child: imagecontroller.image != null
-                              ? Image.file(
-                                  imagecontroller.image!,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  'lib/images/avtar.avif',
-                                  height: 10,
+                    FutureBuilder(
+                        future: getimage(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(50).w,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfilePage(),
+                                      ));
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(100).w,
+                                    ),
+                                    height: 60.h,
+                                    width: 60.w,
+                                    child: snapshot.data),
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.asset(
+                                  "lib/images/avtar.avif",
                                 ),
-                        ),
-                      ),
-                    ),
+                              ),
+                              decoration: BoxDecoration(
+                               
+                                borderRadius: BorderRadius.circular(100).w,
+                              ),
+                              height: 60.h,
+                              width: 60.w,
+                            );
+                          }
+                        }),
                   ],
                 ),
               ),
@@ -139,13 +211,13 @@ class Homepage extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(15.r),
                   child: Container(
                     height: 170,
                     width: 350,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(18)),
+                        borderRadius: BorderRadius.circular(18.r)),
                     child: CarouselSlider(
                       options: CarouselOptions(
                           autoPlayCurve: Easing.standard,
@@ -193,8 +265,8 @@ class Homepage extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 10,
-                  left: 130,
+                  bottom: 10.h,
+                  left: 150.w,
                   child: Container(
                     height: 5,
                     width: 5,

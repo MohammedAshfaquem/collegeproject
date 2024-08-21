@@ -1,5 +1,7 @@
 import 'dart:io';
 
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +14,7 @@ class DonateController extends ChangeNotifier {
   final picker = ImagePicker();
   File? image;
   File? savedimage;
+  String? imageurl;
   List<String> dropdowmitems = [
     'Bca',
     'Bcom CA',
@@ -28,6 +31,24 @@ class DonateController extends ChangeNotifier {
   String get email => _email;
   String _editname = '';
   String get eeditname => _editname;
+
+
+   imagepickcamera() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+    String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
+    // if (file == null) return;
+    Reference referenceroot = FirebaseStorage.instance.ref();
+    Reference referenceDirimages = referenceroot.child('images');
+    Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+    try {
+      await referenceimagetoupload.putFile(File(file!.path));
+      imageurl = await referenceimagetoupload.getDownloadURL();
+    } catch (e) {
+      print("error:$e");
+    }
+    ;
+  }
 
   void addtile(
     Itemmodel itemmodel,
@@ -121,7 +142,7 @@ class DonateController extends ChangeNotifier {
                 ),
                 GestureDetector(
                   onTap: () {
-                    imagefromcamera();
+                    imagepickcamera();
                     Navigator.of(context).pop();
                     notifyListeners();
                   },

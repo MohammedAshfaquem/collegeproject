@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
-import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,9 +11,17 @@ import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:college_project/Profile/profiletile/profiletile.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   ProfilePage();
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool _isloading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +49,46 @@ class ProfilePage extends StatelessWidget {
       }
     }
 
+    Future<Widget> getimage() async {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot userdoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (userdoc.exists) {
+        var data = userdoc.data() as Map<String, dynamic>;
+        return Skeletonizer(
+          enabled: _isloading,
+          child: Image.network(
+            data['image'] as String,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                Future.microtask(
+                  () {
+                    if (mounted) {
+                      setState(() {
+                        _isloading = false;
+                      });
+                    }
+                  },
+                );
+
+                return child;
+              } else {
+                return Container(
+                  color: Colors.grey.shade100,
+                );
+              }
+            },
+            fit: BoxFit.fill,
+          ),
+        );
+      } else {
+        return Image.asset(
+          "lib/images/avtar.avif",
+          color: Colors.red,
+        );
+      }
+    }
+
     final imagcontroller = Provider.of<ImgController>(
       context,
     );
@@ -59,7 +105,7 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      imagcontroller.imagefromgallery();
+                      imagcontroller.imagepickcamera();
                       Navigator.of(context).pop();
                     },
                     child: Row(
@@ -98,7 +144,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      imagcontroller.imagefromcamera();
+                      imagcontroller.imagepickcamera();
                       Navigator.of(context).pop();
                     },
                     child: Container(
@@ -152,81 +198,147 @@ class ProfilePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          
           Center(
-            child: Container(
-              height: 150,
-              width: 150,
-              child: Stack(
-                children: [
-                  Consumer<ImgController>(
-                    builder: (context, value, child) => Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Container(
-                        decoration: BoxDecoration(
-                           border: Border.all(color:Theme.of(context).colorScheme.primary,width: 1),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        height: 120,
-                        width: 120,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: imagcontroller.savedimage == null
-                                ? Image.asset("lib/images/avtar.avif")
-                                : Image.file(
-                                    value.savedimage!,
-                                    fit: BoxFit.fill,
-                                  )),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 25,
-                    bottom: 25,
-                    child: CircleAvatar(
-                      radius: 15,
-                      child: Center(
-                        child: IconButton(
-                          onPressed: () {
-                            showimagepicker();
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: Theme.of(context).colorScheme.surface,
-                            size: 16,
+            child: FutureBuilder(
+                future: getimage(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Stack(
+                      children: [
+                        Container(
+                          height: 170,
+                          width: 170,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100).w,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                ),
+                                height: 170.h,
+                                width: 170.w,
+                                child: snapshot.data),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                        Positioned(
+                          bottom: 0,
+                          right: 20,
+                          child: Consumer<ImgController>(
+                            builder: (context, value, child) => CircleAvatar(
+                              radius: 20,
+                              child: IconButton(
+                                  onPressed: () {
+                                  //  value.imagepickcamera();
+                                    showimagepicker();
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Stack(
+                      children: [
+                        Container(
+                          height: 170,
+                          width: 170,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100).w,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfilePage(),
+                                    ));
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100).w,
+                                  ),
+                                  height: 170.h,
+                                  width: 170.w,
+                                  child: Image.asset("lib/images/avtar.avif")),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 20,
+                          child: Consumer<ImgController>(
+                            builder: (context, value, child) => CircleAvatar(
+                              radius: 20,
+                              child: IconButton(
+                                  onPressed: () {
+                                    value.imagepickcamera();
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }),
           ),
           SizedBox(height: 20),
           FutureBuilder(
-            future: getusername(),
-            builder: (context, snapshot) => Text(
-              snapshot.data.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
+              future: getusername(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  );
+                } else {
+                  return Skeletonizer(
+                    child: Text(
+                      "no data found",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  );
+                }
+              }),
           SizedBox(height: 10),
           FutureBuilder(
-            future: getemail(),
-            builder: (context, snapshot) => Text(
-              snapshot.data.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
+              future: getemail(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  );
+                } else {
+                  return Skeletonizer(
+                    child: Text(
+                      "no data found",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  );
+                }
+              }),
           SizedBox(height: 35),
           // ProfilePageModel(
           //   onTap: () {
@@ -241,7 +353,9 @@ class ProfilePage extends StatelessWidget {
           //   colors: Theme.of(context).colorScheme.surface,
           //   icon: Icons.person,
           // ),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
           ProfilePageModel(
             onTap: () {
               Navigator.push(

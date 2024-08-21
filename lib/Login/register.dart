@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Editimage/imagecontroller.dart';
 import 'package:college_project/Login/login.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/service/googlesign.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 // ignore: camel_case_types
 final _formkey = GlobalKey<FormState>();
@@ -61,8 +64,8 @@ class _RegisterpageState extends State<RegisterPage> {
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'email': regemailcontroller.text,
           'name': regnamecontroller.text,
-          'password':regpasswordcontroller.text,
-          'confirm pass':regconfirmpasscontroller.text,
+          'password': regpasswordcontroller.text,
+          'confirm pass': regconfirmpasscontroller.text,
         });
       } catch (e) {
         showDialog(
@@ -75,7 +78,6 @@ class _RegisterpageState extends State<RegisterPage> {
           ),
         );
       }
-     
     }
   }
 
@@ -84,7 +86,6 @@ class _RegisterpageState extends State<RegisterPage> {
     super.dispose();
     regemailcontroller.dispose();
     regpasswordcontroller.dispose();
-
   }
 
   @override
@@ -314,7 +315,6 @@ class _RegisterpageState extends State<RegisterPage> {
                   SizedBox(
                     height: 10,
                   ),
-                 
                   GestureDetector(
                     onTap: () {
                       GoogleSignin().signInWithGoogle(context);
