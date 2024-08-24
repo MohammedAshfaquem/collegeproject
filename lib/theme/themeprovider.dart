@@ -2,8 +2,8 @@ import 'package:college_project/theme/darktheme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider with ChangeNotifier {
-  ThemeData _themdata = lightmode;
-  ThemeData get themedata => _themdata;
+   ThemeData _themdata = lightmode;
+   ThemeData get themedata => _themdata;
    bool _theme = true ;
    bool get theme => _theme;
    bool _isselected = false;

@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class FireStoreServivce {
+  var now = DateTime.now();
   final CollectionReference notes =
       FirebaseFirestore.instance.collection('notes');
-
   Future<void> addNote(
       String fname,
       String lname,
@@ -27,7 +28,7 @@ class FireStoreServivce {
       'option': option,
       'decsription': decsription,
       'image': image,
-      'time': Timestamp.now(),
+      'time': DateFormat.yMd().add_jm().format(now),
     });
   }
 

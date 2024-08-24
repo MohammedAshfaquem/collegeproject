@@ -1,8 +1,10 @@
 import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/service/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class GoogleSignin {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -11,6 +13,7 @@ class GoogleSignin {
   }
 
   signInWithGoogle(BuildContext context)async {
+    final image = Provider.of<ImgController>(context,listen: false);
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount? googleSignInAccount = await  googleSignIn.signIn();
@@ -25,10 +28,11 @@ class GoogleSignin {
 
     if(userDetails != null){
       Map<String,dynamic> userInfoMap = {
-        "email":userDetails!.email,
+        "email":userDetails.email,
         "name":userDetails.displayName,
         "imgurl":userDetails.photoURL,
-        "id":userDetails.uid
+        "id":userDetails.uid,
+        // "image":image.imageurl
       };
       await DataBaseMethods().addUser(userDetails.uid,userInfoMap).then((value) {
         Navigator.push(context, MaterialPageRoute(builder: (context) =>MainPage() ,));

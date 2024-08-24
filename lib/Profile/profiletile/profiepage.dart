@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
 import 'package:college_project/imagecontroller.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -89,9 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
 
-    final imagcontroller = Provider.of<ImgController>(
-      context,
-    );
+    final imagcontroller = Provider.of<ImgController>(context);
     void showimagepicker() {
       showModalBottomSheet(
         context: context,
@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      imagcontroller.imagepickcamera();
+                      imagcontroller.imagepickgallery();
                       Navigator.of(context).pop();
                     },
                     child: Row(
@@ -186,14 +186,12 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          ' My Profile',
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).colorScheme.primary,
-            letterSpacing: 1,
-          ),
-        ),
+        title: Text(' My Profile',
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary,
+              letterSpacing: 1,
+            )),
         centerTitle: true,
       ),
       body: Column(
@@ -227,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               radius: 20,
                               child: IconButton(
                                   onPressed: () {
-                                  //  value.imagepickcamera();
+                                    //  value.imagepickcamera();
                                     showimagepicker();
                                   },
                                   icon: Icon(
@@ -273,11 +271,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               radius: 20,
                               child: IconButton(
                                   onPressed: () {
-                                    value.imagepickcamera();
+                                    showimagepicker();
                                   },
                                   icon: Icon(
                                     Icons.edit,
-                                    color: Colors.white,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
                                   )),
                             ),
                           ),
@@ -313,7 +312,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 }
               }),
-          SizedBox(height: 10),
+         
           FutureBuilder(
               future: getemail(),
               builder: (context, snapshot) {
@@ -353,9 +352,20 @@ class _ProfilePageState extends State<ProfilePage> {
           //   colors: Theme.of(context).colorScheme.surface,
           //   icon: Icons.person,
           // ),
-          SizedBox(
-            height: 50,
+          ProfilePageModel(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyDonations(),
+                ),
+              );
+            },
+            text: "Support",
+            colors: Theme.of(context).colorScheme.surface,
+            icon: Icons.call,
           ),
+         
           ProfilePageModel(
             onTap: () {
               Navigator.push(

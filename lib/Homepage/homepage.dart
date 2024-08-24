@@ -10,6 +10,7 @@ import 'package:college_project/Profile/profiletile/profiepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -116,13 +117,12 @@ class _HomepageState extends State<Homepage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Hello!",
-                          style: TextStyle(
+                        Text("Hello!",
+                            style: GoogleFonts.poppins(
                               color: Theme.of(context).colorScheme.primary,
                               fontSize: 20.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
+                              fontWeight: FontWeight.w600,
+                            )),
                         FutureBuilder(
                             future: getdata(),
                             builder: (context, snapshot) {
@@ -193,7 +193,6 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                               decoration: BoxDecoration(
-                               
                                 borderRadius: BorderRadius.circular(100).w,
                               ),
                               height: 60.h,
@@ -296,18 +295,16 @@ class _HomepageState extends State<Homepage> {
               duration: Duration(milliseconds: 700),
               delay: Duration(milliseconds: 500),
               child: Padding(
-                padding: const EdgeInsets.only(left: 30),
+                padding: const EdgeInsets.only(left: 20),
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Choose Your Role',
-                        style: TextStyle(
-                            fontSize: 18.sp,
-                            color: Color(0xff247D7F),
-                            fontWeight: FontWeight.w600),
-                      ),
+                      Text('Choose Your Role',
+                          style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600)),
                       SizedBox(
                         height: 8.h,
                       ),
@@ -328,7 +325,7 @@ class _HomepageState extends State<Homepage> {
                               decoration: BoxDecoration(
                                   color: Color(0xff247D7F),
                                   borderRadius: BorderRadius.circular(20)),
-                              width: 175.w,
+                              width: 180.w,
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -367,7 +364,7 @@ class _HomepageState extends State<Homepage> {
                               decoration: BoxDecoration(
                                   color: Color(0xff247D7F),
                                   borderRadius: BorderRadius.circular(20).w),
-                              width: 175.w,
+                              width: 180.w,
                               child: Column(
                                 children: [
                                   Image.asset(
@@ -399,14 +396,15 @@ class _HomepageState extends State<Homepage> {
               duration: Duration(milliseconds: 800),
               delay: Duration(milliseconds: 600),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    "What People Feel About us",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                        color: Color(0xff247D7F)),
+                  Padding(
+                    padding:  EdgeInsets.only(left: 25.w),
+                    child: Text("What People Feel About us",
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xff247D7F))),
                   ),
                 ],
               ),

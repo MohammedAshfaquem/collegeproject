@@ -9,10 +9,10 @@ import 'package:image_picker/image_picker.dart';
 
 class ImgController extends ChangeNotifier {
   File? image;
-  File? savedimage;
+  String? savedimage;
   final picker = ImagePicker();
   String imageurl = '';
-  final addimageedb = FirebaseFirestore.instance.collection('users');
+  final addimagedb = FirebaseFirestore.instance.collection('users');
 
    imagepickcamera() async {
     ImagePicker imagePicker = ImagePicker();
@@ -33,31 +33,31 @@ class ImgController extends ChangeNotifier {
         .update({'image':imageurl});
     } catch (e) {
       print("error getting :$e");
+    };
+  }
+
+  imagepickgallery() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
+    // if (file == null) return;
+    Reference referenceroot = FirebaseStorage.instance.ref();
+    Reference referenceDirimages = referenceroot.child('images');
+    Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    
+    try {
+      await referenceimagetoupload.putFile(File(file!.path));
+      imageurl = await referenceimagetoupload.getDownloadURL();
+       FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'image': imageurl});
+    } catch (e) {
+      print("error:$e");
     }
     ;
   }
-
-  // imagepickgallery() async {
-  //   ImagePicker imagePicker = ImagePicker();
-  //   XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-  //   String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
-  //   // if (file == null) return;
-  //   Reference referenceroot = FirebaseStorage.instance.ref();
-  //   Reference referenceDirimages = referenceroot.child('images');
-  //   Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
-  //   String uid = FirebaseAuth.instance.currentUser!.uid;
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(uid)
-  //       .update({'image': imageurl});
-  //   try {
-  //     await referenceimagetoupload.putFile(File(file!.path));
-  //     imageurl = await referenceimagetoupload.getDownloadURL();
-  //   } catch (e) {
-  //     print("error:$e");
-  //   }
-  //   ;
-  // }
 
   void clearImageCache() {
     savedimage = null;

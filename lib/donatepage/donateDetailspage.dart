@@ -5,9 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // ignore: must_be_immutable
-class Detailspage extends StatelessWidget {
+class Detailspage extends StatefulWidget {
   var foodname;
   var itemdes;
   var user;
@@ -16,7 +17,7 @@ class Detailspage extends StatelessWidget {
   var imageurl;
   var option;
   var lname;
-
+  var time;
   Detailspage(
       {super.key,
       required this.lname,
@@ -26,7 +27,15 @@ class Detailspage extends StatelessWidget {
       this.user,
       this.cntctno,
       this.course,
-      this.imageurl});
+      this.imageurl,
+      required this.time});
+
+  @override
+  State<Detailspage> createState() => _DetailspageState();
+}
+
+class _DetailspageState extends State<Detailspage> {
+  bool _isloading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +72,29 @@ class Detailspage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30).w,
                   child: Container(
                     child: Image.network(
-                      imageurl.toString(),
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          Future.microtask(
+                            () {
+                              if (mounted) {
+                                setState(() {
+                                  _isloading = false;
+                                });
+                              }
+                            },
+                          );
+
+                          return child;
+                        } else {
+                          return Skeletonizer(
+                            enabled: true,
+                            child: Container(
+                             color: Colors.grey.shade100,
+                            ),
+                          );
+                        }
+                      },
+                      widget.imageurl.toString(),
                       fit: BoxFit.cover,
                     ),
                     decoration: BoxDecoration(
@@ -79,18 +110,18 @@ class Detailspage extends StatelessWidget {
               padding: EdgeInsets.only(left: 20.r, top: 20.h),
               child: ListTile(
                 title: Text(
-                  foodname.toString(),
+                  widget.foodname.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary),
                 ),
                 subtitle: Text(
-                  fotmatter,
+                "${widget.time}",
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 trailing: Text(
-                  "$option",
+                  "${widget.option}",
                   style: TextStyle(color: Colors.blue, fontSize: 15),
                 ),
               ),
@@ -111,13 +142,13 @@ class Detailspage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${user} ${lname}',
+                        '${widget.user} ${widget.lname}',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.primary),
                       ),
                       Text(
-                        "$cntctno",
+                        "${widget.cntctno}",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -127,7 +158,7 @@ class Detailspage extends StatelessWidget {
                     width: 100.w,
                   ),
                   Text(
-                    "$course",
+                    "${widget.course}",
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
@@ -152,7 +183,7 @@ class Detailspage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary),
                       ),
                       Text(
-                        "$itemdes",
+                        "${widget.itemdes}",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -179,7 +210,7 @@ class Detailspage extends StatelessWidget {
                       color: Colors.white,
                     ),
                     Text(
-                      '$cntctno',
+                      '${widget.cntctno}',
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.surface,
                           fontWeight: FontWeight.bold,
@@ -193,7 +224,8 @@ class Detailspage extends StatelessWidget {
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white)),
                         onPressed: () {
-                          FlutterPhoneDirectCaller.callNumber("$cntctno");
+                          FlutterPhoneDirectCaller.callNumber(
+                              "${widget.cntctno}");
                         },
                         child: Text(
                           "call",

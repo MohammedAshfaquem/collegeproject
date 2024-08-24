@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
@@ -230,6 +231,7 @@ class persondetails extends StatelessWidget {
                               description,
                               value.imageurl.toString(),
                               DateTime.now(),
+                              
                             );
                             value.addtile(Itemmodel(
                               image: images!,
@@ -249,18 +251,18 @@ class persondetails extends StatelessWidget {
                             Lnamecontroller.clear();
                             value.selectedvalue = null;
                             value.currentvalue = null;
-                            Navigator.push(
+                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Donatepage(
                                     showbackbutton: true,
-                                    onpressed: () {
-                                      Navigator.push(
+                                    onpressed: () =>  Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => MainPage(),
-                                          ));
-                                    },
+                                          ),),
+                                
+                                    
                                   ),
                                 ));
                           },

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,7 @@ class DonateController extends ChangeNotifier {
   String _dropdownvalue = 'Free';
   String get dropdownvalue => _dropdownvalue;
   final picker = ImagePicker();
-  File? image;
+  XFile? image;
   File? savedimage;
   String? imageurl;
   List<String> dropdowmitems = [
@@ -32,10 +31,28 @@ class DonateController extends ChangeNotifier {
   String _editname = '';
   String get eeditname => _editname;
 
-
-   imagepickcamera() async {
+  imagepickcamera() async {
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+
+    String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
+    // if (file == null) return;
+    Reference referenceroot = FirebaseStorage.instance.ref();
+    Reference referenceDirimages = referenceroot.child('images');
+    Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+    try {
+      await referenceimagetoupload.putFile(File(file!.path));
+      imageurl = await referenceimagetoupload.getDownloadURL();
+    } catch (e) {
+      print("error:$e");
+    }
+    ;
+    notifyListeners();
+  }
+
+  imagepickgallery() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
     String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
     // if (file == null) return;
     Reference referenceroot = FirebaseStorage.instance.ref();
@@ -78,7 +95,7 @@ class DonateController extends ChangeNotifier {
   }
 
   void clearImageCache() {
-    savedimage = null;
+    imageurl = null;
     notifyListeners();
   }
 
@@ -103,12 +120,11 @@ class DonateController extends ChangeNotifier {
               children: [
                 GestureDetector(
                   onTap: () {
-                    imagefromgallery();
+                    imagepickgallery();
                     Navigator.of(context).pop();
                     notifyListeners();
                   },
                   child: Row(
-                  
                     children: [
                       Container(
                         height: 70.h,
@@ -130,7 +146,9 @@ class DonateController extends ChangeNotifier {
                                   fontSize: 17.sp,
                                   fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(width: 70,),
+                            SizedBox(
+                              width: 70,
+                            ),
                           ],
                         ),
                       ),
@@ -156,7 +174,7 @@ class DonateController extends ChangeNotifier {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Image.asset(
-                           'lib/images/camerapick.png',
+                          'lib/images/camerapick.png',
                           height: 50.h,
                         ),
                         Text(
@@ -166,7 +184,9 @@ class DonateController extends ChangeNotifier {
                               fontSize: 17.sp,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(width: 90,),
+                        SizedBox(
+                          width: 90,
+                        ),
                       ],
                     ),
                   ),
@@ -179,32 +199,32 @@ class DonateController extends ChangeNotifier {
     );
   }
 
-  imagefromgallery() async {
-    final PickedFile = await picker.pickImage(source: ImageSource.gallery);
+  // imagefromgallery() async {
+  //   final PickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if (PickedFile != null) {
-      image = File(PickedFile.path);
-      savedimage = image;
-    } else {
-      print("no image picked");
-    }
-    notifyListeners();
-    //  if (value != null) {
-    //    _cropimage(File(value.path));
-    // }
-  }
+  //   if (PickedFile != null) {
+  //     image = File(PickedFile.path);
+  //     savedimage = image;
+  //   } else {
+  //     print("no image picked");
+  //   }
+  //   notifyListeners();
+  //   //  if (value != null) {
+  //   //    _cropimage(File(value.path));
+  //   // }
+  // }
 
-  imagefromcamera() async {
-    final PickedFile = await picker.pickImage(source: ImageSource.camera);
+  // imagefromcamera() async {
+  //   final PickedFile = await picker.pickImage(source: ImageSource.camera);
 
-    if (PickedFile != null) {
-      image = File(PickedFile.path);
-      savedimage = image;
-    } else {
-      print("no image picked");
-    }
-    notifyListeners();
-  }
+  //   if (PickedFile != null) {
+  //     image = File(PickedFile.path);
+  //     savedimage = image;
+  //   } else {
+  //     print("no image picked");
+  //   }
+  //   notifyListeners();
+  // }
 }
 
 class Itemmodel {
