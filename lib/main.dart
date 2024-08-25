@@ -1,6 +1,6 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
+import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/Dopescreens/dopcontroller.dart';
-import 'package:college_project/donatepage/donatecontroller.dart';
 import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/auth/auth_gate.dart';
@@ -17,9 +17,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => DonateController(),
-        ),
+       ChangeNotifierProvider(create: (context) => Donate(),),
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
         ),

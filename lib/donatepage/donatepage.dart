@@ -24,13 +24,13 @@ class _DonatepageState extends State<Donatepage> {
   bool _isloading = true;
   @override
   Widget build(BuildContext context) {
-    final FireStoreServivce fireStoreServivce = FireStoreServivce();
+    final FireStoreService fireStoreServivce = FireStoreService();
     return PopScope(
       onPopInvoked: (didPop) {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => MainPage(),
+              builder: (context) =>MainPage(),
             ));
       },
       child: Scaffold(

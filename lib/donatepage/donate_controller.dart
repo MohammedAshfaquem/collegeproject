@@ -1,19 +1,23 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
-class DonateController extends ChangeNotifier {
-  List<Itemmodel> _itemlist = [];
-  List<Itemmodel> get itemlist => _itemlist;
+class Donate extends ChangeNotifier {
+  List<ItemModel> _itemlist = [];
+  List<ItemModel> get itemlist => _itemlist;
   String _dropdownvalue = 'Free';
   String get dropdownvalue => _dropdownvalue;
   final picker = ImagePicker();
   XFile? image;
   File? savedimage;
   String? imageurl;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<String> dropdowmitems = [
     'Bca',
     'Bcom CA',
@@ -67,10 +71,9 @@ class DonateController extends ChangeNotifier {
     ;
   }
 
-  void addtile(
-    Itemmodel itemmodel,
-  ) {
-    itemlist.add(itemmodel);
+  void addtile(ItemModel itemmodel) {
+    _itemlist.add(itemmodel);
+    notifyListeners();
   }
 
   void deleteitem(int removeitem, BuildContext context) {
@@ -225,29 +228,111 @@ class DonateController extends ChangeNotifier {
   //   }
   //   notifyListeners();
   // }
+  Future<void> deleteFieldFromDocument(String docId, String mydonations) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    try {
+      // Reference to the specific document
+
+      DocumentReference documentRef = _firestore.collection('users').doc(uid);
+
+      // Update the document by deleting the specific field
+      await documentRef.update({
+        mydonations: FieldValue.delete(),
+      });
+      notifyListeners();
+      print('Field deleted successfully!');
+    } catch (e) {
+      print('Error deleting field: $e');
+    }
+  
+  }
+
+  
+Future<void> deleteDocumentsByUserCondition(String collectionPath, String fieldName) async {
+  try {
+    // Get the currently signed-in user
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Get the UID of the current user
+      String uid = user.uid;
+
+      // Reference to the collection
+      CollectionReference collectionRef = FirebaseFirestore.instance.collection(collectionPath);
+
+      // Query to find documents where the field matches the user's UID
+      QuerySnapshot querySnapshot = await collectionRef.where(fieldName, isEqualTo: uid).get();
+    print("valladhum nadakko");
+    print(uid);
+      // Delete each document that matches the condition
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      print('Documents successfully deleted');
+    } else {
+      print('No user is currently signed in');
+    }
+  } catch (e) {
+    print('Error deleting documents: $e');
+  }
 }
 
-class Itemmodel {
+}
+
+class ItemModel {
+  final String image;
+  final String category;
   final String foodname;
-  final String Category;
   final String description;
   final DateTime date;
-  final String fname;
   final String lname;
+  final String fname;
   final String course;
   final String cntctbo;
   final String option;
-  final File image;
 
-  Itemmodel(
-      {required this.image,
-      required this.fname,
-      required this.lname,
-      required this.Category,
-      required this.description,
-      required this.foodname,
-      required this.course,
-      required this.cntctbo,
-      required this.option,
-      required this.date});
+  ItemModel({
+    required this.image,
+    required this.category,
+    required this.foodname,
+    required this.description,
+    required this.date,
+    required this.lname,
+    required this.fname,
+    required this.course,
+    required this.cntctbo,
+    required this.option,
+  });
+  final now = DateTime.now();
+  // Convert an ItemModel into a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'image': image,
+      'category': category,
+      'foodname': foodname,
+      'description': description,
+      'date': DateFormat.yMd().add_jm().format(now),
+      'lname': lname,
+      'fname': fname,
+      'course': course,
+      'cntctbo': cntctbo,
+      'option': option,
+    };
+  }
+
+  // Convert a Map into an ItemModel
+  factory ItemModel.fromMap(Map<String, dynamic> map) {
+    return ItemModel(
+      image: map['image'],
+      category: map['category'],
+      foodname: map['foodname'],
+      description: map['description'],
+      date: DateTime(map['date']),
+      lname: map['lname'],
+      fname: map['fname'],
+      course: map['course'],
+      cntctbo: map['cntctbo'],
+      option: map['option'],
+    );
+  }
 }

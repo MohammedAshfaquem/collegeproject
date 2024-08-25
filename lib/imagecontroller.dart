@@ -34,6 +34,7 @@ class ImgController extends ChangeNotifier {
     } catch (e) {
       print("error getting :$e");
     };
+     notifyListeners();
   }
 
   imagepickgallery() async {
@@ -57,6 +58,7 @@ class ImgController extends ChangeNotifier {
       print("error:$e");
     }
     ;
+    notifyListeners();
   }
 
   void clearImageCache() {

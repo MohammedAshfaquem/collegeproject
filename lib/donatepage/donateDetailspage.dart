@@ -1,4 +1,4 @@
-import 'package:college_project/donatepage/donatecontroller.dart';
+import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,7 +67,7 @@ class _DetailspageState extends State<Detailspage> {
           children: [
             Padding(
               padding: EdgeInsets.all(20).w,
-              child: Consumer<DonateController>(
+              child: Consumer<Donate>(
                 builder: (context, value, child) => ClipRRect(
                   borderRadius: BorderRadius.circular(30).w,
                   child: Container(

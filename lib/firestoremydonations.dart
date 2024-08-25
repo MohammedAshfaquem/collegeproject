@@ -1,17 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
-class FireStoreService {
+class FireStoreServivce {
   var now = DateTime.now();
-        User? user = FirebaseAuth.instance.currentUser;
-        
-
-  final CollectionReference notes =
-      FirebaseFirestore.instance.collection('notes');
-  Future<void> addNote(
+  final CollectionReference mydonation =
+      FirebaseFirestore.instance.collection('mydonations');
+  Future<void> addmydonation(
       String fname,
       String lname,
       String number,
@@ -22,7 +18,7 @@ class FireStoreService {
       String decsription,
       String image,
       DateTime time) {
-    return notes.add({
+    return mydonation.add({
       'course': course,
       'first name': fname,
       'last name': lname,
@@ -33,12 +29,11 @@ class FireStoreService {
       'decsription': decsription,
       'image': image,
       'time': DateFormat.yMd().add_jm().format(now),
-      'uid':user!.uid,
     });
   }
 
   Stream<QuerySnapshot> getNotesStream() {
-    final notesstream = notes.orderBy('time', descending: true).snapshots();
+    final notesstream = mydonation.orderBy('time', descending: true).snapshots();
     return notesstream;
   }
 }

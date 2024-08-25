@@ -1,16 +1,20 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/donatepage/donatecontroller.dart';
+import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/firestore.dart';
+import 'package:college_project/firestoremydonations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 
 class persondetails extends StatelessWidget {
-  const persondetails({
+  persondetails({
     super.key,
     required this.foodname,
     required this.description,
@@ -21,15 +25,39 @@ class persondetails extends StatelessWidget {
   final String foodname;
   final String category;
   final String description;
-  final File? images;
+  final String images;
   final String option;
 
   @override
   Widget build(BuildContext context) {
-    final FireStoreServivce fireStoreServivce = FireStoreServivce();
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
+    final controller = Provider.of<Donate>(context, listen: false);
+
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    Future<void> addItemToUser(ItemModel itemModel) async {
+      try {
+        // Reference to the specific user's document
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+        DocumentReference userRef = _firestore.collection('users').doc(userId);
+
+        // Update the document with the new field
+        await userRef.update({
+           'mydonations': FieldValue.arrayUnion([itemModel.toMap()]), // Adding the itemModel as a field
+        });
+
+        print('Item added to user document successfully!');
+      } catch (e) {
+        print('Error adding item to user document: $e');
+      }
+    }
+
+    final FireStoreService fireStoreService = FireStoreService();
+    final FireStoreServivce fireStoreServivce = FireStoreServivce();
+    final now = DateTime.now();
+
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
@@ -135,7 +163,7 @@ class persondetails extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Consumer<DonateController>(
+                      Consumer<Donate>(
                         builder: (context, value, child) => Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -210,10 +238,38 @@ class persondetails extends StatelessWidget {
               Positioned(
                 bottom: 120.h,
                 left: 40.r,
-                child: Consumer<DonateController>(
+                child: Consumer<Donate>(
                   builder: (context, value, child) => GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (_formkey.currentState!.validate()) {
+                        await addItemToUser(
+                          ItemModel(
+                            image: images,
+                            category: category,
+                            foodname: foodname,
+                            description: description,
+                            date: DateTime.now(),
+                            lname: Lnamecontroller.text,
+                            fname: fnamecontroller.text,
+                            course: value.selectedvalue.toString(),
+                            cntctbo: Contactnocontroller.text,
+                            option: value.currentvalue.toString(),
+                          ),
+                        );
+                        // value.addtile(
+                        //   ItemModel(
+                        //     image: images,
+                        //     category: category,
+                        //     foodname: foodname,
+                        //     description: description,
+                        //     date: DateTime.now(),
+                        //     lname: Lnamecontroller.text,
+                        //     fname: fnamecontroller.text,
+                        //     course: value.selectedvalue.toString(),
+                        //     cntctbo: Contactnocontroller.text,
+                        //     option: value.currentvalue.toString(),
+                        //   ),
+                        // );
                         QuickAlert.show(
                           context: context,
                           type: QuickAlertType.confirm,
@@ -221,7 +277,7 @@ class persondetails extends StatelessWidget {
                           animType: QuickAlertAnimType.scale,
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
-                            fireStoreServivce.addNote(
+                            fireStoreService.addNote(
                               fnamecontroller.text,
                               Lnamecontroller.text,
                               Contactnocontroller.text,
@@ -231,42 +287,42 @@ class persondetails extends StatelessWidget {
                               description,
                               value.imageurl.toString(),
                               DateTime.now(),
-                              
                             );
-                            value.addtile(Itemmodel(
-                              image: images!,
-                              Category: category,
-                              foodname: foodname,
-                              description: description,
-                              date: DateTime.now(),
-                              lname: Lnamecontroller.text,
-                              fname: fnamecontroller.text,
-                              course: value.selectedvalue.toString(),
-                              cntctbo: Contactnocontroller.text,
-                              option: value.currentvalue.toString(),
-                            ));
+                            fireStoreServivce.addmydonation(
+                              fnamecontroller.text,
+                              Lnamecontroller.text,
+                              Contactnocontroller.text,
+                              foodname,
+                              value.selectedvalue.toString(),
+                              value.currentvalue.toString(),
+                              description,
+                              value.imageurl.toString(),
+                              DateTime.now(),
+                            );
+
                             value.image = null;
                             fnamecontroller.clear();
                             Contactnocontroller.clear();
                             Lnamecontroller.clear();
                             value.selectedvalue = null;
                             value.currentvalue = null;
-                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Donatepage(
-                                    showbackbutton: true,
-                                    onpressed: () =>  Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => MainPage(),
-                                          ),),
-                                
-                                    
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Donatepage(
+                                  showbackbutton: true,
+                                  onpressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MainPage(),
+                                    ),
                                   ),
-                                ));
+                                ),
+                              ),
+                            );
                           },
-                        ); // That's it to display an alert, use other properties to customize.
+                        );
+                        // That's it to display an alert, use other properties to customize.
                       }
                       ;
                     },

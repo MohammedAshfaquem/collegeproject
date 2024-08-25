@@ -1,18 +1,19 @@
-import 'package:college_project/donatepage/donatecontroller.dart';
+import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class cdetails extends StatelessWidget {
-  cdetails({super.key, required this.category});
+class catogorydetails extends StatelessWidget {
+  catogorydetails({super.key, required this.category, required this.function});
   final String category;
+  final VoidCallback function;
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final foodnamecontroller = TextEditingController();
     final descriptioncontroller = TextEditingController();
-    final imagcontroller = Provider.of<DonateController>(context,listen: false);
+    final imagcontroller = Provider.of<Donate>(context,listen: false);
 
     return PopScope(
        onPopInvoked: (didPop) => imagcontroller.clearImageCache(),
@@ -40,7 +41,7 @@ class cdetails extends StatelessWidget {
                   right: 30.r,
                   child: Container(
                     padding: EdgeInsets.all(18).w,
-                    child: Consumer<DonateController>(
+                    child: Consumer<Donate>(
                       builder: (context, value, child) => Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +178,7 @@ class cdetails extends StatelessWidget {
                 Positioned(
                   bottom: 40.h,
                   left: 40.r,
-                  child: Consumer<DonateController>(
+                  child: Consumer<Donate>(
                     builder: (context, value, child) => GestureDetector(
                       onTap: () {
                         if (_formkey.currentState!.validate()) {
@@ -188,7 +189,7 @@ class cdetails extends StatelessWidget {
                             print(value.image);
                             return persondetails(
                               option: value.currentvalue.toString(),
-                              images: value.savedimage,
+                              images: value.imageurl.toString(),
                               foodname: foodnamecontroller.text,
                               category: value.selectedvalue.toString(),
                               description: descriptioncontroller.text,

@@ -1,20 +1,30 @@
-import 'package:college_project/category/categorydetailsapge.dart';
+import 'package:college_project/Category/categorydetailsapge.dart';
+import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class categorymodels extends StatelessWidget {
-  const categorymodels({super.key, required this.category, required this.categoryno, required this.image,});
+  const categorymodels({
+    super.key,
+    required this.category,
+    required this.categoryno,
+    required this.image,
+  });
   final String category;
   final String categoryno;
   final String image;
-  
 
   @override
   Widget build(BuildContext context) {
+    final imagcontroller = Provider.of<Donate>(context, listen: false);
     return GestureDetector(
-      onTap:() {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>cdetails(category: category),));
-        
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => catogorydetails(
+                  category: category,
+                  function: () => imagcontroller.clearImageCache,
+                )));
       },
       child: Container(
         width: 350.w,
@@ -32,13 +42,16 @@ class categorymodels extends StatelessWidget {
               children: [
                 Text(
                   categoryno,
-                  style: TextStyle(color: Color(0xff247D7F), fontSize: 17.sp,fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: Color(0xff247D7F),
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w500),
                 ),
                 Text(category,
                     style: TextStyle(
-                      color: Color(0xff247D7F),
-                       fontSize: 24.sp,fontWeight: FontWeight.bold)
-                    ),
+                        color: Color(0xff247D7F),
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -49,7 +62,6 @@ class categorymodels extends StatelessWidget {
               child: Image.asset(
                 image,
                 fit: BoxFit.fitWidth,
-                
               ),
             ),
           ],
