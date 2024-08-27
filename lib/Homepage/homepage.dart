@@ -50,7 +50,7 @@ class _HomepageState extends State<Homepage> {
         return Skeletonizer(
           enabled: _isloading,
           child: Image.network(
-            data['image'] as String,
+            data['imgurl'] as String,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) {
                 Future.microtask(

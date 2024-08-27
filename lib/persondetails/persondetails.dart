@@ -306,6 +306,7 @@ class persondetails extends StatelessWidget {
                             Lnamecontroller.clear();
                             value.selectedvalue = null;
                             value.currentvalue = null;
+                            value.clearImageCache();
                             Navigator.push(
                               context,
                               MaterialPageRoute(

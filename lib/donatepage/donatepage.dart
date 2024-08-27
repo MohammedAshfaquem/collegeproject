@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/donatepage/donateDetailspage.dart';
-
 import 'package:college_project/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -21,17 +17,18 @@ class Donatepage extends StatefulWidget {
 }
 
 class _DonatepageState extends State<Donatepage> {
-  bool _isloading = true;
   @override
   Widget build(BuildContext context) {
     final FireStoreService fireStoreServivce = FireStoreService();
-    return PopScope(
-      onPopInvoked: (didPop) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>MainPage(),
-            ));
+    return WillPopScope(
+      onWillPop: () async {
+        // Navigate to the home page when the back button is pressed
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+          (Route<dynamic> route) => false,
+        );
+        return false; // Prevent default back button behavior
       },
       child: Scaffold(
         appBar: AppBar(

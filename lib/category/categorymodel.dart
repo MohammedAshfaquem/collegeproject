@@ -23,7 +23,7 @@ class categorymodels extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => catogorydetails(
                   category: category,
-                  function: () => imagcontroller.clearImageCache,
+                  function: () => imagcontroller.clearImageCache(),
                 )));
       },
       child: Container(

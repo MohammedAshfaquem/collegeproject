@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Editimage/imagecontroller.dart';
-import 'package:college_project/Login/login.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
-import 'package:college_project/imagecontroller.dart';
+
 import 'package:college_project/service/googlesign.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

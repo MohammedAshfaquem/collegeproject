@@ -47,6 +47,7 @@ class Donate extends ChangeNotifier {
     try {
       await referenceimagetoupload.putFile(File(file!.path));
       imageurl = await referenceimagetoupload.getDownloadURL();
+      
     } catch (e) {
       print("error:$e");
     }
@@ -69,6 +70,7 @@ class Donate extends ChangeNotifier {
       print("error:$e");
     }
     ;
+    notifyListeners();
   }
 
   void addtile(ItemModel itemmodel) {
