@@ -49,9 +49,7 @@ class _RegisterpageState extends State<RegisterPage> {
       return false;
     }
   }
-
-
-  Future<void> signupEmail() async {
+Future<void> signupEmail() async {
   if (passwordConfirmed()) {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -62,18 +60,15 @@ class _RegisterpageState extends State<RegisterPage> {
       // Send email verification
       await userCredential.user?.sendEmailVerification();
 
-      // Save user data to Firestore
+      // Save user data and creation timestamp to Firestore
       String uid = userCredential.user!.uid;
       await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'email': regemailcontroller.text,
         'name': regnamecontroller.text,
-         'password': regpasswordcontroller.text,
-        'confirm pass': regconfirmpasscontroller.text,
-        'createdAt': FieldValue.serverTimestamp(),
         'emailVerified': false,
+        'createdAt': FieldValue.serverTimestamp(), // Store creation time
       });
 
-      // Navigate to email verification page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -93,7 +88,6 @@ class _RegisterpageState extends State<RegisterPage> {
     }
   }
 }
-
 
 
   @override
