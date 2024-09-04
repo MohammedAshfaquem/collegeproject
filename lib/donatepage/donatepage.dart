@@ -50,7 +50,7 @@ class _DonatepageState extends State<Donatepage> {
           ),
           centerTitle: true,
         ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         body: StreamBuilder<QuerySnapshot>(
             stream: fireStoreServivce.getNotesStream(),
             builder: (context, snapshot) {
@@ -95,15 +95,10 @@ class _DonatepageState extends State<Donatepage> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.white,
-                                      offset: Offset(5, 5),
-                                      blurRadius: 5),
-                                ],
+                              
                                 borderRadius: BorderRadius.circular(12),
-                                color: Color(0xff247D7F)),
-                            height: 110.h,
+                                color: Colors.white),
+                            height: 120.h,
                             width: 500.w,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,11 +106,12 @@ class _DonatepageState extends State<Donatepage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(20).w,
                                   child: Container(
+                                    
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
                                       child: Image.network(
                                         imageurl,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fill,
                                         loadingBuilder:
                                             (context, child, loadingProgress) {
                                           if (loadingProgress == null)
@@ -124,21 +120,19 @@ class _DonatepageState extends State<Donatepage> {
                                               enabled: true,
                                               child: Container(
                                                 color: Colors.grey.shade100,
-                                                height: 100,
-                                                width: 80,
+                                                height: 120,
+                                                width:100,
                                               ));
                                         },
                                       ),
                                     ),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(7)),
-                                    height: 80.h,
-                                    width: 100.w,
+                                    height: 90.h,
+                                    width: 120.w,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
+                               
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -154,46 +148,30 @@ class _DonatepageState extends State<Donatepage> {
                                         foodname,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                             fontSize: 19.sp),
                                       ),
                                       Text(
                                         course,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
-                                            color: Colors.grey.shade200),
+                                            color: Colors.black),
                                       ),
                                       Text(
                                         dateTime.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 15.sp),
+                                            fontSize: 15.sp,
+                                            color: Colors.black),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      )
+                                    SizedBox(height: 10,)
                                     ],
                                   ),
                                 ),
                                 SizedBox(
                                   width: 30.w,
                                 ),
-                                // IconButton(
-                                //   onPressed: () {
-                                //     QuickAlert.show(
-                                //         context: context,
-                                //         type: QuickAlertType.warning,
-                                //         showCancelBtn: true,
-                                //         onCancelBtnTap: () =>
-                                //             Navigator.pop(context),
-                                //         title: 'Are you sure',
-                                //         onConfirmBtnTap: () {
-                                //           value.deleteitem(index, context);
-                                //           Navigator.pop(context);
-                                //         });
-                                //   },
-                                //   icon: const Icon(Icons.delete),
-                                // )
+                              Text(option,style: TextStyle(color: Colors.black),),
                               ],
                             ),
                           ),

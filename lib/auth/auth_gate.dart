@@ -1,4 +1,5 @@
 
+import 'package:college_project/Login/emailverification.dart';
 import 'package:college_project/Login/login.dart';
 import 'package:college_project/Login/register.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
@@ -16,7 +17,10 @@ class AuthGate extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MainPage();
+            if(FirebaseAuth.instance.currentUser!.emailVerified == true){
+              return MainPage();
+            }
+            return VerifyEmailPage();
           } else {
             return AuthPage();
           }

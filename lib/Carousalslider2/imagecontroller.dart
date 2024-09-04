@@ -6,6 +6,6 @@ class SlideImageController extends ChangeNotifier {
 
   void  updateindex(int index,){
    _selectedindex = index;
-   notifyListeners();
+  notifyListeners();
   }
 }

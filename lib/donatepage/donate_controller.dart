@@ -313,7 +313,7 @@ class ItemModel {
       'category': category,
       'foodname': foodname,
       'description': description,
-      'date': DateFormat.yMd().add_jm().format(now),
+      'date': DateFormat.jm().format(now),
       'lname': lname,
       'fname': fname,
       'course': course,

@@ -28,7 +28,7 @@ class _ForgetpageState extends State<Forgetpage> {
           context: context,
           builder: (context) {
             return const AlertDialog(
-              content: Text("Reset link sended to your email"),
+              content: Text("Reset link sended to your email.\n please check your email",style: TextStyle(color:Colors.black),),
             );
           });
     } on FirebaseAuthException catch (e) {
@@ -63,7 +63,7 @@ class _ForgetpageState extends State<Forgetpage> {
           child: Column(
             children: [
             
-              Image.asset("lib/images//forget_password.png"),
+              Image.asset("lib/images/forget_password.png"),
               SizedBox(height: 20,),
                Row(
                 mainAxisAlignment:MainAxisAlignment.start ,
@@ -89,6 +89,7 @@ class _ForgetpageState extends State<Forgetpage> {
                 height: 20.h,
               ),
               TextField(
+                style: TextStyle(color: Colors.black),
                 controller: resetcontroller,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(

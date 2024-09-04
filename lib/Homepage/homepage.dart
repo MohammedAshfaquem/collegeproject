@@ -50,7 +50,7 @@ class _HomepageState extends State<Homepage> {
         return Skeletonizer(
           enabled: _isloading,
           child: Image.network(
-            data['imgurl'] as String,
+            data['image'] as String,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) {
                 Future.microtask(
@@ -108,6 +108,7 @@ class _HomepageState extends State<Homepage> {
               duration: Duration(milliseconds: 600),
               delay: Duration(milliseconds: 600),
               child: Container(
+                
                 height: 60,
                 width: 350,
                 child: Row(
@@ -177,7 +178,7 @@ class _HomepageState extends State<Homepage> {
                                 child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.circular(100).w,
+                                          BorderRadius.circular(10).w,
                                     ),
                                     height: 60.h,
                                     width: 60.w,
@@ -295,7 +296,7 @@ class _HomepageState extends State<Homepage> {
               duration: Duration(milliseconds: 700),
               delay: Duration(milliseconds: 500),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20,),
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,6 +348,7 @@ class _HomepageState extends State<Homepage> {
                             width: 10.w,
                           ),
                           GestureDetector(
+
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -433,7 +435,7 @@ class _HomepageState extends State<Homepage> {
                       feedbackmodel(
                           feedback:
                               'Mealio app is very helpfull and the services are highly usefull',
-                          name: 'Abhay Krishna'),
+                          name: 'Abhay Krishnan k'),
                     ],
                   ),
                 ),

@@ -361,7 +361,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               );
             },
-            text: "Support",
+            text: "My Donations",
             colors: Theme.of(context).colorScheme.surface,
             icon: Icons.call,
           ),
@@ -445,6 +445,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   //
                   FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
+                  Navigator.pushNamedAndRemoveUntil(context, 'authpage', (route) => false,
+                  );
                 },
               );
             },

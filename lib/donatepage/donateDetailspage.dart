@@ -40,7 +40,6 @@ class _DetailspageState extends State<Detailspage> {
   @override
   Widget build(BuildContext context) {
     final now = new DateTime.now();
-    String fotmatter = DateFormat.yMd().add_jm().format(now);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -95,12 +94,12 @@ class _DetailspageState extends State<Detailspage> {
                         }
                       },
                       widget.imageurl.toString(),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                     decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(30)),
-                    height: 150.h,
+                    height: 170.h,
                     width: 500.w,
                   ),
                 ),
@@ -127,44 +126,52 @@ class _DetailspageState extends State<Detailspage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0).w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: CircleAvatar(
-                      child: Image.asset('lib/images/avtar.avif'),
-                      radius: 30.r,
+              padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10).w,
+              child: Container(
+                height: 80,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Colors.grey.shade300,),
+                
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: CircleAvatar(
+                        child: Image.asset('lib/images/avtar.avif'),
+                        radius: 30.r,
+                      ),
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${widget.user} ${widget.lname}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      Text(
-                        "${widget.cntctno}",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 100.w,
-                  ),
-                  Text(
-                    "${widget.course}",
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.primary),
-                  )
-                ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20,),
+                        Text(
+                          '${widget.user} ${widget.lname}',
+                          style: TextStyle(
+                            fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        SizedBox(height: 5,),
+                        Text(
+                          "${widget.cntctno}",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 100.w,
+                    ),
+                    Text(
+                      "${widget.course}",
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.primary),
+                    )
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -193,7 +200,7 @@ class _DetailspageState extends State<Detailspage> {
               ),
             ),
             SizedBox(
-              height: 170.h,
+              height: 130.h,
             ),
             SizedBox(
               height: 30.h,
@@ -237,7 +244,7 @@ class _DetailspageState extends State<Detailspage> {
                   ],
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(27).w,
+                    borderRadius: BorderRadius.circular(15).w,
                     color: Color(0xff247D7F)),
               ),
             ),

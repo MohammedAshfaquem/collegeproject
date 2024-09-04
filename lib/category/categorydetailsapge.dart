@@ -110,6 +110,7 @@ class catogorydetails extends StatelessWidget {
                                 ).toList(),
                                 onChanged: value.freeornotcontroll,
                               )),
+
                           TextFormField(
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),

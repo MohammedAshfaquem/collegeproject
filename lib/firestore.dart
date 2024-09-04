@@ -32,7 +32,7 @@ class FireStoreService {
       'option': option,
       'decsription': decsription,
       'image': image,
-      'time': DateFormat.yMd().add_jm().format(now),
+      'time': DateFormat.jm().format(now),
       'uid':user!.uid,
     });
   }
