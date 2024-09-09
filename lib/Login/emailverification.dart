@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Login/login.dart';
+import 'package:college_project/Login/loginorsignup.dart';
+import 'package:college_project/Login/register.dart';
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +51,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           // Optionally navigate to a different page or show a message
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) =>AuthGate()),
+            MaterialPageRoute(builder: (context) => AuthGate()),
           );
         } catch (e) {
           // Handle errors if user deletion fails
@@ -70,29 +73,66 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       appBar: AppBar(title: Text('Verify Your Email')),
       body: Center(
         child: Column(
-          children:[
-            Icon(Icons.email_outlined,size: 150,),
-            SizedBox(height: 50,),
-            Text('Verify your email address.',style: GoogleFonts.poppins(fontSize: 20,color: Colors.black,fontWeight: FontWeight.w600),),
+          children: [
+            Icon(
+              Icons.email_outlined,
+              size: 150,
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              'Verify your email address.',
+              style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600),
+            ),
             SizedBox(height: 20),
-            Text("We have just send email verification link on \n your email.please check email and click on \n      that link to verify your email address",style: TextStyle(color: Colors.grey.shade900),),
-          
-          SizedBox(height: 50,),
-          Text("if not auto redirected  after verification ,then \n               please reload this page.",style: TextStyle(color: Colors.grey.shade900),),
-         SizedBox(height: 50,),
+            Text(
+              "We have just send email verification link on \n your email.please check email and click on \n      that link to verify your email address",
+              style: TextStyle(color: Colors.grey.shade900),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              "if not auto redirected  after verification ,then \n               please reload this page.",
+              style: TextStyle(color: Colors.grey.shade900),
+            ),
+            SizedBox(
+              height: 50,
+            ),
             GestureDetector(
               onTap: () async {
                 await _auth.currentUser?.sendEmailVerification();
               },
-              child: Text('Resend  E-mail link',style: TextStyle(color: Colors.blue),),
+              child: Text(
+                'Resend  E-mail link',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
-                      SizedBox(height: 20,),
-
-             GestureDetector(
-              onTap: () async {
-                await _auth.currentUser?.sendEmailVerification();
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegisterPage(
+                        showloginpage: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(showRegisterpage: (){
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => loginorsignup(),));
+                          }),));
+                        },
+                      ),
+                    ));
               },
-              child: Text("Back to login",style: TextStyle(color: Colors.blue),),
+              child: Text(
+                "Back to login",
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
           ],
         ),

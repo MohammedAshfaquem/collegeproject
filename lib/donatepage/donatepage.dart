@@ -5,6 +5,7 @@ import 'package:college_project/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Donatepage extends StatefulWidget {
@@ -19,7 +20,7 @@ class Donatepage extends StatefulWidget {
 class _DonatepageState extends State<Donatepage> {
   @override
   Widget build(BuildContext context) {
-    final FireStoreService fireStoreServivce = FireStoreService();
+    final FireStoreService fireStoreService = FireStoreService();
     return WillPopScope(
       onWillPop: () async {
         // Navigate to the home page when the back button is pressed
@@ -52,137 +53,150 @@ class _DonatepageState extends State<Donatepage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: StreamBuilder<QuerySnapshot>(
-            stream: fireStoreServivce.getNotesStream(),
+            stream: fireStoreService.getNotesStream(),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List noteslist = snapshot.data!.docs;
-                return ListView.builder(
-                    itemCount: noteslist.length,
-                    itemBuilder: (context, index) {
-                      DocumentSnapshot document = noteslist[index];
-                      String docID = document.id;
-                      Map<dynamic, dynamic> data =
-                          document.data() as Map<dynamic, dynamic>;
-                      String fname = data['first name'];
-                      String lname = data['last name'];
-                      String number = data['number'];
-                      String course = data['course'];
-                      String foodname = data['food name'];
-                      String option = data['option'];
-                      String itemdes = data['decsription'];
-                      String imageurl = data['image'];
-                      String dateTime = data['time'];
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // While the future is still loading
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                // If there was an error while fetching data
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                // If data is available
+                final notesList = snapshot.data!.docs;
+                if (notesList.isNotEmpty) {
+                  // Data exists and is not empty
+                  return ListView.builder(
+                      itemCount: notesList.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot document = notesList[index];
+                        String docID = document.id;
+                        Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
+                        String fname = data['first name'] ?? '';
+                        String lname = data['last name'] ?? '';
+                        String number = data['number'] ?? '';
+                        String course = data['course'] ?? '';
+                        String foodname = data['food name'] ?? '';
+                        String option = data['option'] ?? '';
+                        String itemdes = data['description'] ?? '';
+                        String imageurl = data['image'] ?? '';
+                        String dateTime = data['time'] ?? '';
 
-                      return Padding(
-                        padding: const EdgeInsets.all(28.0).w,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Detailspage(
-                                    cntctno: number,
-                                    course: course,
-                                    lname: lname,
-                                    foodname: foodname,
-                                    user: fname,
-                                    option: option,
-                                    itemdes: itemdes,
-                                    imageurl: imageurl,
-                                    time: dateTime,
-                                  ),
-                                ));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white),
-                            height: 120.h,
-                            width: 500.w,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20).w,
-                                  child: Container(
-                                    
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: Image.network(
-                                        imageurl,
-                                        fit: BoxFit.fill,
-                                        loadingBuilder:
-                                            (context, child, loadingProgress) {
-                                          if (loadingProgress == null)
-                                            return child;
-                                          return Skeletonizer(
-                                              enabled: true,
-                                              child: Container(
-                                                color: Colors.grey.shade100,
-                                                height: 120,
-                                                width:100,
-                                              ));
-                                        },
-                                      ),
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                                  left: 25, right: 25, top: 15)
+                              .r,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Detailspage(
+                                      cntctno: number,
+                                      course: course,
+                                      lname: lname,
+                                      foodname: foodname,
+                                      user: fname,
+                                      option: option,
+                                      itemdes: itemdes,
+                                      imageurl: imageurl,
+                                      time: dateTime,
                                     ),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7)),
-                                    height: 90.h,
-                                    width: 120.w,
+                                  ));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white),
+                              height: 120.h,
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      imageurl,
+                                      fit: BoxFit.cover,
+                                      width: 120.w,
+                                      height: 90.h,
+                                      loadingBuilder: (context, child,
+                                          loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Skeletonizer(
+                                            enabled: true,
+                                            child: Container(
+                                              color: Colors.grey.shade100,
+                                              height: 120,
+                                              width: 100,
+                                            ));
+                                      },
+                                    ),
                                   ),
-                                ),
-                               
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        foodname,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            fontSize: 19.sp),
-                                      ),
-                                      Text(
-                                        course,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        dateTime.toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.sp,
-                                            color: Colors.black),
-                                      ),
-                                    SizedBox(height: 10,)
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          foodname,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 19.sp),
+                                        ),
+                                        Text(
+                                          course,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          dateTime.toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.sp,
+                                              color: Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 30.w,
-                                ),
-                              Text(option,style: TextStyle(color: Colors.black),),
-                              ],
+                                  SizedBox(
+                                    width: 30.w,
+                                  ),
+                                  Text(
+                                    option,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    });
+                        );
+                      });
+                } else {
+                  // Data is either null or empty
+                  return Center(
+                    child: Lottie.asset(
+                  "lib/Animations/emtypage.json", // Corrected the path here
+                  repeat: false,
+                )); 
+                }
               } else {
+                // Handle the case where snapshot has no data but no error (shouldn't usually reach here)
                 return Center(
-                    child: Text(
-                  "No Recoreds",
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                    child: Lottie.asset(
+                  "lib/Animations/emtypage.json", // Corrected the path here
+                  repeat: false,
                 ));
               }
             }),

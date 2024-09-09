@@ -1,6 +1,7 @@
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -13,10 +14,11 @@ class catogorydetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final foodnamecontroller = TextEditingController();
     final descriptioncontroller = TextEditingController();
-    final imagcontroller = Provider.of<Donate>(context,listen: false);
+    final pricecontroller = TextEditingController();
+    final imagcontroller = Provider.of<Donate>(context, listen: false);
 
     return PopScope(
-       onPopInvoked: (didPop) => imagcontroller.clearImageCache(),
+      onPopInvoked: (didPop) => imagcontroller.clearImageCache(),
       child: Scaffold(
         body: SingleChildScrollView(
           child: Form(
@@ -110,7 +112,40 @@ class catogorydetails extends StatelessWidget {
                                 ).toList(),
                                 onChanged: value.freeornotcontroll,
                               )),
-
+                          if (value.currentvalue == 'Price')
+                            TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              maxLength: 3,
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                              controller: pricecontroller,
+                              decoration: InputDecoration(
+                                counterText: "",
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Text(
+                                    "RS",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                hintText: "Enter The price",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(23),
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .black), // When the field is focused
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .grey), // When the field is not focused
+                                ),
+                              ),
+                            ),
                           TextFormField(
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
@@ -136,7 +171,7 @@ class catogorydetails extends StatelessWidget {
                             "pictures",
                             style: TextStyle(color: Colors.black),
                           ),
-                          value.imageurl  == null
+                          value.imageurl == null
                               ? GestureDetector(
                                   onTap: () async {
                                     value.showimagepicker(context);
@@ -153,14 +188,44 @@ class catogorydetails extends StatelessWidget {
                                 )
                               : Container(
                                   decoration: BoxDecoration(
-                                      
                                       borderRadius: BorderRadius.circular(17)),
                                   height: 50.h,
                                   width: 50.w,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(17).w,
                                     child: Image.network(
-                               
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          // Image is loaded
+                                          return child;
+                                        } else {
+                                          // Image is still loading
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      (loadingProgress
+                                                              .expectedTotalBytes ??
+                                                          1)
+                                                  : null,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      errorBuilder: (BuildContext context,
+                                          Object error,
+                                          StackTrace? stackTrace) {
+                                        // Error occurred while loading the image
+                                        return Center(
+                                          child: Icon(Icons.error,
+                                              color: Colors.red),
+                                        );
+                                      },
                                       value.imageurl.toString(),
                                       fit: BoxFit.cover,
                                     ),
@@ -188,14 +253,17 @@ class catogorydetails extends StatelessWidget {
                             print(foodnamecontroller.text);
                             print(descriptioncontroller.text);
                             print(value.image);
+                            
                             return persondetails(
-                              option: value.currentvalue.toString(),
+                              option:value.currentvalue == 'Free'?"Free":"Rs:"+pricecontroller.text.toString(),
                               images: value.imageurl.toString(),
                               foodname: foodnamecontroller.text,
                               category: value.selectedvalue.toString(),
                               description: descriptioncontroller.text,
                             );
+                            
                           }));
+                          print(pricecontroller.text);
                         }
                       },
                       child: Container(

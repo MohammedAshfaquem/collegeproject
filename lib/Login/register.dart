@@ -56,10 +56,8 @@ Future<void> signupEmail() async {
           .createUserWithEmailAndPassword(
               email: regemailcontroller.text.trim(),
               password: regpasswordcontroller.text.trim());
-
       // Send email verification
       await userCredential.user?.sendEmailVerification();
-
       // Save user data and creation timestamp to Firestore
       String uid = userCredential.user!.uid;
       await FirebaseFirestore.instance.collection('users').doc(uid).set({

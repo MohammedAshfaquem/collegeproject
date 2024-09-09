@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
@@ -30,10 +31,19 @@ class persondetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String generateRandomId({int length = 16}) {
+      const characters =
+          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      final random = Random();
+      return List.generate(
+          length, (_) => characters[random.nextInt(characters.length)]).join();
+    }
+
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
     final controller = Provider.of<Donate>(context, listen: false);
+    final donationId = generateRandomId();
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -45,7 +55,8 @@ class persondetails extends StatelessWidget {
 
         // Update the document with the new field
         await userRef.update({
-           'mydonations': FieldValue.arrayUnion([itemModel.toMap()]), // Adding the itemModel as a field
+          'mydonations': FieldValue.arrayUnion(
+              [itemModel.toMap()]), // Adding the itemModel as a field
         });
 
         print('Item added to user document successfully!');
@@ -253,7 +264,8 @@ class persondetails extends StatelessWidget {
                             fname: fnamecontroller.text,
                             course: value.selectedvalue.toString(),
                             cntctbo: Contactnocontroller.text,
-                            option: value.currentvalue.toString(),
+                            option: option,
+                            donationId: donationId
                           ),
                         );
                         // value.addtile(
@@ -283,22 +295,23 @@ class persondetails extends StatelessWidget {
                               Contactnocontroller.text,
                               foodname,
                               value.selectedvalue.toString(),
-                              value.currentvalue.toString(),
+                              option,
                               description,
                               value.imageurl.toString(),
                               DateTime.now(),
+                              donationId.toString(),
                             );
                             fireStoreServivce.addmydonation(
-                              fnamecontroller.text,
-                              Lnamecontroller.text,
-                              Contactnocontroller.text,
-                              foodname,
-                              value.selectedvalue.toString(),
-                              value.currentvalue.toString(),
-                              description,
-                              value.imageurl.toString(),
-                              DateTime.now(),
-                            );
+                                fnamecontroller.text,
+                                Lnamecontroller.text,
+                                Contactnocontroller.text,
+                                foodname,
+                                option,
+                                value.currentvalue.toString(),
+                                description,
+                                value.imageurl.toString(),
+                                DateTime.now(),
+                                donationId.toString());
 
                             value.image = null;
                             fnamecontroller.clear();

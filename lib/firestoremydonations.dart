@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FireStoreServivce {
@@ -17,7 +18,8 @@ class FireStoreServivce {
       String option,
       String decsription,
       String image,
-      DateTime time) {
+      DateTime time,
+      String donationId) {
     return mydonation.add({
       'course': course,
       'first name': fname,
@@ -29,7 +31,11 @@ class FireStoreServivce {
       'decsription': decsription,
       'image': image,
       'time': DateFormat.jm().format(now),
+      "donationid":donationId,
     });
+  }
+  Future<void> deletenote(String docId){
+  return mydonation.doc(docId).delete();
   }
 
   Stream<QuerySnapshot> getNotesStream() {

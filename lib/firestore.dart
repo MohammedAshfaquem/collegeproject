@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +22,9 @@ class FireStoreService {
       String option,
       String decsription,
       String image,
-      DateTime time) {
+      DateTime time,
+      String donationId,
+      ) {
     return notes.add({
       'course': course,
       'first name': fname,
@@ -34,6 +37,7 @@ class FireStoreService {
       'image': image,
       'time': DateFormat.jm().format(now),
       'uid':user!.uid,
+      "donationid":donationId,
     });
   }
 

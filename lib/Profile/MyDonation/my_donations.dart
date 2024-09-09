@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -14,11 +15,7 @@ class MyDonations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
     final donate = Provider.of<Donate>(context, listen: false);
-
     Future<List?> getmydonation() async {
       String uid = FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot userdoc =
@@ -29,11 +26,11 @@ class MyDonations extends StatelessWidget {
         print(data['mydonations']);
         return data['mydonations'] as List?;
       }
+      return null;
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-
+        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
           backgroundColor: Color(0xff247D7F),
           leading: IconButton(
@@ -94,7 +91,6 @@ class MyDonations extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.white),
                           height: 110.h,
@@ -162,7 +158,7 @@ class MyDonations extends StatelessWidget {
                                     Text(
                                       item['date'],
                                       style: TextStyle(
-                                        color: Colors.grey.shade500,
+                                          color: Colors.grey.shade500,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15.sp),
                                     ),
@@ -185,13 +181,22 @@ class MyDonations extends StatelessWidget {
                                           Navigator.pop(context),
                                       title: 'Are you sure',
                                       onConfirmBtnTap: () {
-                                        donate.deleteFieldFromDocument(
-                                            'users', 'mydonations');
-                                        donate.deleteDocumentsByUserCondition('notes','uid');
+                                        print(index);
+                                        donate.deleteFromMyDonations(
+                                            index,
+                                            );
+                                          print(
+                                            item['donationid']
+                                          );
+                                         donate.deleteFromAvailbleDanations(
+                                            'notes', 'donationid',index,item['donationid']);
                                         Navigator.pop(context);
                                       });
                                 },
-                                icon: const Icon(Icons.delete,color: Colors.black,),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
                               )
                             ],
                           ),
@@ -203,17 +208,18 @@ class MyDonations extends StatelessWidget {
               } else {
                 // Data is either null or empty
                 return Center(
-                    child: Text(
-                  "No data",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ));
+                  child: Lottie.asset(
+                "lib/Animations/emtypage.json",
+                repeat: false,
+              ));
               }
             } else {
               // Handle the case where snapshot has no data but no error (shouldn't usually reach here)
-              return Center(child: Text("Unexpected state"));
+              return Center(
+                  child: Lottie.asset(
+                "lib/Animations/emtypage.json",
+                repeat: false,
+              ));
             }
           },
         ));

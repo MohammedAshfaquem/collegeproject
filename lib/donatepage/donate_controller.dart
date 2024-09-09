@@ -47,7 +47,6 @@ class Donate extends ChangeNotifier {
     try {
       await referenceimagetoupload.putFile(File(file!.path));
       imageurl = await referenceimagetoupload.getDownloadURL();
-      
     } catch (e) {
       print("error:$e");
     }
@@ -204,81 +203,76 @@ class Donate extends ChangeNotifier {
     );
   }
 
-  // imagefromgallery() async {
-  //   final PickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-  //   if (PickedFile != null) {
-  //     image = File(PickedFile.path);
-  //     savedimage = image;
-  //   } else {
-  //     print("no image picked");
-  //   }
-  //   notifyListeners();
-  //   //  if (value != null) {
-  //   //    _cropimage(File(value.path));
-  //   // }
-  // }
-
-  // imagefromcamera() async {
-  //   final PickedFile = await picker.pickImage(source: ImageSource.camera);
-
-  //   if (PickedFile != null) {
-  //     image = File(PickedFile.path);
-  //     savedimage = image;
-  //   } else {
-  //     print("no image picked");
-  //   }
-  //   notifyListeners();
-  // }
-  Future<void> deleteFieldFromDocument(String docId, String mydonations) async {
+  Future<void> deleteFromMyDonations(int index) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     try {
       // Reference to the specific document
-
       DocumentReference documentRef = _firestore.collection('users').doc(uid);
 
-      // Update the document by deleting the specific field
-      await documentRef.update({
-        mydonations: FieldValue.delete(),
+      // Use a transaction to ensure data consistency
+      await _firestore.runTransaction((transaction) async {
+        // Get the current document snapshot
+        DocumentSnapshot docSnapshot = await transaction.get(documentRef);
+
+        // Check if the document exists
+        if (!docSnapshot.exists) {
+          throw Exception('Document does not exist');
+        }
+
+        // Get the current list of donations
+        List<dynamic> donationsList =
+            docSnapshot.get('mydonations') as List<dynamic>;
+
+        // Ensure the index is within bounds
+        if (index < 0 || index >= donationsList.length) {
+          throw Exception('Index out of bounds');
+        }
+
+        // Remove the item at the specified index
+        donationsList.removeAt(index);
+
+        // Update the document with the new list
+        transaction.update(documentRef, {'mydonations': donationsList});
       });
+
       notifyListeners();
-      print('Field deleted successfully!');
+      print('Item deleted successfully!');
     } catch (e) {
-      print('Error deleting field: $e');
+      print('Error deleting item: $e');
     }
-  
   }
 
-  
-Future<void> deleteDocumentsByUserCondition(String collectionPath, String fieldName) async {
-  try {
-    // Get the currently signed-in user
-    User? user = FirebaseAuth.instance.currentUser;
+  Future<void> deleteFromAvailbleDanations(
+      String collectionPath, String fieldName,int index,String donationId) async {
+    try {
+      // Get the currently signed-in user
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      // Get the UID of the current user
-      String uid = user.uid;
+      if (user != null) {
+        // Get the UID of the current user
+        String uid = user.uid;
 
-      // Reference to the collection
-      CollectionReference collectionRef = FirebaseFirestore.instance.collection(collectionPath);
+        // Reference to the collection
+        CollectionReference collectionRef =
+            FirebaseFirestore.instance.collection(collectionPath);
 
-      // Query to find documents where the field matches the user's UID
-      QuerySnapshot querySnapshot = await collectionRef.where(fieldName, isEqualTo: uid).get();
-    print("valladhum nadakko");
-    print(uid);
-      // Delete each document that matches the condition
-      for (var doc in querySnapshot.docs) {
-        await doc.reference.delete();
+        // Query to find documents where the field matches the user's UID
+        QuerySnapshot querySnapshot =
+            await collectionRef.where(fieldName, isEqualTo: donationId).get();
+        print("valladhum nadakko");
+        print(uid);
+        // Delete each document that matches the condition
+        for (var doc in querySnapshot.docs) {
+          await doc.reference.delete();
+        }
+        print('Documents successfully deleted');
+      } else {
+        print('No user is currently signed in');
       }
-      print('Documents successfully deleted');
-    } else {
-      print('No user is currently signed in');
+    } catch (e) {
+      print('Error deleting documents: $e');
     }
-  } catch (e) {
-    print('Error deleting documents: $e');
   }
-}
-
 }
 
 class ItemModel {
@@ -292,8 +286,9 @@ class ItemModel {
   final String course;
   final String cntctbo;
   final String option;
+  final String donationId;
 
-  ItemModel({
+  ItemModel( {
     required this.image,
     required this.category,
     required this.foodname,
@@ -304,6 +299,7 @@ class ItemModel {
     required this.course,
     required this.cntctbo,
     required this.option,
+    required this.donationId,
   });
   final now = DateTime.now();
   // Convert an ItemModel into a Map
@@ -319,6 +315,7 @@ class ItemModel {
       'course': course,
       'cntctbo': cntctbo,
       'option': option,
+      'donationid':donationId,
     };
   }
 
@@ -335,6 +332,7 @@ class ItemModel {
       course: map['course'],
       cntctbo: map['cntctbo'],
       option: map['option'],
+      donationId:map["donationid"],
     );
   }
 }
