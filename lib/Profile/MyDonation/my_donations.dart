@@ -183,13 +183,14 @@ class MyDonations extends StatelessWidget {
                                       onConfirmBtnTap: () {
                                         print(index);
                                         donate.deleteFromMyDonations(
+                                          index,
+                                        );
+                                        print(item['donationid']);
+                                        donate.deleteFromAvailbleDanations(
+                                            'notes',
+                                            'donationid',
                                             index,
-                                            );
-                                          print(
-                                            item['donationid']
-                                          );
-                                         donate.deleteFromAvailbleDanations(
-                                            'notes', 'donationid',index,item['donationid']);
+                                            item['donationid']);
                                         Navigator.pop(context);
                                       });
                                 },
@@ -208,18 +209,50 @@ class MyDonations extends StatelessWidget {
               } else {
                 // Data is either null or empty
                 return Center(
-                  child: Lottie.asset(
-                "lib/Animations/emtypage.json",
-                repeat: false,
-              ));
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 190,
+                      ),
+                      Container(
+                        height: 200,
+                        child: Lottie.asset("lib/Animations/emtypage.json",
+                            repeat: false, fit: BoxFit.fill),
+                      ),
+                      Text(
+                        "No Data Dound!",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                      ),
+                    ],
+                  ),
+                );
               }
             } else {
               // Handle the case where snapshot has no data but no error (shouldn't usually reach here)
               return Center(
-                  child: Lottie.asset(
-                "lib/Animations/emtypage.json",
-                repeat: false,
-              ));
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 190,
+                    ),
+                    Container(
+                      height: 200,
+                      child: Lottie.asset("lib/Animations/emtypage.json",
+                          repeat: false, fit: BoxFit.fill),
+                    ),
+                    Text(
+                      "No Data Dound!",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              );
             }
           },
         ));

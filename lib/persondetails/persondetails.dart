@@ -253,21 +253,6 @@ class persondetails extends StatelessWidget {
                   builder: (context, value, child) => GestureDetector(
                     onTap: () async {
                       if (_formkey.currentState!.validate()) {
-                        await addItemToUser(
-                          ItemModel(
-                            image: images,
-                            category: category,
-                            foodname: foodname,
-                            description: description,
-                            date: DateTime.now(),
-                            lname: Lnamecontroller.text,
-                            fname: fnamecontroller.text,
-                            course: value.selectedvalue.toString(),
-                            cntctbo: Contactnocontroller.text,
-                            option: option,
-                            donationId: donationId
-                          ),
-                        );
                         // value.addtile(
                         //   ItemModel(
                         //     image: images,
@@ -289,6 +274,20 @@ class persondetails extends StatelessWidget {
                           animType: QuickAlertAnimType.scale,
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
+                            addItemToUser(
+                              ItemModel(
+                                  image: images,
+                                  category: category,
+                                  foodname: foodname,
+                                  description: description,
+                                  date: DateTime.now(),
+                                  lname: Lnamecontroller.text,
+                                  fname: fnamecontroller.text,
+                                  course: value.selectedvalue.toString(),
+                                  cntctbo: Contactnocontroller.text,
+                                  option: option,
+                                  donationId: donationId),
+                            );
                             fireStoreService.addNote(
                               fnamecontroller.text,
                               Lnamecontroller.text,
