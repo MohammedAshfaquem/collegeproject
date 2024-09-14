@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     List<Widget> widgetlist = [
       Homepage(),
-      CategoryDonate(cheight: false,),
+
       Donatepage(showbackbutton: false,onpressed: () {
         Navigator.maybePop(context);
       },),
@@ -49,13 +49,13 @@ class _MainPageState extends State<MainPage> {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            Container(
-              child: Image.asset(
-                'lib/images/donate.png',
-                height: 28,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            // Container(
+            //   child: Image.asset(
+            //     'lib/images/donate.png',
+            //     height: 28,
+            //     color: Theme.of(context).colorScheme.primary,
+            //   ),
+            // ),
             Container(
               child: Image.asset(
                 'lib/images/find.png',

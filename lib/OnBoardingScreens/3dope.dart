@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class thirddope extends StatelessWidget {
   const thirddope({super.key});
@@ -106,12 +107,11 @@ class thirddope extends StatelessWidget {
               bottom: 70,
               right: 30,
               child: GestureDetector(
-                onTap: () {
-                   Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AuthGate()
-                    ));
+                onTap: () async {
+                  final pref = await SharedPreferences.getInstance();
+                  await pref.setBool("ON_BOARDING", false);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => AuthGate()));
                 },
                 child: Container(
                   height: 60.h,

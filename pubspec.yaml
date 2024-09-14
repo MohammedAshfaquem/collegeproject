@@ -60,6 +60,8 @@ dependencies:
   skeletonizer: ^1.4.2
   google_fonts: ^6.2.1
   firebase_messaging: ^15.0.4
+  cached_network_image: ^3.4.1
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

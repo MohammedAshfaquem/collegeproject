@@ -3,6 +3,7 @@ import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -30,23 +31,21 @@ class MyDonations extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
-          backgroundColor: Color(0xff247D7F),
+          elevation: 0,
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               icon: Icon(
                 LineAwesomeIcons.angle_left_solid,
+                color: Colors.black,
               )),
-          title: Text(
-            'My Donations',
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-                color: Theme.of(context).colorScheme.surface),
-          ),
+          title: Text('My Donations',
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                  color: Theme.of(context).colorScheme.primary)),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -70,7 +69,8 @@ class MyDonations extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final item = data[index];
                     return Padding(
-                      padding: const EdgeInsets.all(28.0).w,
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 15),
                       child: GestureDetector(
                         onTap: () {
                           // Navigator.push(
@@ -91,6 +91,7 @@ class MyDonations extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.white),
                           height: 110.h,

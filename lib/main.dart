@@ -1,6 +1,8 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/Donatepage/donatepage.dart';
+import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/OnBoardingScreens/Dopescrees.dart';
 import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
 import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
@@ -12,10 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final navigatorkey = GlobalKey<NavigatorState>();
+bool isshow = true;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final pref = await SharedPreferences.getInstance();
+  isshow = pref.getBool("ON_BOARDING") ?? true;
   await Firebase.initializeApp();
 
   runApp(
@@ -45,7 +51,7 @@ void main() async {
         builder: (context, child) => MaterialApp(
           theme: Provider.of<ThemeProvider>(context).themedata,
           debugShowCheckedModeBanner: false,
-          home:Splash(),
+          home: isshow ? Dopescreens() : AuthGate(),
           navigatorKey: navigatorkey,
           routes: {
             '/notifivationscreen': (context) => Donatepage(onpressed: () {}),
@@ -53,9 +59,7 @@ void main() async {
           },
         ),
       ),
-      
     ),
-    
   );
   FlutterNativeSplash.remove();
 }

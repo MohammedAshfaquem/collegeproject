@@ -4,6 +4,7 @@ import 'package:college_project/donatepage/donateDetailspage.dart';
 import 'package:college_project/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -33,7 +34,6 @@ class _DonatepageState extends State<Donatepage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff247D7F),
           leading: IconButton(
             onPressed: widget.onpressed,
             icon: widget.showbackbutton
@@ -42,13 +42,12 @@ class _DonatepageState extends State<Donatepage> {
                   )
                 : SizedBox(),
           ),
-          title: Text(
-            'Available Donations',
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-                color: Theme.of(context).colorScheme.surface),
-          ),
+          elevation: 2,
+          title: Text('Available Foods',
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0,
+                  color: Theme.of(context).colorScheme.primary)),
           centerTitle: true,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,

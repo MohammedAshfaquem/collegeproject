@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
@@ -192,44 +193,21 @@ class catogorydetails extends StatelessWidget {
                                   height: 50.h,
                                   width: 50.w,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(17).w,
-                                    child: Image.network(
-                                      loadingBuilder: (BuildContext context,
-                                          Widget child,
-                                          ImageChunkEvent? loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          // Image is loaded
-                                          return child;
-                                        } else {
-                                          // Image is still loading
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      (loadingProgress
-                                                              .expectedTotalBytes ??
-                                                          1)
-                                                  : null,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      errorBuilder: (BuildContext context,
-                                          Object error,
-                                          StackTrace? stackTrace) {
-                                        // Error occurred while loading the image
-                                        return Center(
+                                      borderRadius: BorderRadius.circular(17).w,
+                                      child: CachedNetworkImage(
+                                        errorWidget: (context, url, error) {
+                                           return Center(
                                           child: Icon(Icons.error,
                                               color: Colors.red),
                                         );
-                                      },
-                                      value.imageurl.toString(),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                        
+                                        },
+                                        placeholder: (context, url) => CircularProgressIndicator(
+                                       
+                                        ),
+                                        imageUrl: value.imageurl.toString(),
+                                        
+                                      )),
                                 ),
                         ],
                       ),
@@ -253,15 +231,16 @@ class catogorydetails extends StatelessWidget {
                             print(foodnamecontroller.text);
                             print(descriptioncontroller.text);
                             print(value.image);
-                            
+
                             return persondetails(
-                              option:value.currentvalue == 'Free'?"Free":"Rs:"+pricecontroller.text.toString(),
+                              option: value.currentvalue == 'Free'
+                                  ? "Free"
+                                  : "Rs:" + pricecontroller.text.toString(),
                               images: value.imageurl.toString(),
                               foodname: foodnamecontroller.text,
                               category: value.selectedvalue.toString(),
                               description: descriptioncontroller.text,
                             );
-                            
                           }));
                           print(pricecontroller.text);
                         }
