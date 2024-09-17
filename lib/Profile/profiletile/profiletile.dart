@@ -20,7 +20,7 @@ class ProfilePageModel extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
       child: ListTile(
         onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         tileColor: listtilecolor,
         leading: Container(
           decoration: BoxDecoration(

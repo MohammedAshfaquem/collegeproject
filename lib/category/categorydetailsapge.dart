@@ -83,15 +83,16 @@ class catogorydetails extends StatelessWidget {
                           ),
                           Container(
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(15),
                                   border: Border.all(color: Colors.grey)),
                               height: 60,
                               width: 300,
                               child: DropdownButton<String>(
+
                                 isExpanded: true,
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadius.circular(15),
                                 underline: SizedBox(),
-                                dropdownColor: Color(0xff247D7F),
+                                dropdownColor: Color.fromARGB(255, 39, 172, 174),
                                 padding: EdgeInsets.all(10),
                                 value: value.currentvalue,
                                 hint: Text(
@@ -101,6 +102,7 @@ class catogorydetails extends StatelessWidget {
                                 items: value.freeornot.map(
                                   (String value) {
                                     return DropdownMenuItem<String>(
+
                                         value: value,
                                         child: Text(
                                           value,
@@ -114,7 +116,11 @@ class catogorydetails extends StatelessWidget {
                                 onChanged: value.freeornotcontroll,
                               )),
                           if (value.currentvalue == 'Price')
+                      
                             TextFormField(
+                              validator: (value) =>
+                                  value!.isEmpty ? 'Price required' : null,
+                              
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               maxLength: 3,
@@ -122,9 +128,15 @@ class catogorydetails extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.primary),
                               controller: pricecontroller,
                               decoration: InputDecoration(
+                                errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(23),
+                                borderSide: BorderSide(
+                                    color: Colors
+                                        .black), // When the field is focused
+                              ),
                                 counterText: "",
                                 prefixIcon: Padding(
-                                  padding: const EdgeInsets.all(18.0),
+                                  padding: const EdgeInsets.all(20.0),
                                   child: Text(
                                     "RS",
                                     style: TextStyle(
@@ -220,7 +232,7 @@ class catogorydetails extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: 40.h,
+                  bottom: 35.h,
                   left: 40.r,
                   child: Consumer<Donate>(
                     builder: (context, value, child) => GestureDetector(

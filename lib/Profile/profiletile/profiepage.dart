@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
+import 'package:college_project/auth/auth_gate.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -384,7 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: ListTile(
                 onTap: () {},
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
+                    borderRadius: BorderRadius.circular(15)),
                 tileColor: const Color(0xff247D7F),
                 leading: Container(
                   decoration: BoxDecoration(
@@ -445,7 +446,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   //
                   FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
-                  Navigator.pushNamedAndRemoveUntil(context, 'authpage', (route) => false,
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthGate(),),
                   );
                 },
               );
