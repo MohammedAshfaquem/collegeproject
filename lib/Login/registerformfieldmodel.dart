@@ -11,14 +11,17 @@ class Registerfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return   Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: TextField(
+                    child: TextFormField(
                       style: TextStyle(color: Colors.black),
-                      // validator: (value) => value!.length < 3
-                      //     ? 'Password should be atleast 3 characters'
-                      //     : null,
+                      validator: (value){
+                        return  value==null || value.isEmpty ?
+                                    "Please fill this field":"";
+                          
+                              },
                       obscureText:obscuretext,
                       controller:controller,
                       decoration: InputDecoration(
+                        
                         fillColor: Colors.white,
                         filled: true,
                         prefixIcon: Icon(
@@ -34,7 +37,7 @@ class Registerfield extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15).r),
                         hintText:hintText,
                         hintStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
+                            color: Colors.black),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15).r,
                           borderSide:

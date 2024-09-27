@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class feedbackmodel extends StatelessWidget {
   const feedbackmodel({super.key, required this.feedback, required this.name});
@@ -14,29 +15,25 @@ class feedbackmodel extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Theme.of(context).colorScheme.primary),
-            color:Theme.of(context).colorScheme.surface),
+            color: Theme.of(context).colorScheme.surface),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(18.0),
-              child: Text(
-                feedback,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600),
-              ),
+              child: Text(feedback,
+                  style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w400)),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                name,
-                style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 16),
-              ),
+              child: Text(name,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16)),
             )
           ],
         ),

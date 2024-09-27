@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfilePageModel extends StatelessWidget {
@@ -37,8 +38,7 @@ class ProfilePageModel extends StatelessWidget {
         ),
         title: Text(
           text,
-          style: TextStyle(
-              color: colors, fontWeight: FontWeight.w700, fontSize: 17),
+          style:GoogleFonts.poppins( color: colors, fontWeight: FontWeight.w500, fontSize: 17)
         ),
         trailing: Container(
           decoration: BoxDecoration(

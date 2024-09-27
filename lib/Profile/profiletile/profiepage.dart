@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -17,7 +18,10 @@ import 'package:college_project/Profile/profiletile/profiletile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage();
+  ProfilePage({  this.showbackbutton = false, required this.onpressed, this.height = true});
+   final bool showbackbutton;
+   final VoidCallback onpressed;
+   final bool  height;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -187,6 +191,15 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+         leading: IconButton(
+            onPressed: widget.onpressed,
+            icon: widget.showbackbutton
+                ? Icon(
+                    LineAwesomeIcons.angle_left_solid,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : SizedBox(),
+          ),
         title: Text(' My Profile',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
@@ -195,268 +208,270 @@ class _ProfilePageState extends State<ProfilePage> {
             )),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Center(
-            child: FutureBuilder(
-                future: getimage(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Stack(
-                      children: [
-                        Container(
-                          height: 170,
-                          width: 170,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100).w,
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100).w,
-                                ),
-                                height: 170.h,
-                                width: 170.w,
-                                child: snapshot.data),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 20,
-                          child: Consumer<ImgController>(
-                            builder: (context, value, child) => CircleAvatar(
-                              radius: 20,
-                              child: IconButton(
-                                  onPressed: () {
-                                    //  value.imagepickcamera();
-                                    showimagepicker();
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Stack(
-                      children: [
-                        Container(
-                          height: 170,
-                          width: 170,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100).w,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProfilePage(),
-                                    ));
-                              },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: FutureBuilder(
+                  future: getimage(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: 170,
+                            width: 170,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100).w,
                               child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(100).w,
                                   ),
                                   height: 170.h,
                                   width: 170.w,
-                                  child: Image.asset("lib/images/avtar.avif")),
+                                  child: snapshot.data),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 20,
-                          child: Consumer<ImgController>(
-                            builder: (context, value, child) => CircleAvatar(
-                              radius: 20,
-                              child: IconButton(
-                                  onPressed: () {
-                                    showimagepicker();
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                  )),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Consumer<ImgController>(
+                              builder: (context, value, child) => CircleAvatar(
+                                radius: 20,
+                                child: IconButton(
+                                    onPressed: () {
+                                      //  value.imagepickcamera();
+                                      showimagepicker();
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Theme.of(context).colorScheme.secondary,
+                                    )),
+                              ),
                             ),
                           ),
+                        ],
+                      );
+                    } else {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: 170,
+                            width: 170,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100).w,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfilePage(onpressed: (){},),
+                                      ));
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100).w,
+                                    ),
+                                    height: 170.h,
+                                    width: 170.w,
+                                    child: Image.asset("lib/images/avtar.avif")),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Consumer<ImgController>(
+                              builder: (context, value, child) => CircleAvatar(
+                                radius: 20,
+                                child: IconButton(
+                                    onPressed: () {
+                                      showimagepicker();
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  }),
+            ),
+            SizedBox(height: 20),
+            FutureBuilder(
+                future: getusername(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    );
+                  } else {
+                    return Skeletonizer(
+                      child: Text(
+                        "no data found",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                      ],
+                      ),
                     );
                   }
                 }),
-          ),
-          SizedBox(height: 20),
-          FutureBuilder(
-              future: getusername(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  );
-                } else {
-                  return Skeletonizer(
-                    child: Text(
-                      "no data found",
+           
+            FutureBuilder(
+                future: getemail(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 15,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                    ),
-                  );
-                }
-              }),
-         
-          FutureBuilder(
-              future: getemail(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  );
-                } else {
-                  return Skeletonizer(
-                    child: Text(
-                      "no data found",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
+                    );
+                  } else {
+                    return Skeletonizer(
+                      child: Text(
+                        "no data found",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                    ),
-                  );
-                }
-              }),
-          SizedBox(height: 35),
-          // ProfilePageModel(
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => EditProfilePage(),
-          //       ),
-          //     );
-          //   },
-          //   text: "My Profile",
-          //   colors: Theme.of(context).colorScheme.surface,
-          //   icon: Icons.person,
-          // ),
-          ProfilePageModel(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyDonations(),
-                ),
-              );
-            },
-            text: "My Donations",
-            colors: Theme.of(context).colorScheme.surface,
-            icon: Icons.call,
-          ),
-         
-          ProfilePageModel(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PassResetPage(),
-                ),
-              );
-            },
-            text: "Reset Password",
-            colors: Theme.of(context).colorScheme.surface,
-            icon: Icons.lock,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
-            child: ListTile(
-                onTap: () {},
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                tileColor: const Color(0xff247D7F),
-                leading: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        100,
-                      ),
-                      color: Theme.of(context).colorScheme.surface),
-                  height: 40,
-                  width: 40,
-                  child: Icon(
-                    Icons.color_lens,
-                    color: Theme.of(context).colorScheme.primary,
+                    );
+                  }
+                }),
+            SizedBox(height:widget.height? 65:35),
+            // ProfilePageModel(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => EditProfilePage(),
+            //       ),
+            //     );
+            //   },
+            //   text: "My Profile",
+            //   colors: Theme.of(context).colorScheme.surface,
+            //   icon: Icons.person,
+            // ),
+            ProfilePageModel(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyDonations(),
                   ),
-                ),
-                title: Text(
-                  "Theme",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 17),
-                ),
-                trailing: Consumer<ThemeProvider>(
-                    builder: (context, value, child) => CupertinoSwitch(
-                          trackColor: Theme.of(context).colorScheme.primary,
-                          value: value.isselected,
-                          onChanged: (newvalue) {
-                            value.toggletheme(newvalue);
-                          },
-                          focusColor: Colors.white,
-                        ))),
-          ),
-          ProfilePageModel(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SupportPage(),
-                ),
-              );
-            },
-            text: "Support",
-            colors: Theme.of(context).colorScheme.surface,
-            icon: Icons.call,
-          ),
-          ProfilePageModel(
-            onTap: () {
-              QuickAlert.show(
-                context: context,
-                type: QuickAlertType.warning,
-                title: 'Do you want to logout?',
-                confirmBtnText: 'Yes',
-                cancelBtnText: 'No',
-                showCancelBtn: true,
-                confirmBtnColor: Colors.green,
-                headerBackgroundColor: Colors.red.shade400,
-                onCancelBtnTap: () => Navigator.pop(context),
-                onConfirmBtnTap: () {
-                  //
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthGate(),),
-                  );
-                },
-              );
-            },
-            text: "Log Out",
-            icon: Icons.logout,
-            colors: Colors.red,
-            listtilecolor: Colors.grey.shade200,
-          ),
-        ],
+                );
+              },
+              text: "My Donations",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.call,
+            ),
+           
+            ProfilePageModel(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PassResetPage(),
+                  ),
+                );
+              },
+              text: "Reset Password",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.lock,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+              child: ListTile(
+                  onTap: () {},
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  tileColor: const Color(0xff247D7F),
+                  leading: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          100,
+                        ),
+                        color: Theme.of(context).colorScheme.surface),
+                    height: 40,
+                    width: 40,
+                    child: Icon(
+                      Icons.color_lens,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  title: Text(
+                    "Theme",
+                    style: GoogleFonts.poppins(  color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17)
+                  ),
+                  trailing: Consumer<ThemeProvider>(
+                      builder: (context, value, child) => CupertinoSwitch(
+                            trackColor: Theme.of(context).colorScheme.primary,
+                            value: value.isselected,
+                            onChanged: (newvalue) {
+                              value.toggletheme(newvalue);
+                            },
+                            focusColor: Colors.white,
+                          ))),
+            ),
+            ProfilePageModel(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SupportPage(),
+                  ),
+                );
+              },
+              text: "Support",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.call,
+            ),
+            ProfilePageModel(
+              onTap: () {
+                QuickAlert.show(
+                  context: context,
+                  
+                  type: QuickAlertType.warning,
+                  title: 'Do you want to logout?',
+                  confirmBtnText: 'Yes',
+                  cancelBtnText: 'No',
+                  showCancelBtn: true,
+                  confirmBtnColor: Colors.green,
+                  headerBackgroundColor: Colors.red.shade400,
+                  onCancelBtnTap: () => Navigator.pop(context),
+                  onConfirmBtnTap: () {
+                    //
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AuthGate(),),
+                    );
+                  },
+                );
+              },
+              text: "Log Out",
+              icon: Icons.logout,
+              colors: Colors.red,
+              listtilecolor: Colors.grey.shade200,
+            ),
+          ],
+        ),
       ),
     );
   }

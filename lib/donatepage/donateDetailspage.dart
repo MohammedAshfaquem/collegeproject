@@ -2,6 +2,7 @@ import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -52,14 +53,14 @@ class _DetailspageState extends State<Detailspage> {
             LineAwesomeIcons.angle_left_solid,
           ),
         ),
-        title: Text(
-          "Item Details",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
+        title: Text("Food Details",
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary,
+              
+            )),
         centerTitle: true,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -88,7 +89,7 @@ class _DetailspageState extends State<Detailspage> {
                           return Skeletonizer(
                             enabled: true,
                             child: Container(
-                             color: Colors.grey.shade100,
+                              color: Colors.grey.shade100,
                             ),
                           );
                         }
@@ -99,38 +100,42 @@ class _DetailspageState extends State<Detailspage> {
                     decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(30)),
-                    height: 170.h,
+                    height: 200.h,
                     width: 500.w,
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20.r, top: 20.h),
+              padding: EdgeInsets.only(left: 20.r, top: 10.h),
               child: ListTile(
                 title: Text(
                   widget.foodname.toString(),
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.primary),
                 ),
                 subtitle: Text(
-                "${widget.time}",
+                  "${widget.time}",
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 trailing: Text(
                   "${widget.option}",
-                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                  style: GoogleFonts.poppins(color: Colors.blue, fontSize: 15),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10).w,
+              padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 10)
+                  .w,
               child: Container(
                 height: 80,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Colors.grey.shade300,),
-                
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color.fromARGB(255, 224, 224, 224),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -144,18 +149,22 @@ class _DetailspageState extends State<Detailspage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Text(
                           '${widget.user} ${widget.lname}',
-                          style: TextStyle(
-                            fontSize: 16,
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).colorScheme.primary),
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Text(
                           "${widget.cntctno}",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Theme.of(context).colorScheme.primary),
                         ),
                       ],
@@ -165,7 +174,7 @@ class _DetailspageState extends State<Detailspage> {
                     ),
                     Text(
                       "${widget.course}",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).colorScheme.primary),
@@ -184,9 +193,9 @@ class _DetailspageState extends State<Detailspage> {
                     children: [
                       Text(
                         "About details",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.primary),
                       ),
                       Text(
@@ -200,11 +209,9 @@ class _DetailspageState extends State<Detailspage> {
               ),
             ),
             SizedBox(
-              height: 130.h,
+              height: 140.h,
             ),
-            SizedBox(
-              height: 30.h,
-            ),
+           
             Padding(
               padding: const EdgeInsets.all(20.0).w,
               child: Container(
@@ -212,6 +219,7 @@ class _DetailspageState extends State<Detailspage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    SizedBox(height: 5,),
                     Icon(
                       Icons.call,
                       color: Colors.white,
@@ -219,12 +227,12 @@ class _DetailspageState extends State<Detailspage> {
                     Text(
                       '${widget.cntctno}',
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.sp),
+                          fontSize: 23.sp),
                     ),
                     SizedBox(
-                      width: 40.w,
+                      width: 30.w,
                     ),
                     TextButton(
                         style: ButtonStyle(
@@ -236,9 +244,9 @@ class _DetailspageState extends State<Detailspage> {
                         },
                         child: Text(
                           "call",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Color(0xff247D7F),
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                               fontSize: 17.sp),
                         ))
                   ],

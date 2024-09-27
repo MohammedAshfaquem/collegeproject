@@ -1,11 +1,11 @@
 flutter_native_splash:
   color: "#FFFFFF"
-  background_image: "lib/images/bg.jpg"
-  image: lib/images/applogo.png
+  background_image: "lib/images/mealio.jpeg"
+  image: lib/images/mealio.jpeg
   #color_dark: "#042a49"
   #image_dark: assets/splash-invert.png
   android_12:
-    image: lib/images/applogo.png
+    image: lib/images/mealio.jpeg
 
     # Splash screen background color.
     color: "#FFFFFF"
@@ -22,5 +22,5 @@ flutter_native_splash:
   android: true
   ios: true
   web: true
-  background_image_android: "lib/images/bg.jpg"
+  background_image_android: "lib/images/mealio.jpeg"
   

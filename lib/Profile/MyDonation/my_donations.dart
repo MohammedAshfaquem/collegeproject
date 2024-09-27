@@ -39,7 +39,7 @@ class MyDonations extends StatelessWidget {
               },
               icon: Icon(
                 LineAwesomeIcons.angle_left_solid,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.primary
               )),
           title: Text('My Donations',
               style: GoogleFonts.poppins(

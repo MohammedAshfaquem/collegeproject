@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class PassResetPage extends StatefulWidget {
@@ -76,9 +77,9 @@ class _PassResetPageState extends State<PassResetPage> {
               ),
               Text(
                 'Reset Password',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 30.sp,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
@@ -87,7 +88,7 @@ class _PassResetPageState extends State<PassResetPage> {
               ),
               Text(
                 "Please enter your email address and we'll send you  al link to reset your password",
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                style: GoogleFonts.poppins(color: Theme.of(context).colorScheme.primary),
               ),
               SizedBox(
                 height: 20.h,
@@ -120,23 +121,23 @@ class _PassResetPageState extends State<PassResetPage> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Color(0xff247D7F),
-                          borderRadius: BorderRadius.circular(30).r),
+                          borderRadius: BorderRadius.circular(15).r),
                       height: 50.h,
-                      width: 180.w,
+                      width: 110.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            "Reset Password",
-                            style: TextStyle(
+                            "Reset",
+                            style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontSize: 15.sp,
-                                fontWeight: FontWeight.w600),
+                                fontWeight: FontWeight.w500),
                           ),
-                          Icon(
-                            Icons.arrow_right_alt_rounded,
-                            color: Colors.white,
-                          )
+                          // Icon(
+                          //   Icons.arrow_right_alt_rounded,
+                          //   color: Colors.white,
+                          // )
                         ],
                       ),
                     ),

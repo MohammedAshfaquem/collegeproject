@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         body: Container(
           height: 800.h,
           width: 420.w,
+          color: Colors.white,
           child: Column(
             children: [
               Stack(
@@ -85,16 +86,17 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.bottomRight,
               child: Image.asset(
                 "lib/images/bg1.avif",
-                height: 300,
+                height: 260,
                 
               )),
                 
                   Positioned(
                     top: 80.h,
-                    left: 10,
+                    left: 10.w,
                     child: Container(
-                      height: 350.h,
+                      height: 300.h,
                       width: 400.w,
+                     
                       child: Image.asset(
                         "lib/images/unity.png",
                         height: 250.h,

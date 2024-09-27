@@ -39,6 +39,7 @@ class _DonatepageState extends State<Donatepage> {
             icon: widget.showbackbutton
                 ? Icon(
                     LineAwesomeIcons.angle_left_solid,
+                    color: Theme.of(context).colorScheme.primary,
                   )
                 : SizedBox(),
           ),
@@ -129,8 +130,8 @@ class _DonatepageState extends State<Donatepage> {
                                             enabled: true,
                                             child: Container(
                                               color: Colors.grey.shade100,
-                                              height: 120,
-                                              width: 100,
+                                              height: 90.h,
+                                              width: 120.w,
                                             ));
                                       },
                                     ),
@@ -145,23 +146,23 @@ class _DonatepageState extends State<Donatepage> {
                                       children: [
                                         Text(
                                           foodname,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                          style: GoogleFonts.poppins( fontWeight: FontWeight.w500,
                                               color: Colors.black,
-                                              fontSize: 19.sp),
+                                              fontSize: 19.sp)
                                         ),
                                         Text(
                                           course,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
                                         Text(
                                           dateTime.toString(),
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.w400,
                                               fontSize: 15.sp,
-                                              color: Colors.black),
+                                              
+                                              color: Colors.grey),
                                         ),
                                         SizedBox(
                                           height: 10,

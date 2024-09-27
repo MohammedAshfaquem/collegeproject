@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:college_project/category/categorymodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryDonate extends StatelessWidget {
   const CategoryDonate({super.key,  this.cheight = true});
@@ -27,18 +28,17 @@ final bool cheight;
             left: 30.r,
             child: Text(
               "Select the category",
-              style: TextStyle(
-                  color:  Theme.of(context).colorScheme.surface,
+              style:GoogleFonts.poppins( color:  Theme.of(context).colorScheme.surface,
                   fontSize: 32.sp,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.w600)
             ),
           ),
           Positioned(
-            top: 120.h,
+            top: 125.h,
             left: 30.r,
             child: Text(
              "Which category deos the food belongs to?",
-              style: TextStyle(color: Theme.of(context).colorScheme.surface, fontSize: 13),
+              style: GoogleFonts.poppins(color: Theme.of(context).colorScheme.surface, fontSize: 12),
             ),
           ),
 

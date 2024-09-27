@@ -27,7 +27,9 @@ class _MainPageState extends State<MainPage> {
       Donatepage(showbackbutton: false,onpressed: () {
         Navigator.maybePop(context);
       },),
-      ProfilePage(),
+      ProfilePage(onpressed: (){},
+      height: false,
+      ),
       
     ];
     return Scaffold(

@@ -2,6 +2,7 @@ import 'package:college_project/Category/categorydetailsapge.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class categorymodels extends StatelessWidget {
@@ -38,22 +39,23 @@ class categorymodels extends StatelessWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  categoryno,
-                  style: TextStyle(
-                      color: Color(0xff247D7F),
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w500),
-                ),
-                Text(category,
-                    style: TextStyle(
+                SizedBox(height: 35.h,),
+                Text(categoryno,
+                    style: GoogleFonts.poppins(
                         color: Color(0xff247D7F),
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500)),
+                        SizedBox(height: 20.h,),
+                Text(
+                  category,
+                  style: GoogleFonts.poppins(
+                      color: Color(0xff247D7F),
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w600),
+                ),
                 SizedBox(
-                  height: 10.h,
+                  height:0.h,
                 ),
               ],
             ),
