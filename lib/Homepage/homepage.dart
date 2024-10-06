@@ -37,11 +37,7 @@ class _HomepageState extends State<Homepage> {
       return "No user";
     }
   }
-
-  @override
-  @override
-  Widget build(BuildContext context) {
-    Future<Widget> getimage() async {
+      Future<Widget> getimage() async {
       String uid = FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot userdoc =
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
@@ -81,6 +77,10 @@ class _HomepageState extends State<Homepage> {
       }
     }
 
+  @override
+  Widget build(BuildContext context) {
+
+
     List<imagemovingmodel> imagelist = [
       imagemovingmodel(
         image: 'lib/images/foodimage.jpg',
@@ -93,7 +93,7 @@ class _HomepageState extends State<Homepage> {
       ),
     ];
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
@@ -222,7 +222,7 @@ class _HomepageState extends State<Homepage> {
                       height: 180.h,
                       width: 360.w,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(18.r)),
                       child: CarouselSlider(
                         options: CarouselOptions(

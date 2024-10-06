@@ -1,9 +1,7 @@
-import 'package:college_project/category/category_page.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Homepage/homepage.dart';
 import 'package:college_project/Profile/profiletile/profiepage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -37,7 +35,7 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: CurvedNavigationBar(
           index: page,
           color: Color(0xff247D7F),
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           onTap: (index) {
             setState(() {
               page = index;

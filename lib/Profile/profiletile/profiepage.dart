@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
@@ -18,10 +19,13 @@ import 'package:college_project/Profile/profiletile/profiletile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({  this.showbackbutton = false, required this.onpressed, this.height = true});
-   final bool showbackbutton;
-   final VoidCallback onpressed;
-   final bool  height;
+  ProfilePage(
+      {this.showbackbutton = false,
+      required this.onpressed,
+      this.height = true});
+  final bool showbackbutton;
+  final VoidCallback onpressed;
+  final bool height;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -188,18 +192,19 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         automaticallyImplyLeading: false,
-         leading: IconButton(
-            onPressed: widget.onpressed,
-            icon: widget.showbackbutton
-                ? Icon(
-                    LineAwesomeIcons.angle_left_solid,
-                    color: Theme.of(context).colorScheme.primary,
-                  )
-                : SizedBox(),
-          ),
+        leading: IconButton(
+          onPressed: widget.onpressed,
+          icon: widget.showbackbutton
+              ? Icon(
+                  LineAwesomeIcons.angle_left_solid,
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              : SizedBox(),
+        ),
         title: Text(' My Profile',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
@@ -211,162 +216,152 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: FutureBuilder(
-                  future: getimage(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Stack(
-                        children: [
-                          Container(
-                            height: 170,
-                            width: 170,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100).w,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100).w,
-                                  ),
-                                  height: 170.h,
-                                  width: 170.w,
-                                  child: snapshot.data),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 20,
-                            child: Consumer<ImgController>(
-                              builder: (context, value, child) => CircleAvatar(
-                                radius: 20,
-                                child: IconButton(
-                                    onPressed: () {
-                                      //  value.imagepickcamera();
-                                      showimagepicker();
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Theme.of(context).colorScheme.secondary,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Stack(
-                        children: [
-                          Container(
-                            height: 170,
-                            width: 170,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100).w,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ProfilePage(onpressed: (){},),
-                                      ));
-                                },
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100).w,
-                                    ),
-                                    height: 170.h,
-                                    width: 170.w,
-                                    child: Image.asset("lib/images/avtar.avif")),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 20,
-                            child: Consumer<ImgController>(
-                              builder: (context, value, child) => CircleAvatar(
-                                radius: 20,
-                                child: IconButton(
-                                    onPressed: () {
-                                      showimagepicker();
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  }),
+            SizedBox(
+              height: 20.h,
             ),
-            SizedBox(height: 20),
-            FutureBuilder(
-                future: getusername(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      snapshot.data.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    );
-                  } else {
-                    return Skeletonizer(
-                      child: Text(
-                        "no data found",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    );
-                  }
-                }),
-           
-            FutureBuilder(
-                future: getemail(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      snapshot.data.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    );
-                  } else {
-                    return Skeletonizer(
-                      child: Text(
-                        "no data found",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    );
-                  }
-                }),
-            SizedBox(height:widget.height? 65:35),
-            // ProfilePageModel(
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => EditProfilePage(),
-            //       ),
-            //     );
-            //   },
-            //   text: "My Profile",
-            //   colors: Theme.of(context).colorScheme.surface,
-            //   icon: Icons.person,
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 18,right: 18),
+              child: Container(
+                height: 130,
+                width: 400,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: Colors.white),
+                child: Row(
+                  children: [
+                    FutureBuilder(
+                        future: getimage(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return   ClipRRect(
+                                  borderRadius: BorderRadius.circular(18),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 18, right: 18),
+                                    child: Row(
+                                      children: [
+                                       
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100).w,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100)
+                                                        .w,
+                                              ),
+                                              height: 100.h,
+                                              width: 100.w,
+                                              child: snapshot.data),
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                          } else {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 18, right: 18),
+                                child: Container(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.asset("lib/images/avtar.avif",)),
+                                  height: 100,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      
+                                      borderRadius: BorderRadius.circular(100)),
+                                ),
+                              ),
+                            );
+                          }
+                        }),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FutureBuilder(
+                            future: getusername(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  snapshot.data.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                );
+                              } else {
+                                return Skeletonizer(
+                                  child: Text(
+                                    "no data found",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
+                        FutureBuilder(
+                            future: getemail(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Container(
+                                  width: 160,
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    snapshot.data.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                        color: Colors.grey.shade700),
+                                  ),
+                                );
+                              } else {
+                                return Skeletonizer(
+                                  child: Text(
+                                    "no data found",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            SizedBox(height: widget.height ? 65 : 35),
+            ProfilePageModel(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(username:getusername(),),
+                  ),
+                );
+              },
+              text: "Edit Profile",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.person,
+            ),
             ProfilePageModel(
               onTap: () {
                 Navigator.push(
@@ -380,7 +375,6 @@ class _ProfilePageState extends State<ProfilePage> {
               colors: Theme.of(context).colorScheme.surface,
               icon: Icons.call,
             ),
-           
             ProfilePageModel(
               onTap: () {
                 Navigator.push(
@@ -414,12 +408,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  title: Text(
-                    "Theme",
-                    style: GoogleFonts.poppins(  color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17)
-                  ),
+                  title: Text("Theme",
+                      style: GoogleFonts.poppins(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17)),
                   trailing: Consumer<ThemeProvider>(
                       builder: (context, value, child) => CupertinoSwitch(
                             trackColor: Theme.of(context).colorScheme.primary,
@@ -447,7 +440,6 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () {
                 QuickAlert.show(
                   context: context,
-                  
                   type: QuickAlertType.warning,
                   title: 'Do you want to logout?',
                   confirmBtnText: 'Yes',
@@ -460,7 +452,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     //
                     FirebaseAuth.instance.signOut();
                     Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AuthGate(),),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AuthGate(),
+                      ),
                     );
                   },
                 );
@@ -468,7 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
               text: "Log Out",
               icon: Icons.logout,
               colors: Colors.red,
-              listtilecolor: Colors.grey.shade200,
+              listtilecolor: Colors.white,
             ),
           ],
         ),

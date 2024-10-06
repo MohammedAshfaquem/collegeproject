@@ -42,8 +42,9 @@ class _DetailspageState extends State<Detailspage> {
   Widget build(BuildContext context) {
     final now = new DateTime.now();
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         leading: IconButton(
           onPressed: () {
             Navigator.maybePop(context);
@@ -134,7 +135,7 @@ class _DetailspageState extends State<Detailspage> {
                 height: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: const Color.fromARGB(255, 224, 224, 224),
+                  color: Colors.white,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

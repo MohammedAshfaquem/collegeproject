@@ -22,7 +22,7 @@ class categorymodels extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => catogorydetails(
+            builder: (context) => CategoryDetails (
                   category: category,
                   function: () => imagcontroller.clearImageCache(),
                 )));

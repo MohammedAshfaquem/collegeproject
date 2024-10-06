@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class catogorydetails extends StatelessWidget {
-  catogorydetails({super.key, required this.category, required this.function});
+class CategoryDetails extends StatelessWidget {
+  CategoryDetails({super.key, required this.category, required this.function});
+
   final String category;
   final VoidCallback function;
   final _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final foodnamecontroller = TextEditingController();
@@ -18,8 +20,11 @@ class catogorydetails extends StatelessWidget {
     final pricecontroller = TextEditingController();
     final imagcontroller = Provider.of<Donate>(context, listen: false);
 
-    return PopScope(
-      onPopInvoked: (didPop) => imagcontroller.clearImageCache(),
+    return WillPopScope(
+      onWillPop: () async {
+        imagcontroller.clearImageCache();
+        return true;
+      },
       child: Scaffold(
         body: SingleChildScrollView(
           child: Form(
@@ -64,63 +69,54 @@ class catogorydetails extends StatelessWidget {
                               hintStyle: TextStyle(color: Colors.grey),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(23),
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .black), // When the field is focused
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .grey), // When the field is not focused
+                                borderSide: BorderSide(color: Colors.grey),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(23),
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .black), // When the field is focused
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                             ),
                           ),
                           Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(color: Colors.grey)),
-                              height: 60,
-                              width: 300,
-                              child: DropdownButton<String>(
-
-                                isExpanded: true,
-                                borderRadius: BorderRadius.circular(15),
-                                underline: SizedBox(),
-                                dropdownColor: Color.fromARGB(255, 39, 172, 174),
-                                padding: EdgeInsets.all(10),
-                                value: value.currentvalue,
-                                hint: Text(
-                                  "Choose",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                items: value.freeornot.map(
-                                  (String value) {
-                                    return DropdownMenuItem<String>(
-
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                        ));
-                                  },
-                                ).toList(),
-                                onChanged: value.freeornotcontroll,
-                              )),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            height: 60,
+                            width: 300,
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              borderRadius: BorderRadius.circular(15),
+                              underline: SizedBox(),
+                              dropdownColor: Color.fromARGB(255, 39, 172, 174),
+                              padding: EdgeInsets.all(10),
+                              value: value.currentvalue,
+                              hint: Text(
+                                "Choose",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              items: value.freeornot.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: value.freeornotcontroll,
+                            ),
+                          ),
                           if (value.currentvalue == 'Price')
-                      
                             TextFormField(
                               validator: (value) =>
                                   value!.isEmpty ? 'Price required' : null,
-                              
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               maxLength: 3,
@@ -129,11 +125,9 @@ class catogorydetails extends StatelessWidget {
                               controller: pricecontroller,
                               decoration: InputDecoration(
                                 errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(23),
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .black), // When the field is focused
-                              ),
+                                  borderRadius: BorderRadius.circular(23),
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
                                 counterText: "",
                                 prefixIcon: Padding(
                                   padding: const EdgeInsets.all(20.0),
@@ -148,14 +142,10 @@ class catogorydetails extends StatelessWidget {
                                 hintStyle: TextStyle(color: Colors.grey),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(23),
-                                  borderSide: BorderSide(
-                                      color: Colors
-                                          .black), // When the field is focused
+                                  borderSide: BorderSide(color: Colors.black),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors
-                                          .grey), // When the field is not focused
+                                  borderSide: BorderSide(color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -169,66 +159,64 @@ class catogorydetails extends StatelessWidget {
                               hintStyle: TextStyle(color: Colors.grey),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(23),
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .black), // When the field is focused
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors
-                                        .grey), // When the field is not focused
+                                borderSide: BorderSide(color: Colors.grey),
                               ),
                             ),
                           ),
-                          Text(
-                            "pictures",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          value.imageurl == null
-                              ? GestureDetector(
-                                  onTap: () async {
-                                    value.showimagepicker(context);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(17).w),
-                                    height: 50.h,
-                                    width: 50.w,
-                                    child: Icon(Icons.add),
-                                  ),
-                                )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(17)),
+                          Text("Pictures",
+                              style: TextStyle(color: Colors.black)),
+                          value.isLoading
+                              ? Container(
                                   height: 50.h,
-                                  width: 50.w,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(17).w,
+                                  width: 50.h,
+                                  child: CircularProgressIndicator())
+                              : value.imageurl == null
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        value.showimagepicker(context);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(17).w,
+                                        ),
+                                        height: 50.h,
+                                        width: 50.w,
+                                        child: Icon(Icons.add),
+                                      ),
+                                    )
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
+                                      height: 50.h,
+                                      width: 50.w,
                                       child: CachedNetworkImage(
                                         errorWidget: (context, url, error) {
-                                           return Center(
-                                          child: Icon(Icons.error,
-                                              color: Colors.red),
-                                        );
-                                        
+                                          return Center(
+                                              child: Icon(Icons.error,
+                                                  color: Colors.red));
                                         },
-                                        placeholder: (context, url) => CircularProgressIndicator(
-                                       
-                                        ),
+                                        placeholder: (context, url) => Container(
+                                            height: 50.h,
+                                            width: 50.h,
+                                            child: CircularProgressIndicator()),
                                         imageUrl: value.imageurl.toString(),
-                                        
-                                      )),
-                                ),
+                                      ),
+                                    ),
                         ],
                       ),
                     ),
                     height: 520.h,
                     width: 350.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25).w,
-                        color: Theme.of(context).colorScheme.surface),
+                      borderRadius: BorderRadius.circular(25).w,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -240,10 +228,6 @@ class catogorydetails extends StatelessWidget {
                         if (_formkey.currentState!.validate()) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            print(foodnamecontroller.text);
-                            print(descriptioncontroller.text);
-                            print(value.image);
-
                             return persondetails(
                               option: value.currentvalue == 'Free'
                                   ? "Free"
@@ -254,21 +238,22 @@ class catogorydetails extends StatelessWidget {
                               description: descriptioncontroller.text,
                             );
                           }));
-                          print(pricecontroller.text);
                         }
                       },
                       child: Container(
                         child: Center(
-                            child: Text(
-                          "Person Details",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.sp),
-                        )),
+                          child: Text(
+                            "Person Details",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.sp),
+                          ),
+                        ),
                         decoration: BoxDecoration(
-                            color: Color(0xff247D7F),
-                            borderRadius: BorderRadius.circular(50)),
+                          color: Color(0xff247D7F),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
                         height: 60.h,
                         width: 350.w,
                       ),
@@ -285,7 +270,7 @@ class catogorydetails extends StatelessWidget {
                         fontSize: 35,
                         fontWeight: FontWeight.w700),
                   ),
-                )
+                ),
               ],
             ),
           ),

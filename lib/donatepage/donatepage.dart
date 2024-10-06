@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/donatepage/donateDetailspage.dart';
 import 'package:college_project/firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,18 +20,27 @@ class Donatepage extends StatefulWidget {
 }
 
 class _DonatepageState extends State<Donatepage> {
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  String selectedFilter = 'All'; // Default filter showing all options
+
+  void updateFilter(String newFilter) {
+    setState(() {
+      selectedFilter = newFilter;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final FireStoreService fireStoreService = FireStoreService();
     return WillPopScope(
       onWillPop: () async {
-        // Navigate to the home page when the back button is pressed
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => MainPage()),
           (Route<dynamic> route) => false,
         );
-        return false; // Prevent default back button behavior
+        return false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -52,186 +62,235 @@ class _DonatepageState extends State<Donatepage> {
           centerTitle: true,
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: StreamBuilder<QuerySnapshot>(
-            stream: fireStoreService.getNotesStream(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // While the future is still loading
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                // If there was an error while fetching data
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (snapshot.hasData) {
-                // If data is available
-                final notesList = snapshot.data!.docs;
-                if (notesList.isNotEmpty) {
-                  // Data exists and is not empty
-                  return ListView.builder(
-                      itemCount: notesList.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot document = notesList[index];
-                        String docID = document.id;
-                        Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-                        String fname = data['first name'] ?? '';
-                        String lname = data['last name'] ?? '';
-                        String number = data['number'] ?? '';
-                        String course = data['course'] ?? '';
-                        String foodname = data['food name'] ?? '';
-                        String option = data['option'] ?? '';
-                        String itemdes = data['description'] ?? '';
-                        String imageurl = data['image'] ?? '';
-                        String dateTime = data['time'] ?? '';
-
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                                  left: 25, right: 25, top: 15)
-                              .r,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Detailspage(
-                                      cntctno: number,
-                                      course: course,
-                                      lname: lname,
-                                      foodname: foodname,
-                                      user: fname,
-                                      option: option,
-                                      itemdes: itemdes,
-                                      imageurl: imageurl,
-                                      time: dateTime,
-                                    ),
-                                  ));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.white),
-                              height: 120.h,
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.network(
-                                      imageurl,
-                                      fit: BoxFit.cover,
-                                      width: 120.w,
-                                      height: 90.h,
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return Skeletonizer(
-                                            enabled: true,
-                                            child: Container(
-                                              color: Colors.grey.shade100,
-                                              height: 90.h,
-                                              width: 120.w,
-                                            ));
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          foodname,
-                                          style: GoogleFonts.poppins( fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                              fontSize: 19.sp)
-                                        ),
-                                        Text(
-                                          course,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        Text(
-                                          dateTime.toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 15.sp,
-                                              
-                                              color: Colors.grey),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 30.w,
-                                  ),
-                                  Text(
-                                    option,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              TextField(
+                
+                style: TextStyle(color: Colors.black),
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  
+                  focusColor: Colors.red,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  prefixIcon: Icon(Icons.search, color: Colors.black),
+                  hintText: "Search",
+                  hintStyle: TextStyle(color: Colors.black),
+                  suffixIcon: PopupMenuButton<String>(
+                    color: Color.fromARGB(255, 39, 172, 174),
+                    icon: Icon(Icons.tune, color: Colors.black),
+                    onSelected: updateFilter,
+                    itemBuilder: (BuildContext context) {
+                      return {'All', 'Free', 'Price'}.map((String choice) {
+                        return PopupMenuItem<String>(
+                          textStyle: TextStyle(color: Colors.black),
+                          value: choice,
+                          child: Text(
+                            choice,
+                            style: GoogleFonts.poppins(color: Colors.white),
                           ),
                         );
-                      });
-                } else {
-                  // Data is either null or empty
-                  return Center(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 190,
-                        ),
-                        Container(
-                          height: 200,
-                          child: Lottie.asset("lib/Animations/emtypage.json",
-                              repeat: false, fit: BoxFit.fill),
-                        ),
-                        Text(
-                          "No Data Dound!",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              } else {
-                // Handle the case where snapshot has no data but no error (shouldn't usually reach here)
-                return Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 190,
-                      ),
-                      Container(
-                        height: 200,
-                        child: Lottie.asset("lib/Animations/emtypage.json",
-                            repeat: false, fit: BoxFit.fill),
-                      ),
-                      Text(
-                        "No Data Dound!",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                      ),
-                    ],
+                      }).toList();
+                    },
                   ),
-                );
-              }
-            }),
+                ),
+              ),
+              SizedBox(height: 10),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: fireStoreService.getNotesStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (snapshot.hasData) {
+                        final notesList = snapshot.data!.docs;
+
+                        // Filter the notes list based on search query and selected filter
+                        final filteredNotesList = notesList.where((document) {
+                          final data = document.data() as Map<String, dynamic>;
+                          final foodname = data['food name']?.toString().toLowerCase() ?? '';
+                          final option = data['option']?.toString() ?? '';
+
+                          // Check if the food name matches the search query
+                          bool matchesSearch = foodname.contains(searchQuery);
+                          // Check if the food matches the selected filter
+                          bool matchesFilter = (selectedFilter == 'All') ||
+                                               (selectedFilter == 'Free' && option == 'Free') ||
+                                               (selectedFilter == 'Price' && option != 'Free');
+
+                          return matchesSearch && matchesFilter;
+                        }).toList();
+
+                        if (filteredNotesList.isNotEmpty) {
+                          return ListView.builder(
+                              itemCount: filteredNotesList.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot document = filteredNotesList[index];
+                                String docID = document.id;
+                                Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                                String fname = data['first name'] ?? '';
+                                String lname = data['last name'] ?? '';
+                                String number = data['number'] ?? '';
+                                String course = data['course'] ?? '';
+                                String foodname = data['food name'] ?? '';
+                                String option = data['option'] ?? '';
+                                String itemdes = data['description'] ?? '';
+                                String imageurl = data['image'] ?? '';
+                                String dateTime = data['time'] ?? '';
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 15),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Detailspage(
+                                              cntctno: number,
+                                              course: course,
+                                              lname: lname,
+                                              foodname: foodname,
+                                              user: fname,
+                                              option: option,
+                                              itemdes: itemdes,
+                                              imageurl: imageurl,
+                                              time: dateTime,
+                                            ),
+                                          ));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(12),
+                                          color: Colors.white),
+                                      height: 120.h,
+                                      width: double.infinity,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(12),
+                                            child: Image.network(
+                                              imageurl,
+                                              fit: BoxFit.cover,
+                                              width: 120.w,
+                                              height: 90.h,
+                                              loadingBuilder: (context, child, loadingProgress) {
+                                                if (loadingProgress == null) return child;
+                                                return Skeletonizer(
+                                                    enabled: true,
+                                                    child: Container(
+                                                      color: Colors.grey.shade100,
+                                                      height: 90.h,
+                                                      width: 120.w,
+                                                    ));
+                                              },
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(foodname,
+                                                    style: GoogleFonts.poppins(
+                                                        fontWeight: FontWeight.w500,
+                                                        color: Colors.black,
+                                                        fontSize: 19.sp)),
+                                                Text(
+                                                  course,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.black),
+                                                ),
+                                                Text(
+                                                  dateTime.toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 15.sp,
+                                                      color: Colors.grey),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30.w,
+                                          ),
+                                          Text(
+                                            option,
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        } else {
+                          return Center(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 190),
+                                Container(
+                                  height: 200,
+                                  child: Lottie.asset(
+                                      "lib/Animations/emtypage.json",
+                                      repeat: false,
+                                      fit: BoxFit.fill),
+                                ),
+                                Text(
+                                  "No Data Found!",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      } else {
+                        return Center(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 190),
+                              Container(
+                                height: 200,
+                                child: Lottie.asset(
+                                    "lib/Animations/emtypage.json",
+                                    repeat: false,
+                                    fit: BoxFit.fill),
+                              ),
+                              Text(
+                                "No Data Found!",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    }),
+              ),
+            ],
+          ),
+        ),
+        
       ),
     );
   }

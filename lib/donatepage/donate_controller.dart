@@ -9,6 +9,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Donate extends ChangeNotifier {
+  bool _isLoading = false;
+  // other properties...
+
+  bool get isLoading => _isLoading;
+
+  void setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
+  }
   List<ItemModel> _itemlist = [];
   List<ItemModel> get itemlist => _itemlist;
   String _dropdownvalue = 'Free';
@@ -35,41 +44,52 @@ class Donate extends ChangeNotifier {
   String _editname = '';
   String get eeditname => _editname;
 
-  imagepickcamera() async {
+  Future<void> imagepickcamera() async {
+    setLoading(true);
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+    if (file == null) {
+      setLoading(false);
+      return;
+    }
 
     String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
-    // if (file == null) return;
     Reference referenceroot = FirebaseStorage.instance.ref();
     Reference referenceDirimages = referenceroot.child('images');
     Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+
     try {
-      await referenceimagetoupload.putFile(File(file!.path));
+      await referenceimagetoupload.putFile(File(file.path));
       imageurl = await referenceimagetoupload.getDownloadURL();
     } catch (e) {
       print("error:$e");
+    } finally {
+      setLoading(false);
     }
-    ;
-    notifyListeners();
   }
 
-  imagepickgallery() async {
+  Future<void> imagepickgallery() async {
+    setLoading(true);
     ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) {
+      setLoading(false);
+      return;
+    }
+
     String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
-    // if (file == null) return;
     Reference referenceroot = FirebaseStorage.instance.ref();
     Reference referenceDirimages = referenceroot.child('images');
     Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+
     try {
-      await referenceimagetoupload.putFile(File(file!.path));
+      await referenceimagetoupload.putFile(File(file.path));
       imageurl = await referenceimagetoupload.getDownloadURL();
     } catch (e) {
       print("error:$e");
+    } finally {
+      setLoading(false);
     }
-    ;
-    notifyListeners();
   }
 
   void addtile(ItemModel itemmodel) {

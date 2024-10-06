@@ -24,6 +24,7 @@ class editprofilemodel extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
 
     return TextFormField(
+      
       key:_formkey ,
       style: TextStyle(color: Theme.of(context).colorScheme.primary),
       obscureText:obscureText,

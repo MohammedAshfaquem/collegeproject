@@ -6,75 +6,99 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImgController extends ChangeNotifier {
-  File? image;
-  String? savedimage;
-  final picker = ImagePicker();
+  bool _isLoading = false;
   String? imageurl;
-  final addimagedb = FirebaseFirestore.instance.collection('users');
 
-  imagepickcamera() async {
-    ImagePicker imagePicker = ImagePicker();
-    XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
-    String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
-    if (file == null) return;
-    Reference referenceroot = FirebaseStorage.instance.ref();
-    Reference referenceDirimages = referenceroot.child('images');
-    Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
-    try {
-      await referenceimagetoupload.putFile(File(file!.path));
-      imageurl = await referenceimagetoupload.getDownloadURL();
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .update({'image': imageurl});
-      notifyListeners();
-    } catch (e) {
-      print("error getting :$e");
-    }
-    ;
+  void setLoading(bool loading) {
+    _isLoading = loading;
     notifyListeners();
   }
 
-  imagepickgallery() async {
+  Future<void> imagepickcamera() async {
+    setLoading(true);
     ImagePicker imagePicker = ImagePicker();
-    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+    if (file == null) {
+      setLoading(false);
+      return;
+    }
+
     String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
-    // if (file == null) return;
     Reference referenceroot = FirebaseStorage.instance.ref();
     Reference referenceDirimages = referenceroot.child('images');
     Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
-    String uid = FirebaseAuth.instance.currentUser!.uid;
 
     try {
-      await referenceimagetoupload.putFile(File(file!.path));
+      await referenceimagetoupload.putFile(File(file.path));
       imageurl = await referenceimagetoupload.getDownloadURL();
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .update({'image': imageurl});
     } catch (e) {
       print("error:$e");
+    } finally {
+      setLoading(false);
     }
-    ;
+  }
+
+  Future<String> getImage() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    
+    if (userDoc.exists) {
+      var data = userDoc.data() as Map<String, dynamic>;
+      return data['image'] as String;
+    } else {
+      // Provide a default image URL
+      return "lib/images/avatar.avif"; // Change this to a URL if needed
+    }
+  }
+
+  Future<void> updateImage() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String newImageUrl = imageurl ?? await getImage(); // Await the getImage call
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'image': newImageUrl});
+
     notifyListeners();
+  }
+  updateusername(String name) {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'name': name});
+    notifyListeners();
+  }
+
+  Future<void> imagepickgallery() async {
+    setLoading(true);
+    ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) {
+      setLoading(false);
+      return;
+    }
+
+    String uniquefilename = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceroot = FirebaseStorage.instance.ref();
+    Reference referenceDirimages = referenceroot.child('images');
+    Reference referenceimagetoupload = referenceDirimages.child(uniquefilename);
+
+    try {
+      await referenceimagetoupload.putFile(File(file.path));
+      imageurl = await referenceimagetoupload.getDownloadURL();
+    } catch (e) {
+      print("error:$e");
+    } finally {
+      setLoading(false);
+    }
   }
 
   void clearImageCache() {
-    savedimage = null;
+    imageurl = null;
     notifyListeners();
   }
-
-  // imagefromcamera() async {
-  //   final PickedFile = await picker.pickImage(source: ImageSource.camera);
-
-  //   if (PickedFile != null) {
-  //     image = File(PickedFile.path);
-  //     savedimage = image;
-  //   } else {
-  //     print("no image picked");
-  //   }
-  //   notifyListeners();
-  // }
 }

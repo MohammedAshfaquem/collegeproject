@@ -85,6 +85,7 @@ class _RegisterpageState extends State<RegisterPage> {
           'name': regnamecontroller.text,
           'emailVerified': false,
           'createdAt': FieldValue.serverTimestamp(), // Store creation time
+          'password':regconfirmpasscontroller.text,
         });
 
         Navigator.pushReplacement(
@@ -336,28 +337,8 @@ class _RegisterpageState extends State<RegisterPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              if (_formkey.currentState!.validate()) {
-                                if (regpasswordcontroller.text.trim() ==
-                                    regconfirmpasscontroller.text.trim()) {
-                                  signupEmail();
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      content: Text(
-                                        "Password and Confirm Password doesnot match",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text("OK"))
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
+                            
+                             signupEmail();
                             },
                             child: Padding(
                               padding: EdgeInsets.only(right: 20.w),
