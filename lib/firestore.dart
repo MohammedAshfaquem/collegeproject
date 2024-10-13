@@ -24,6 +24,7 @@ class FireStoreService {
       String image,
       DateTime time,
       String donationId,
+      String quantity,
       ) {
     return notes.add({
       'course': course,
@@ -38,6 +39,7 @@ class FireStoreService {
       'time': DateFormat.jm().format(now),
       'uid':user!.uid,
       "donationid":donationId,
+      'quantity':quantity,
     });
   }
 

@@ -112,7 +112,10 @@ class Donate extends ChangeNotifier {
     currentvalue = nvalue;
     notifyListeners();
   }
-
+  void reset(){
+    currentvalue = null;
+    notifyListeners();
+  }
   void setfreeorprice(String option) {
     _dropdownvalue = option;
     notifyListeners();
@@ -307,8 +310,9 @@ class ItemModel {
   final String cntctbo;
   final String option;
   final String donationId;
+  final String quantity;
 
-  ItemModel( {
+  ItemModel({
     required this.image,
     required this.category,
     required this.foodname,
@@ -320,6 +324,7 @@ class ItemModel {
     required this.cntctbo,
     required this.option,
     required this.donationId,
+    required this.quantity, 
   });
   final now = DateTime.now();
   // Convert an ItemModel into a Map
@@ -353,6 +358,7 @@ class ItemModel {
       cntctbo: map['cntctbo'],
       option: map['option'],
       donationId:map["donationid"],
+      quantity:map['quantity']
     );
   }
 }

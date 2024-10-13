@@ -19,7 +19,8 @@ class FireStoreServivce {
       String decsription,
       String image,
       DateTime time,
-      String donationId) {
+      String donationId,
+      String quantity) {
     return mydonation.add({
       'course': course,
       'first name': fname,
@@ -32,6 +33,7 @@ class FireStoreServivce {
       'image': image,
       'time': DateFormat.jm().format(now),
       "donationid":donationId,
+      "quantity":quantity,
     });
   }
   Future<void> deletenote(String docId){

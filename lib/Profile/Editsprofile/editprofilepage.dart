@@ -4,6 +4,7 @@ import 'package:college_project/imagecontroller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:college_project/Profile/Editsprofile/editprofilemodel.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -19,6 +20,9 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController fullnameController;
+  late TextEditingController emailController;
+  late TextEditingController cnnoController;
+  late TextEditingController passwordcontroller;
 
   Future<String> getUsername() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -32,6 +36,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return "No user";
     }
   }
+  Future<String> getEmail() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    if (userDoc.exists) {
+      var data = userDoc.data() as Map<String, dynamic>;
+      return data['email'] as String;
+    } else {
+      return "No user";
+    }
+  }
+  Future<String> getPassword() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    if (userDoc.exists) {
+      var data = userDoc.data() as Map<String, dynamic>;
+      return data['password'] as String;
+    } else {
+      return "No user";
+    }
+  }
+
+
 
   Future<void> _setUsername() async {
     try {
@@ -42,10 +72,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  Future<void> _setemail() async {
+    try {
+      String username = await getEmail();
+      emailController.text = username; // Set the text of the controller
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+  Future<void> _setpasssword() async {
+    try {
+      String username = await getPassword();
+      passwordcontroller.text = username; // Set the text of the controller
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
   bool _isloading = true;
-  late TextEditingController emailController;
-  late TextEditingController cnnoController;
-  late TextEditingController passwordcontroller;
+  
   final _formkey = GlobalKey<FormState>();
 
   @override
@@ -56,6 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     cnnoController = TextEditingController();
     passwordcontroller = TextEditingController();
     _setUsername();
+    _setemail();
   }
 
   @override
@@ -184,8 +230,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final imagcontroller = Provider.of<ImgController>(context);
@@ -286,19 +330,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       )
                     ],
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
+                  Center(
+                      child: Text(
+                    "Share a Little bit about Yorself",
+                    style: GoogleFonts.poppins(color: Colors.grey.shade600),
+                  )),
+                  SizedBox(height: 30),
                   TextField(
                     style:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
                     obscureText: false,
                     controller: fullnameController,
                     decoration: InputDecoration(
+                      labelText: "Full Name",
+                      labelStyle: TextStyle(color: Colors.black),
                       disabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: const Color.fromARGB(255, 255, 14, 14))),
                       focusColor: Theme.of(context).colorScheme.primary,
                       prefixIcon: Icon(
-                        Icons.person,
+                        Icons.person_2_outlined,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       hintStyle: TextStyle(
@@ -329,31 +381,138 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  editprofilemodel(
-                    hinttext: 'Email',
-                    errortext: "Please enter a valid email",
+                  TextField(
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                    obscureText: false,
                     controller: emailController,
-                    icon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(color: Colors.black),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 255, 14, 14))),
+                      focusColor: Theme.of(context).colorScheme.primary,
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15).w,
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary), // When the field is focused
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 0,
+                                0)), // When the field is not focused
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                            color:
+                                Colors.grey), // When the field is not focused
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20),
-                  editprofilemodel(
-                    hinttext: 'Phone no',
-                    errortext: "Please enter a valid phone number",
+                  TextField(
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                    obscureText: false,
                     controller: cnnoController,
-                    icon: Icons.phone,
-                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelText: "Phone NO",
+                      labelStyle: TextStyle(color: Colors.black),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 255, 14, 14))),
+                      focusColor: Theme.of(context).colorScheme.primary,
+                      prefixIcon: Icon(
+                        Icons.call_end_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15).w,
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary), // When the field is focused
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 0,
+                                0)), // When the field is not focused
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                            color:
+                                Colors.grey), // When the field is not focused
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20),
-                  editprofilemodel(
-                    hinttext: 'Password',
-                    errortext: "Please enter your password",
+                  TextField(
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                    obscureText: false,
                     controller: passwordcontroller,
-                    icon: Icons.lock,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: TextStyle(color: Colors.black),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 255, 14, 14))),
+                      focusColor: Theme.of(context).colorScheme.primary,
+                      prefixIcon: Icon(
+                        Icons.password,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15).w,
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary), // When the field is focused
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 0,
+                                0)), // When the field is not focused
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                            color:
+                                Colors.grey), // When the field is not focused
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 60),
                   GestureDetector(
                     onTap: () {
                       imagcontroller.updateImage();
@@ -365,16 +524,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Color(0xff247D7F),
-                          borderRadius: BorderRadius.circular(30)),
-                      height: 50,
-                      width: 200,
+                          borderRadius: BorderRadius.circular(15)),
+                      height: 65,
+                      width: 400,
                       child: Center(
-                        child: Text(
-                          'Edit Profile',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(LineAwesomeIcons.cloud_upload_alt_solid,color: Colors.white,),
+                            SizedBox(width:10,),
+                            Text(
+                              'Update',
+
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 17),
+                            ),
+                          ],
                         ),
                       ),
                     ),

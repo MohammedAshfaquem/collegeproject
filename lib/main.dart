@@ -1,4 +1,5 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
+import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/Donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
@@ -44,6 +45,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ImgController(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => CategoryController(),
         ),
       ],
       child: ScreenUtilInit(

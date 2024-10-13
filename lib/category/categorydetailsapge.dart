@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CategoryDetails extends StatelessWidget {
@@ -11,18 +14,24 @@ class CategoryDetails extends StatelessWidget {
 
   final String category;
   final VoidCallback function;
+ final foodnamecontroller = TextEditingController();
+    final descriptioncontroller = TextEditingController();
+    final pricecontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final foodnamecontroller = TextEditingController();
-    final descriptioncontroller = TextEditingController();
-    final pricecontroller = TextEditingController();
+    
     final imagcontroller = Provider.of<Donate>(context, listen: false);
+    final categorycontroller = Provider.of<CategoryController>(
+      context,
+    );
 
     return WillPopScope(
       onWillPop: () async {
         imagcontroller.clearImageCache();
+        categorycontroller.reset();
+        imagcontroller.reset();
         return true;
       },
       child: Scaffold(
@@ -168,46 +177,96 @@ class CategoryDetails extends StatelessWidget {
                           ),
                           Text("Pictures",
                               style: TextStyle(color: Colors.black)),
-                          value.isLoading
-                              ? Container(
-                                  height: 50.h,
-                                  width: 50.h,
-                                  child: CircularProgressIndicator())
-                              : value.imageurl == null
-                                  ? GestureDetector(
-                                      onTap: () async {
-                                        value.showimagepicker(context);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(17).w,
-                                        ),
-                                        height: 50.h,
-                                        width: 50.w,
-                                        child: Icon(Icons.add),
-                                      ),
-                                    )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      height: 50.h,
-                                      width: 50.w,
-                                      child: CachedNetworkImage(
-                                        errorWidget: (context, url, error) {
-                                          return Center(
-                                              child: Icon(Icons.error,
-                                                  color: Colors.red));
-                                        },
-                                        placeholder: (context, url) => Container(
-                                            height: 50.h,
-                                            width: 50.h,
-                                            child: CircularProgressIndicator()),
-                                        imageUrl: value.imageurl.toString(),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  value.isLoading
+                                      ? Container(
+                                          height: 50.h,
+                                          width: 50.h,
+                                          child: CircularProgressIndicator())
+                                      : value.imageurl == null
+                                          ? GestureDetector(
+                                              onTap: () async {
+                                                value.showimagepicker(context);
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey,
+                                                  borderRadius:
+                                                      BorderRadius.circular(17)
+                                                          .w,
+                                                ),
+                                                height: 50.h,
+                                                width: 50.w,
+                                                child: Icon(Icons.add),
+                                              ),
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(17),
+                                              ),
+                                              height: 50.h,
+                                              width: 50.w,
+                                              child: CachedNetworkImage(
+                                                errorWidget:
+                                                    (context, url, error) {
+                                                  return Center(
+                                                      child: Icon(Icons.error,
+                                                          color: Colors.red));
+                                                },
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                        height: 50.h,
+                                                        width: 50.h,
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                imageUrl:
+                                                    value.imageurl.toString(),
+                                              ),
+                                            ),
+                                ],
+                              ),
+                              Container(
+                                height: 40,
+                                width: 250,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Quantity",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.black),
+                                    ),
+                                    Container(
+                                        child: OutlinedButton(
+                                          
+                                            onPressed:
+                                                categorycontroller.decrement,
+                                            child: Icon(LineAwesomeIcons.minus_solid,))),
+                                    Text(
+                                      "${categorycontroller.quantity}",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Container(
+                                      child: Center(
+                                        child: IconButton(
+                                            iconSize: 30,
+                                            onPressed:
+                                                categorycontroller.increment,
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: Colors.black,
+                                            )),
                                       ),
                                     ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -236,6 +295,7 @@ class CategoryDetails extends StatelessWidget {
                               foodname: foodnamecontroller.text,
                               category: value.selectedvalue.toString(),
                               description: descriptioncontroller.text,
+                              quantity: categorycontroller.quantity.toString(),
                             );
                           }));
                         }

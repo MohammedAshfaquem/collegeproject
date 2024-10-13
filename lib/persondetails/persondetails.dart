@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
@@ -10,6 +11,7 @@ import 'package:college_project/firestoremydonations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
@@ -21,13 +23,15 @@ class persondetails extends StatelessWidget {
     required this.description,
     required this.category,
     required this.images,
-    required this.option,
+    required this.option, 
+    required this.quantity,
   });
   final String foodname;
   final String category;
   final String description;
   final String images;
   final String option;
+  final String quantity;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,7 @@ class persondetails extends StatelessWidget {
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
-    final controller = Provider.of<Donate>(context, listen: false);
+    final categerycontroller = Provider.of<CategoryController>(context,);
     final donationId = generateRandomId();
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -194,7 +198,7 @@ class persondetails extends StatelessWidget {
                               items: value.dropdowmitems.map(
                                 (String value) {
                                   return DropdownMenuItem<String>(
-                                      value: value, child: Text(value));
+                                      value: value, child: Text(value,style:GoogleFonts.poppins(color: Colors.white)));
                                 },
                               ).toList(),
                               onChanged: value.coursecontroll,
@@ -286,7 +290,8 @@ class persondetails extends StatelessWidget {
                                   course: value.selectedvalue.toString(),
                                   cntctbo: Contactnocontroller.text,
                                   option: option,
-                                  donationId: donationId),
+                                  donationId: donationId,
+                                  quantity: quantity),
                             );
                             fireStoreService.addNote(
                               fnamecontroller.text,
@@ -299,6 +304,7 @@ class persondetails extends StatelessWidget {
                               value.imageurl.toString(),
                               DateTime.now(),
                               donationId.toString(),
+                              quantity.toString(),
                             );
                             fireStoreServivce.addmydonation(
                                 fnamecontroller.text,
@@ -310,7 +316,8 @@ class persondetails extends StatelessWidget {
                                 description,
                                 value.imageurl.toString(),
                                 DateTime.now(),
-                                donationId.toString());
+                                donationId.toString(),
+                                quantity.toString());
 
                             value.image = null;
                             fnamecontroller.clear();
@@ -319,6 +326,7 @@ class persondetails extends StatelessWidget {
                             value.selectedvalue = null;
                             value.currentvalue = null;
                             value.clearImageCache();
+                            categerycontroller.reset();
                             Navigator.push(
                               context,
                               MaterialPageRoute(

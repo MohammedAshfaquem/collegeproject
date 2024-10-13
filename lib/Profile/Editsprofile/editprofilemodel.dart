@@ -10,6 +10,7 @@ class editprofilemodel extends StatelessWidget {
       required this.icon,
       required this.keyboardType,
       this.obscureText = false,
+      required this.labelText,
     });
 
   final String hinttext;
@@ -18,6 +19,7 @@ class editprofilemodel extends StatelessWidget {
   final IconData icon;
   final TextInputType keyboardType;
   final bool obscureText;
+  final String labelText;
   
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,8 @@ class editprofilemodel extends StatelessWidget {
       controller: controller,
       
       decoration: InputDecoration(
-        
+        labelText: labelText,
+                      labelStyle: TextStyle(color: Colors.black),
         disabledBorder: OutlineInputBorder(
             borderSide:
                 BorderSide(color: const Color.fromARGB(255, 255, 14, 14))),

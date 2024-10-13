@@ -67,7 +67,6 @@ class _DonatepageState extends State<Donatepage> {
           child: Column(
             children: [
               TextField(
-                
                 style: TextStyle(color: Colors.black),
                 controller: searchController,
                 onChanged: (value) {
@@ -76,8 +75,8 @@ class _DonatepageState extends State<Donatepage> {
                   });
                 },
                 decoration: InputDecoration(
-                  
-                  focusColor: Colors.red,
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18),
                   ),
@@ -103,7 +102,6 @@ class _DonatepageState extends State<Donatepage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: fireStoreService.getNotesStream(),
@@ -118,15 +116,16 @@ class _DonatepageState extends State<Donatepage> {
                         // Filter the notes list based on search query and selected filter
                         final filteredNotesList = notesList.where((document) {
                           final data = document.data() as Map<String, dynamic>;
-                          final foodname = data['food name']?.toString().toLowerCase() ?? '';
+                          final foodname =
+                              data['food name']?.toString().toLowerCase() ?? '';
                           final option = data['option']?.toString() ?? '';
 
                           // Check if the food name matches the search query
                           bool matchesSearch = foodname.contains(searchQuery);
                           // Check if the food matches the selected filter
                           bool matchesFilter = (selectedFilter == 'All') ||
-                                               (selectedFilter == 'Free' && option == 'Free') ||
-                                               (selectedFilter == 'Price' && option != 'Free');
+                              (selectedFilter == 'Free' && option == 'Free') ||
+                              (selectedFilter == 'Price' && option != 'Free');
 
                           return matchesSearch && matchesFilter;
                         }).toList();
@@ -135,9 +134,11 @@ class _DonatepageState extends State<Donatepage> {
                           return ListView.builder(
                               itemCount: filteredNotesList.length,
                               itemBuilder: (context, index) {
-                                DocumentSnapshot document = filteredNotesList[index];
+                                DocumentSnapshot document =
+                                    filteredNotesList[index];
                                 String docID = document.id;
-                                Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                                Map<String, dynamic> data =
+                                    document.data() as Map<String, dynamic>;
                                 String fname = data['first name'] ?? '';
                                 String lname = data['last name'] ?? '';
                                 String number = data['number'] ?? '';
@@ -147,6 +148,8 @@ class _DonatepageState extends State<Donatepage> {
                                 String itemdes = data['description'] ?? '';
                                 String imageurl = data['image'] ?? '';
                                 String dateTime = data['time'] ?? '';
+                                String quantity = data['quantity'] ?? '';
+                                String donationid = data['donationid'] ?? '';
 
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 15),
@@ -165,31 +168,39 @@ class _DonatepageState extends State<Donatepage> {
                                               itemdes: itemdes,
                                               imageurl: imageurl,
                                               time: dateTime,
+                                              quantity: quantity,
+                                              donationId: donationid,
                                             ),
                                           ));
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                           color: Colors.white),
                                       height: 120.h,
                                       width: double.infinity,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(12),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                             child: Image.network(
                                               imageurl,
                                               fit: BoxFit.cover,
                                               width: 120.w,
                                               height: 90.h,
-                                              loadingBuilder: (context, child, loadingProgress) {
-                                                if (loadingProgress == null) return child;
+                                              loadingBuilder: (context, child,
+                                                  loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
                                                 return Skeletonizer(
                                                     enabled: true,
                                                     child: Container(
-                                                      color: Colors.grey.shade100,
+                                                      color:
+                                                          Colors.grey.shade100,
                                                       height: 90.h,
                                                       width: 120.w,
                                                     ));
@@ -199,24 +210,30 @@ class _DonatepageState extends State<Donatepage> {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
                                               children: [
+                                                SizedBox(height: 10,),
                                                 Text(foodname,
                                                     style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.black,
                                                         fontSize: 19.sp)),
-                                                Text(
-                                                  course,
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w500,
-                                                      color: Colors.black),
-                                                ),
+                                                // Text(
+                                                //   course,
+                                                //   style: TextStyle(
+                                                //       fontWeight:
+                                                //           FontWeight.w500,
+                                                //       color: Colors.black),
+                                                // ),
                                                 Text(
                                                   dateTime.toString(),
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 15.sp,
                                                       color: Colors.grey),
                                                 ),
@@ -229,9 +246,18 @@ class _DonatepageState extends State<Donatepage> {
                                           SizedBox(
                                             width: 30.w,
                                           ),
-                                          Text(
-                                            option,
-                                            style: TextStyle(color: Colors.black),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              SizedBox(height: 30,),
+                                              Text("Qty:$quantity",style:GoogleFonts.poppins(color: Colors.black)),
+                                              Text(
+                                                option,
+                                                style:
+                                                    TextStyle(color: Colors.black),
+                                              ),
+                                              SizedBox(height: 30,)
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -290,7 +316,6 @@ class _DonatepageState extends State<Donatepage> {
             ],
           ),
         ),
-        
       ),
     );
   }
