@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/Notification/sendnotification.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/firestore.dart';
@@ -15,15 +16,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class persondetails extends StatelessWidget {
+class persondetails extends StatefulWidget {
   persondetails({
     super.key,
     required this.foodname,
     required this.description,
     required this.category,
     required this.images,
-    required this.option, 
+    required this.option,
     required this.quantity,
   });
   final String foodname;
@@ -33,6 +35,11 @@ class persondetails extends StatelessWidget {
   final String option;
   final String quantity;
 
+  @override
+  State<persondetails> createState() => _persondetailsState();
+}
+
+class _persondetailsState extends State<persondetails> {
   @override
   Widget build(BuildContext context) {
     String generateRandomId({int length = 16}) {
@@ -46,7 +53,9 @@ class persondetails extends StatelessWidget {
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
-    final categerycontroller = Provider.of<CategoryController>(context,);
+    final categerycontroller = Provider.of<CategoryController>(
+      context,
+    );
     final donationId = generateRandomId();
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -68,6 +77,8 @@ class persondetails extends StatelessWidget {
         print('Error adding item to user document: $e');
       }
     }
+
+    bool _isloading = true;
 
     final FireStoreService fireStoreService = FireStoreService();
     final FireStoreServivce fireStoreServivce = FireStoreServivce();
@@ -185,20 +196,28 @@ class persondetails extends StatelessWidget {
                                 border: Border.all(color: Colors.grey)),
                             height: 60,
                             width: 300,
-                            child: DropdownButton<String>(
+                            child: DropdownButtonFormField<String>(
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary),
                               isExpanded: true,
                               borderRadius: BorderRadius.circular(25),
-                              underline: SizedBox(),
                               dropdownColor: Color(0xff247D7F),
                               padding: EdgeInsets.all(10),
                               value: value.selectedvalue,
                               hint: Text("Select your course"),
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please select your course'; // Error message if no value is selected
+                                }
+                                return null;
+                              },
                               items: value.dropdowmitems.map(
                                 (String value) {
                                   return DropdownMenuItem<String>(
-                                      value: value, child: Text(value,style:GoogleFonts.poppins(color: Colors.white)));
+                                      value: value,
+                                      child: Text(value,
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black)));
                                 },
                               ).toList(),
                               onChanged: value.coursecontroll,
@@ -278,46 +297,49 @@ class persondetails extends StatelessWidget {
                           animType: QuickAlertAnimType.scale,
                           showCancelBtn: true,
                           onConfirmBtnTap: () {
+                            sendTopicNotificationv2(
+                                value.selectedvalue.toString());
                             addItemToUser(
                               ItemModel(
-                                  image: images,
-                                  category: category,
-                                  foodname: foodname,
-                                  description: description,
-                                  date: DateTime.now(),
-                                  lname: Lnamecontroller.text,
-                                  fname: fnamecontroller.text,
-                                  course: value.selectedvalue.toString(),
-                                  cntctbo: Contactnocontroller.text,
-                                  option: option,
-                                  donationId: donationId,
-                                  quantity: quantity),
+                                image: widget.images,
+                                category: widget.category,
+                                foodname: widget.foodname,
+                                description: widget.description,
+                                date: DateTime.now(),
+                                lname: Lnamecontroller.text,
+                                fname: fnamecontroller.text,
+                                course: value.selectedvalue.toString(),
+                                cntctbo: Contactnocontroller.text,
+                                option: widget.option,
+                                donationId: donationId,
+                                quantity: widget.quantity,
+                              ),
                             );
                             fireStoreService.addNote(
-                              fnamecontroller.text,
-                              Lnamecontroller.text,
-                              Contactnocontroller.text,
-                              foodname,
-                              value.selectedvalue.toString(),
-                              option,
-                              description,
-                              value.imageurl.toString(),
-                              DateTime.now(),
-                              donationId.toString(),
-                              quantity.toString(),
-                            );
-                            fireStoreServivce.addmydonation(
                                 fnamecontroller.text,
                                 Lnamecontroller.text,
                                 Contactnocontroller.text,
-                                foodname,
-                                option,
-                                value.currentvalue.toString(),
-                                description,
+                                widget.foodname,
+                                value.selectedvalue.toString(),
+                                widget.option,
+                                widget.description,
                                 value.imageurl.toString(),
                                 DateTime.now(),
                                 donationId.toString(),
-                                quantity.toString());
+                                widget.quantity.toString());
+                            fireStoreServivce.addmydonation(
+                              fnamecontroller.text,
+                              Lnamecontroller.text,
+                              Contactnocontroller.text,
+                              widget.foodname,
+                              widget.option,
+                              value.currentvalue.toString(),
+                              widget.description,
+                              value.imageurl.toString(),
+                              DateTime.now(),
+                              donationId.toString(),
+                              widget.quantity.toString(),
+                            );
 
                             value.image = null;
                             fnamecontroller.clear();

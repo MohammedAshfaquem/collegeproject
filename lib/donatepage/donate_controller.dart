@@ -18,6 +18,7 @@ class Donate extends ChangeNotifier {
     _isLoading = loading;
     notifyListeners();
   }
+
   List<ItemModel> _itemlist = [];
   List<ItemModel> get itemlist => _itemlist;
   String _dropdownvalue = 'Free';
@@ -112,10 +113,12 @@ class Donate extends ChangeNotifier {
     currentvalue = nvalue;
     notifyListeners();
   }
-  void reset(){
+
+  void reset() {
     currentvalue = null;
     notifyListeners();
   }
+
   void setfreeorprice(String option) {
     _dropdownvalue = option;
     notifyListeners();
@@ -265,8 +268,8 @@ class Donate extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteFromAvailbleDanations(
-      String collectionPath, String fieldName,int index,String donationId) async {
+  Future<void> deleteFromAvailbleDanations(String collectionPath,
+      String fieldName, int index, String donationId) async {
     try {
       // Get the currently signed-in user
       User? user = FirebaseAuth.instance.currentUser;
@@ -324,7 +327,7 @@ class ItemModel {
     required this.cntctbo,
     required this.option,
     required this.donationId,
-    required this.quantity, 
+    required this.quantity,
   });
   final now = DateTime.now();
   // Convert an ItemModel into a Map
@@ -340,7 +343,7 @@ class ItemModel {
       'course': course,
       'cntctbo': cntctbo,
       'option': option,
-      'donationid':donationId,
+      'donationid': donationId,
     };
   }
 
@@ -357,8 +360,8 @@ class ItemModel {
       course: map['course'],
       cntctbo: map['cntctbo'],
       option: map['option'],
-      donationId:map["donationid"],
-      quantity:map['quantity']
+      donationId: map["donationid"],
+      quantity: map['quantity'],
     );
   }
 }

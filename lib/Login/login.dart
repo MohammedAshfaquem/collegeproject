@@ -90,19 +90,47 @@ class _LoginPageState extends State<LoginPage> {
                 
               )),
                 
-                  Positioned(
-                    top: 80.h,
-                    left: 10.w,
-                    child: Container(
-                      height: 300.h,
-                      width: 400.w,
+                  // Positioned(
+                  //   top: 100.h,
+                  //   left: 10.w,
+                  //   child: Container(
+                  //     height: 200.h,
+                  //     width: 400.w,
                      
-                      child: Image.asset(
-                        "lib/images/unity.png",
-                        height: 250.h,
-                      ),
-                    ),
-                  ),
+                  //     child: Image.asset(
+                  //       "lib/images/Login logo.png",
+                  //       height: 10.h,
+                  //     ),
+                  //   ),
+                  // ),
+                   Positioned(
+                          top: 180.h,
+                          left: 20.w,
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              "Login",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 225.h,
+                          left: 20.w,
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              "Please sign in to continue",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15.sp,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
                 ],
               ),
               Padding(

@@ -25,6 +25,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+      bool isSearchFocused = false; // Shared state for navigation bar visibility
+  void updateNavigationBarVisibility(bool isFocused) {
+    setState(() {
+      isSearchFocused = isFocused;
+    });
+  }
   bool _isloading = true;
   Future<String> getdata() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -363,6 +369,8 @@ class _HomepageState extends State<Homepage> {
                                         onpressed: () {
                                           Navigator.maybePop(context);
                                         },
+                                                onSearchFocusChange: updateNavigationBarVisibility, // Pass callback
+
                                       ),
                                     ));
                               },

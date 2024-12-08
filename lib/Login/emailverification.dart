@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Login/login.dart';
 import 'package:college_project/Login/loginorsignup.dart';
-import 'package:college_project/Login/register.dart';
+import 'package:college_project/Login/signup.dart';
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

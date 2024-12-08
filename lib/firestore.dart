@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 class FireStoreService {
   var now = DateTime.now();
         User? user = FirebaseAuth.instance.currentUser;
+    String? userimage = FirebaseAuth.instance.currentUser?.photoURL;
         
 
   final CollectionReference notes =
@@ -24,7 +25,7 @@ class FireStoreService {
       String image,
       DateTime time,
       String donationId,
-      String quantity,
+      String quantity
       ) {
     return notes.add({
       'course': course,
@@ -40,6 +41,7 @@ class FireStoreService {
       'uid':user!.uid,
       "donationid":donationId,
       'quantity':quantity,
+      'userimage':userimage,
     });
   }
 

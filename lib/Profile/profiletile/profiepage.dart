@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
@@ -33,73 +34,95 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool _isloading = true;
+  late TextEditingController fullnameController;
+  Future<String> getUsername() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userdoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userdoc.exists) {
+      var data = userdoc.data() as Map<String, dynamic>;
+      return data['name'] as String;
+    } else {
+      return "No user";
+    }
+  }
+
+  Future<String> getemail() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userdoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userdoc.exists) {
+      var data = userdoc.data() as Map<String, dynamic>;
+      return data['email'] as String;
+    } else {
+      return "No user";
+    }
+  }
+
+  Future<void> _setUsername() async {
+    try {
+      String username = await getUsername();
+      fullnameController.text = username; // Set the text of the controller
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  Future<Widget> getimage() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userdoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userdoc.exists) {
+      var data = userdoc.data() as Map<String, dynamic>;
+      return Skeletonizer(
+        enabled: _isloading,
+        child: Image.network(
+          data['image'] as String,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              Future.microtask(
+                () {
+                  if (mounted) {
+                    setState(() {
+                      _isloading = false;
+                    });
+                  }
+                },
+              );
+
+              return child;
+            } else {
+              return Container(
+                color: Colors.grey.shade100,
+              );
+            }
+          },
+          fit: BoxFit.fill,
+        ),
+      );
+    } else {
+      return Image.asset(
+        "lib/images/avtar.avif",
+        color: Colors.red,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fullnameController = TextEditingController();
+    _setUsername();
+  }
+
+  @override
+  void dispose() {
+    fullnameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future<String> getusername() async {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userdoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userdoc.exists) {
-        var data = userdoc.data() as Map<String, dynamic>;
-        return data['name'] as String;
-      } else {
-        return "No user";
-      }
-    }
-
-    Future<String> getemail() async {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userdoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userdoc.exists) {
-        var data = userdoc.data() as Map<String, dynamic>;
-        return data['email'] as String;
-      } else {
-        return "No user";
-      }
-    }
-
-    Future<Widget> getimage() async {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userdoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userdoc.exists) {
-        var data = userdoc.data() as Map<String, dynamic>;
-        return Skeletonizer(
-          enabled: _isloading,
-          child: Image.network(
-            data['image'] as String,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                Future.microtask(
-                  () {
-                    if (mounted) {
-                      setState(() {
-                        _isloading = false;
-                      });
-                    }
-                  },
-                );
-
-                return child;
-              } else {
-                return Container(
-                  color: Colors.grey.shade100,
-                );
-              }
-            },
-            fit: BoxFit.fill,
-          ),
-        );
-      } else {
-        return Image.asset(
-          "lib/images/avtar.avif",
-          color: Colors.red,
-        );
-      }
-    }
-
     final imagcontroller = Provider.of<ImgController>(context);
     void showimagepicker() {
       showModalBottomSheet(
@@ -191,6 +214,163 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+    void showEditPopup() {
+      final imagcontroller = Provider.of<ImgController>(context, listen: false);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            title: Text(
+              "Edit Profile",
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Stack(
+                  children: [
+                    FutureBuilder(
+                      future: getimage(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 18, right: 18),
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                  child: CachedNetworkImage(
+                                    errorWidget: (context, url, error) {
+                                      return Center(
+                                          child: Container(
+                                              child: snapshot.hasData
+                                                  ? snapshot.data
+                                                  : Image.asset(
+                                                      "lib/images/avtar.avif")));
+                                    },
+                                    placeholder: (context, url) => Container(
+                                        height: 50.h,
+                                        width: 50.h,
+                                        child: CircularProgressIndicator()),
+                                    imageUrl:
+                                        imagcontroller.imageurl.toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            height: 150,
+                            width: 150,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.asset(
+                                  "lib/images/avtar.avif",
+                                )),
+                          );
+                        }
+                      },
+                    ),
+                    Positioned(
+                      right: 35,
+                      bottom: 0,
+                      child: CircleAvatar(
+                        radius: 15,
+                        child: IconButton(
+                          onPressed: () {
+                            showimagepicker();
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                TextField(
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  obscureText: false,
+                  controller: fullnameController,
+                  decoration: InputDecoration(
+                    labelText: "Full Name",
+                    labelStyle: TextStyle(color: Colors.black),
+                    disabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 14, 14))),
+                    focusColor: Theme.of(context).colorScheme.primary,
+                    prefixIcon: Icon(
+                      Icons.person_2_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    hintStyle:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15).w,
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary), // When the field is focused
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: const Color.fromARGB(
+                              255, 255, 0, 0)), // When the field is not focused
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                          color: Colors.grey), // When the field is not focused
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  imagcontroller.updateImage();
+                  imagcontroller
+                      .updateusername(fullnameController.text.toString());
+
+                  Navigator.pop(context);
+                },
+                child: Text("Update"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       appBar: AppBar(
@@ -220,7 +400,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20.h,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 18,right: 18),
+              padding: const EdgeInsets.only(left: 18, right: 18),
               child: Container(
                 height: 130,
                 width: 400,
@@ -233,34 +413,32 @@ class _ProfilePageState extends State<ProfilePage> {
                         future: getimage(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return   ClipRRect(
-                                  borderRadius: BorderRadius.circular(18),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, right: 18),
-                                    child: Row(
-                                      children: [
-                                       
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100).w,
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(100)
-                                                        .w,
-                                              ),
-                                              height: 100.h,
-                                              width: 100.w,
-                                              child: snapshot.data),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                      ],
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 18, right: 18),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(100).w,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100).w,
+                                          ),
+                                          height: 100.h,
+                                          width: 100.w,
+                                          child: snapshot.data),
                                     ),
-                                  ),
-                                );
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           } else {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(18),
@@ -268,100 +446,127 @@ class _ProfilePageState extends State<ProfilePage> {
                                 padding:
                                     const EdgeInsets.only(left: 18, right: 18),
                                 child: Container(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.asset("lib/images/avtar.avif",)),
+                                  child: Row(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Image.asset(
+                                            "lib/images/avtar.avif",
+                                          )),
+                                      //
+                                    ],
+                                  ),
                                   height: 100,
                                   width: 100,
                                   decoration: BoxDecoration(
                                       color: Colors.grey.shade200,
-                                      
                                       borderRadius: BorderRadius.circular(100)),
                                 ),
                               ),
                             );
                           }
                         }),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FutureBuilder(
-                            future: getusername(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(
-                                  snapshot.data.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
-                                );
-                              } else {
-                                return Skeletonizer(
-                                  child: Text(
-                                    "no data found",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
-                                );
-                              }
-                            }),
-                        FutureBuilder(
-                            future: getemail(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Container(
-                                  width: 160,
-                                  child: Text(
-                                    overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: 170.w,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FutureBuilder(
+                              future: getUsername(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
                                     snapshot.data.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 15,
-                                        color: Colors.grey.shade700),
-                                  ),
-                                );
-                              } else {
-                                return Skeletonizer(
-                                  child: Text(
-                                    "no data found",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                                        color: Colors.black),
+                                  );
+                                } else {
+                                  return Skeletonizer(
+                                    child: Text(
+                                      "no data found",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }
-                            }),
-                      ],
+                                  );
+                                }
+                              }),
+                          FutureBuilder(
+                              future: getemail(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Container(
+                                    width: 160,
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15,
+                                          color: Colors.grey.shade700),
+                                    ),
+                                  );
+                                } else {
+                                  return Skeletonizer(
+                                    child: Text(
+                                      "no data found",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }),
+                        ],
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 15,
+                      child: IconButton(
+                        onPressed: () {
+                          //  showimagepicker();\
+                          showEditPopup();
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 50),
             SizedBox(height: widget.height ? 65 : 35),
-            ProfilePageModel(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfilePage(username:getusername(),),
-                  ),
-                );
-              },
-              text: "Edit Profile",
-              colors: Theme.of(context).colorScheme.surface,
-              icon: Icons.person,
-            ),
+            // ProfilePageModel(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => EditProfilePage(
+            //           username: getUsername(),
+            //         ),
+            //       ),
+            //     );
+            //   },
+            //   text: "Edit Profile",
+            //   colors: Theme.of(context).colorScheme.surface,
+            //   icon: Icons.person,
+            // ),
             ProfilePageModel(
               onTap: () {
                 Navigator.push(
@@ -374,6 +579,9 @@ class _ProfilePageState extends State<ProfilePage> {
               text: "My Donations",
               colors: Theme.of(context).colorScheme.surface,
               icon: Icons.call,
+            ),
+            SizedBox(
+              height: 10.h,
             ),
             ProfilePageModel(
               onTap: () {
@@ -388,6 +596,10 @@ class _ProfilePageState extends State<ProfilePage> {
               colors: Theme.of(context).colorScheme.surface,
               icon: Icons.lock,
             ),
+            SizedBox(
+              height: 10.h,
+            ),
+
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
               child: ListTile(
@@ -423,6 +635,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             focusColor: Colors.white,
                           ))),
             ),
+            SizedBox(
+              height: 10.h,
+            ),
+
             ProfilePageModel(
               onTap: () {
                 Navigator.push(
@@ -436,6 +652,10 @@ class _ProfilePageState extends State<ProfilePage> {
               colors: Theme.of(context).colorScheme.surface,
               icon: Icons.call,
             ),
+            SizedBox(
+              height: 10.h,
+            ),
+
             ProfilePageModel(
               onTap: () {
                 QuickAlert.show(
@@ -446,7 +666,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   cancelBtnText: 'No',
                   showCancelBtn: true,
                   confirmBtnColor: Colors.green,
-                  headerBackgroundColor: Colors.red.shade400,
                   onCancelBtnTap: () => Navigator.pop(context),
                   onConfirmBtnTap: () {
                     //

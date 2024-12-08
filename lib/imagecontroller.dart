@@ -52,7 +52,7 @@ class ImgController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateImage() async {
+  Future<void>  updateImage() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     String newImageUrl = imageurl ?? await getImage(); // Await the getImage call
 
@@ -60,7 +60,10 @@ class ImgController extends ChangeNotifier {
         .collection('users')
         .doc(uid)
         .update({'image': newImageUrl});
-
+FirebaseFirestore.instance
+        .collection('notes')
+        .doc(uid)
+        .update({'userimage': newImageUrl});
     notifyListeners();
   }
   updateusername(String name) {

@@ -1,7 +1,7 @@
 
 import 'package:college_project/Login/emailverification.dart';
 import 'package:college_project/Login/login.dart';
-import 'package:college_project/Login/register.dart';
+import 'package:college_project/Login/signup.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/auth/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';

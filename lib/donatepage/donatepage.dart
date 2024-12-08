@@ -11,9 +11,10 @@ import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Donatepage extends StatefulWidget {
-  Donatepage({super.key, this.showbackbutton = false, required this.onpressed});
+  Donatepage({super.key, this.showbackbutton = false, required this.onpressed, this.onSearchFocusChange});
   final bool showbackbutton;
   final VoidCallback onpressed;
+final ValueChanged<bool>? onSearchFocusChange;
 
   @override
   State<Donatepage> createState() => _DonatepageState();
@@ -21,6 +22,7 @@ class Donatepage extends StatefulWidget {
 
 class _DonatepageState extends State<Donatepage> {
   TextEditingController searchController = TextEditingController();
+  FocusNode searchFocusNode = FocusNode(); // Track focus
   String searchQuery = '';
   String selectedFilter = 'All'; // Default filter showing all options
 
@@ -30,6 +32,22 @@ class _DonatepageState extends State<Donatepage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to focus changes and notify parent via callback
+    searchFocusNode.addListener(() {
+      widget.onSearchFocusChange?.call(searchFocusNode.hasFocus); // Safe call
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    searchFocusNode.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final FireStoreService fireStoreService = FireStoreService();
@@ -43,6 +61,7 @@ class _DonatepageState extends State<Donatepage> {
         return false;
       },
       child: Scaffold(
+        
         appBar: AppBar(
           leading: IconButton(
             onPressed: widget.onpressed,
@@ -68,6 +87,7 @@ class _DonatepageState extends State<Donatepage> {
             children: [
               TextField(
                 style: TextStyle(color: Colors.black),
+                focusNode: searchFocusNode, // Attach the FocusNode
                 controller: searchController,
                 onChanged: (value) {
                   setState(() {
@@ -102,7 +122,7 @@ class _DonatepageState extends State<Donatepage> {
                   ),
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: fireStoreService.getNotesStream(),
                     builder: (context, snapshot) {
@@ -150,6 +170,7 @@ class _DonatepageState extends State<Donatepage> {
                                 String dateTime = data['time'] ?? '';
                                 String quantity = data['quantity'] ?? '';
                                 String donationid = data['donationid'] ?? '';
+                                String userimage = data['userimage'] ?? '';
 
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 15),
@@ -159,6 +180,7 @@ class _DonatepageState extends State<Donatepage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Detailspage(
+                                              userimage:userimage ,
                                               cntctno: number,
                                               course: course,
                                               lname: lname,
@@ -184,27 +206,30 @@ class _DonatepageState extends State<Donatepage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            child: Image.network(
-                                              imageurl,
-                                              fit: BoxFit.cover,
-                                              width: 120.w,
-                                              height: 90.h,
-                                              loadingBuilder: (context, child,
-                                                  loadingProgress) {
-                                                if (loadingProgress == null)
-                                                  return child;
-                                                return Skeletonizer(
-                                                    enabled: true,
-                                                    child: Container(
-                                                      color:
-                                                          Colors.grey.shade100,
-                                                      height: 90.h,
-                                                      width: 120.w,
-                                                    ));
-                                              },
+                                          Hero(
+                                            tag: 'image${imageurl}',
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: Image.network(
+                                                imageurl,
+                                                fit: BoxFit.cover,
+                                                width: 120.w,
+                                                height: 90.h,
+                                                loadingBuilder: (context, child,
+                                                    loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Skeletonizer(
+                                                      enabled: true,
+                                                      child: Container(
+                                                        color:
+                                                            Colors.grey.shade100,
+                                                        height: 90.h,
+                                                        width: 120.w,
+                                                      ));
+                                                },
+                                              ),
                                             ),
                                           ),
                                           Padding(

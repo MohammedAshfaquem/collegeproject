@@ -10,22 +10,41 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CategoryDetails extends StatelessWidget {
-  CategoryDetails({super.key, required this.category, required this.function});
+  CategoryDetails({
+    super.key,
+    required this.category,
+    required this.function,
+    required this.image,
+  });
 
   final String category;
   final VoidCallback function;
- final foodnamecontroller = TextEditingController();
-    final descriptioncontroller = TextEditingController();
-    final pricecontroller = TextEditingController();
+  final foodnamecontroller = TextEditingController();
+  final descriptioncontroller = TextEditingController();
+  final pricecontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  final String image;
+
+  void showCustomSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     final imagcontroller = Provider.of<Donate>(context, listen: false);
-    final categorycontroller = Provider.of<CategoryController>(
-      context,
-    );
+    final categorycontroller = Provider.of<CategoryController>(context);
 
     return WillPopScope(
       onWillPop: () async {
@@ -63,15 +82,13 @@ class CategoryDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Title',
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                          Text('Title', style: TextStyle(color: Colors.grey)),
                           TextFormField(
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
-                            validator: (name) =>
-                                name!.isEmpty ? 'Please enter your name' : null,
+                            validator: (name) => name!.isEmpty
+                                ? 'Please enter your name'
+                                : null,
                             controller: foodnamecontroller,
                             decoration: InputDecoration(
                               hintText: 'Food Name',
@@ -161,6 +178,9 @@ class CategoryDetails extends StatelessWidget {
                           TextFormField(
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
+                            validator: (description) => description!.isEmpty
+                                ? 'Description is required'
+                                : null,
                             controller: descriptioncontroller,
                             maxLines: 5,
                             decoration: InputDecoration(
@@ -175,8 +195,7 @@ class CategoryDetails extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Text("Pictures",
-                              style: TextStyle(color: Colors.black)),
+                          Text("Pictures", style: TextStyle(color: Colors.black)),
                           Row(
                             children: [
                               Column(
@@ -229,39 +248,41 @@ class CategoryDetails extends StatelessWidget {
                                             ),
                                 ],
                               ),
+                              SizedBox(width: 60.w),
                               Container(
-                                height: 40,
-                                width: 250,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(color: Colors.black),
+                                ),
+                                height: 50,
+                                width: 185,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    SizedBox(width: 10.w),
                                     Text(
-                                      "Quantity",
+                                      "Quantity:",
                                       style: GoogleFonts.poppins(
                                           color: Colors.black),
                                     ),
-                                    Container(
-                                        child: OutlinedButton(
-                                          
-                                            onPressed:
-                                                categorycontroller.decrement,
-                                            child: Icon(LineAwesomeIcons.minus_solid,))),
+                                    IconButton(
+                                        onPressed:
+                                            categorycontroller.decrement,
+                                        icon: Icon(
+                                          LineAwesomeIcons.minus_circle_solid,
+                                          color: Colors.black,
+                                        )),
                                     Text(
                                       "${categorycontroller.quantity}",
                                       style: TextStyle(color: Colors.black),
                                     ),
-                                    Container(
-                                      child: Center(
-                                        child: IconButton(
-                                            iconSize: 30,
-                                            onPressed:
-                                                categorycontroller.increment,
-                                            icon: Icon(
-                                              Icons.add,
-                                              color: Colors.black,
-                                            )),
-                                      ),
-                                    ),
+                                    IconButton(
+                                        iconSize: 25,
+                                        onPressed:
+                                            categorycontroller.increment,
+                                        icon: Icon(
+                                          LineAwesomeIcons.plus_circle_solid,
+                                          color: Colors.black,
+                                        )),
                                   ],
                                 ),
                               )
@@ -285,6 +306,20 @@ class CategoryDetails extends StatelessWidget {
                     builder: (context, value, child) => GestureDetector(
                       onTap: () {
                         if (_formkey.currentState!.validate()) {
+                          if (value.currentvalue == null ||
+                              value.currentvalue!.isEmpty) {
+                            showCustomSnackBar(
+                                context, "Please select an option.");
+                            return;
+                          }
+
+                          if (value.imageurl == null ||
+                              value.imageurl!.isEmpty) {
+                            showCustomSnackBar(
+                                context, "Please select an image.");
+                            return;
+                          }
+
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return persondetails(
@@ -298,6 +333,9 @@ class CategoryDetails extends StatelessWidget {
                               quantity: categorycontroller.quantity.toString(),
                             );
                           }));
+                        } else {
+                          showCustomSnackBar(
+                              context, "Please fill in all the required fields.");
                         }
                       },
                       child: Container(

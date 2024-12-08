@@ -264,72 +264,74 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Stack(
-                    children: [
-                      FutureBuilder(
-                        future: getimage(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(18),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 18, right: 18),
-                                child: Container(
-                                  height: 150,
-                                  width: 150,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100).w,
-                                    child: CachedNetworkImage(
-                                      errorWidget: (context, url, error) {
-                                        return Center(
-                                            child: Container(
-                                                child: snapshot.hasData
-                                                    ? snapshot.data
-                                                    : Image.asset(
-                                                        "lib/images/avtar.avif")));
-                                      },
-                                      placeholder: (context, url) => Container(
-                                          height: 50.h,
-                                          width: 50.h,
-                                          child: CircularProgressIndicator()),
-                                      imageUrl:
-                                          imagcontroller.imageurl.toString(),
-                                    ),
+                 Stack(
+                  children: [
+                    FutureBuilder(
+                      future: getimage(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 18, right: 18),
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100).w,
+                                  child: CachedNetworkImage(
+                                    errorWidget: (context, url, error) {
+                                      return Center(
+                                          child: Container(
+                                              child: snapshot.hasData
+                                                  ? snapshot.data
+                                                  : Image.asset(
+                                                      "lib/images/avtar.avif")));
+                                    },
+                                    placeholder: (context, url) => Container(
+                                        height: 50.h,
+                                        width: 50.h,
+                                        child: CircularProgressIndicator()),
+                                    imageUrl:
+                                        imagcontroller.imageurl.toString(),
                                   ),
                                 ),
                               ),
-                            );
-                          } else {
-                            return Container(
-                              height: 150,
-                              width: 150,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Image.asset(
-                                    "lib/images/avtar.avif",
-                                  )),
-                            );
-                          }
-                        },
-                      ),
-                      Positioned(
-                        right: 10,
-                        bottom: 0,
-                        child: CircleAvatar(
-                          child: IconButton(
-                            onPressed: () {
-                              showimagepicker();
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.white,
                             ),
+                          );
+                        } else {
+                          return Container(
+                            height: 150,
+                            width: 150,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.asset(
+                                  "lib/images/avtar.avif",
+                                )),
+                          );
+                        }
+                      },
+                    ),
+                    Positioned(
+                      right: 35,
+                      bottom: 0,
+                      child: CircleAvatar(
+                        radius: 15,
+                        child: IconButton(
+                          onPressed: () {
+                            showimagepicker();
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 15,
                           ),
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
+                ),
                   SizedBox(height: 30),
                   Center(
                       child: Text(
@@ -518,7 +520,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       imagcontroller.updateImage();
                       imagcontroller
                           .updateusername(fullnameController.text.toString());
+                          
                       Navigator.pop(context);
+
                       // Add functionality to edit profile here
                     },
                     child: Container(
