@@ -1,12 +1,9 @@
-import 'package:college_project/Login/loginorsignup.dart';
-import 'package:college_project/OnBoardingScreens/3dope.dart';
-import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
+
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class thirddope extends StatelessWidget {
@@ -14,7 +11,6 @@ class thirddope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dopecontroller = Provider.of<DopeController>(context, listen: false);
     return Scaffold(
       body: Container(
         height: 825.h,

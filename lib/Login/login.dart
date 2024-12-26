@@ -23,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   var _isobscured;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _isobscured = true;
   }
@@ -46,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
     final authservice = Authservice();
 
     try {
-      
       await authservice.signInWithEmailAndPassword(
           textcontroller.text, passwordcontroller.text);
     } catch (e) {
@@ -81,56 +79,54 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Stack(
                 children: [
-                 
-                 Align(
-              alignment: Alignment.bottomRight,
-              child: Image.asset(
-                "lib/images/bg1.avif",
-                height: 260,
-                
-              )),
-                
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: Image.asset(
+                        "lib/images/bg1.png",
+                        height: 260,
+                      )),
+
                   // Positioned(
                   //   top: 100.h,
                   //   left: 10.w,
                   //   child: Container(
                   //     height: 200.h,
                   //     width: 400.w,
-                     
+
                   //     child: Image.asset(
                   //       "lib/images/Login logo.png",
                   //       height: 10.h,
                   //     ),
                   //   ),
                   // ),
-                   Positioned(
-                          top: 180.h,
-                          left: 20.w,
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "Login",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 225.h,
-                          left: 20.w,
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "Please sign in to continue",
-                              style: GoogleFonts.poppins(
-                                  fontSize: 15.sp,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
+                  Positioned(
+                    top: 180.h,
+                    left: 20.w,
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "Login",
+                        style: GoogleFonts.poppins(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 225.h,
+                    left: 20.w,
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "Please sign in to continue",
+                        style: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Padding(
@@ -200,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 10.h,
                       ),
                       Padding(
-                        padding:EdgeInsets.only(right: 20.r),
+                        padding: EdgeInsets.only(right: 20.r),
                         child: TextField(
                           style: TextStyle(color: Colors.black),
                           // validator: (value) => value!.length < 3

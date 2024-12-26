@@ -1,15 +1,13 @@
 import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/Notification/notificationHandler.dart';
 import 'package:college_project/OnBoardingScreens/Dopescrees.dart';
 import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
+import 'package:college_project/category/quantitycontroller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/auth/auth_gate.dart';
-import 'package:college_project/splash.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,7 +25,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final pref = await SharedPreferences.getInstance();
@@ -36,7 +33,6 @@ void main() async {
   Notificationhandler.requestnotification();
   FirebaseMessaging.instance.subscribeToTopic('Ashfaque');
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
 
   runApp(
     MultiProvider(
@@ -60,7 +56,7 @@ void main() async {
           create: (context) => ImgController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => CategoryController(),
+          create: (context) => QuantityController(),
         ),
       ],
       child: ScreenUtilInit(

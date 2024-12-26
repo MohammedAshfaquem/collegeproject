@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Login/emailverification.dart';
 import 'package:college_project/Login/registerformfieldmodel.dart';
-
 import 'package:college_project/service/googlesign.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 // ignore: camel_case_types
 final _formkey = GlobalKey<FormState>();
@@ -51,18 +49,27 @@ class _RegisterpageState extends State<RegisterPage> {
     } else {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          content: Text(
-            "Password and Confirm Password doesnot match.",
-            style: TextStyle(
-              color: Colors.black,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Password Mismatch',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context), child: Text("OK"))
-          ],
-        ),
+            content: Text(
+                'The passwords you entered do not match. Please try again.',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.w500)),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
       );
 
       return false;
@@ -70,6 +77,31 @@ class _RegisterpageState extends State<RegisterPage> {
   }
 
   Future<void> signupEmail() async {
+    if (regnamecontroller.text.trim().isEmpty) {
+      // Show an alert dialog if the name is empty
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            "Name is required",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            "Please enter your name to continue.",
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+      return print("false"); // Exit the function if the name is empty
+    }
     if (passwordConfirmed()) {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
@@ -85,7 +117,7 @@ class _RegisterpageState extends State<RegisterPage> {
           'name': regnamecontroller.text,
           'emailVerified': false,
           'createdAt': FieldValue.serverTimestamp(), // Store creation time
-          'password':regconfirmpasscontroller.text,
+          'password': regconfirmpasscontroller.text,
         });
 
         Navigator.pushReplacement(
@@ -116,7 +148,6 @@ class _RegisterpageState extends State<RegisterPage> {
   }
 
   void initState() {
-    // TODO: implement initState
     super.initState();
     _ispassobscured = true;
     _isconfirmpassobscured = true;
@@ -142,7 +173,7 @@ class _RegisterpageState extends State<RegisterPage> {
                         Align(
                             alignment: Alignment.bottomRight,
                             child: Image.asset(
-                              "lib/images/bg1.avif",
+                              "lib/images/bg1.png",
                               height: 230.h,
                             )),
                         Positioned(
@@ -192,11 +223,46 @@ class _RegisterpageState extends State<RegisterPage> {
                       padding: EdgeInsets.only(left: 20.h),
                       child: Column(
                         children: [
-                          Registerfield(
+                          // Registerfield(
+                          //     controller: regnamecontroller,
+                          //     hintText: "Name",
+                          //     icon: Icons.person,
+                          //     obscuretext: false),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: TextFormField(
+                              style: TextStyle(color: Colors.black),
+                              validator: (value) {
+                                return value == null || value.isEmpty
+                                    ? "Please fill this field"
+                                    : "";
+                              },
+                              obscureText: _ispassobscured,
                               controller: regnamecontroller,
-                              hintText: "Name",
-                              icon: Icons.person,
-                              obscuretext: false),
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                prefixIcon: Icon(
+                                  Icons.person,
+                                  color: Colors.black,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(15).r,
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15).r),
+                                hintText: "Name",
+                                hintStyle: TextStyle(color: Colors.black),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15).r,
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 15.h,
                           ),
@@ -320,8 +386,6 @@ class _RegisterpageState extends State<RegisterPage> {
                                 width: 120.w,
                               ),
                               CupertinoSwitch(
-                                trackColor: Colors.black,
-                                activeColor: Color(0xff247D7F),
                                 value: value,
                                 onChanged: (newvalue) {
                                   setState(() {
@@ -337,8 +401,7 @@ class _RegisterpageState extends State<RegisterPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                            
-                             signupEmail();
+                              signupEmail();
                             },
                             child: Padding(
                               padding: EdgeInsets.only(right: 20.w),

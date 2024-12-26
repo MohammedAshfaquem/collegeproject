@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 class GoogleSignin {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  
   getCurreuser() async {
     return await auth.currentUser;
   }

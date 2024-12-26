@@ -1,4 +1,3 @@
-import 'package:college_project/OnBoardingScreens/3dope.dart';
 import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

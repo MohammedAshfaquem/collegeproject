@@ -24,8 +24,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Observe app lifecycle changes
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

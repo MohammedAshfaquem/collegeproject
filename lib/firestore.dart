@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -18,10 +16,9 @@ class FireStoreService {
       String lname,
       String number,
       String foodname,
-      // String category
       String course,
       String option,
-      String decsription,
+      String description,
       String image,
       DateTime time,
       String donationId,
@@ -35,7 +32,7 @@ class FireStoreService {
       'food name': foodname,
       // 'category': category,
       'option': option,
-      'decsription': decsription,
+      'description': description,
       'image': image,
       'time': DateFormat.jm().format(now),
       'uid':user!.uid,

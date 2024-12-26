@@ -1,6 +1,3 @@
-import 'package:college_project/Login/login.dart';
-import 'package:college_project/Login/signup.dart';
-import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -27,12 +24,7 @@ class loginorsignup extends StatelessWidget {
               bottom: 230.h,
               right: 31.w,
               child: GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => LoginPage(),
-                  //     ));
+                onTap: () {                
                 },
                 child: Container(
                   decoration: BoxDecoration(

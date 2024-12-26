@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/donatepage/donateDetailspage.dart';
 import 'package:college_project/firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,10 +10,14 @@ import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Donatepage extends StatefulWidget {
-  Donatepage({super.key, this.showbackbutton = false, required this.onpressed, this.onSearchFocusChange});
+  Donatepage(
+      {super.key,
+      this.showbackbutton = false,
+      required this.onpressed,
+      this.onSearchFocusChange});
   final bool showbackbutton;
   final VoidCallback onpressed;
-final ValueChanged<bool>? onSearchFocusChange;
+  final ValueChanged<bool>? onSearchFocusChange;
 
   @override
   State<Donatepage> createState() => _DonatepageState();
@@ -48,6 +51,7 @@ class _DonatepageState extends State<Donatepage> {
     searchFocusNode.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final FireStoreService fireStoreService = FireStoreService();
@@ -61,7 +65,6 @@ class _DonatepageState extends State<Donatepage> {
         return false;
       },
       child: Scaffold(
-        
         appBar: AppBar(
           leading: IconButton(
             onPressed: widget.onpressed,
@@ -139,6 +142,8 @@ class _DonatepageState extends State<Donatepage> {
                           final foodname =
                               data['food name']?.toString().toLowerCase() ?? '';
                           final option = data['option']?.toString() ?? '';
+                          final quantity =
+                              int.tryParse(data['quantity'] ?? '0') ?? 0;
 
                           // Check if the food name matches the search query
                           bool matchesSearch = foodname.contains(searchQuery);
@@ -147,7 +152,7 @@ class _DonatepageState extends State<Donatepage> {
                               (selectedFilter == 'Free' && option == 'Free') ||
                               (selectedFilter == 'Price' && option != 'Free');
 
-                          return matchesSearch && matchesFilter;
+                          return matchesSearch && matchesFilter && quantity > 0;
                         }).toList();
 
                         if (filteredNotesList.isNotEmpty) {
@@ -165,7 +170,7 @@ class _DonatepageState extends State<Donatepage> {
                                 String course = data['course'] ?? '';
                                 String foodname = data['food name'] ?? '';
                                 String option = data['option'] ?? '';
-                                String itemdes = data['description'] ?? '';
+                                String description = data['description'] ?? '';
                                 String imageurl = data['image'] ?? '';
                                 String dateTime = data['time'] ?? '';
                                 String quantity = data['quantity'] ?? '';
@@ -180,14 +185,14 @@ class _DonatepageState extends State<Donatepage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Detailspage(
-                                              userimage:userimage ,
+                                              userimage: userimage,
                                               cntctno: number,
                                               course: course,
                                               lname: lname,
                                               foodname: foodname,
                                               user: fname,
                                               option: option,
-                                              itemdes: itemdes,
+                                              description: description,
                                               imageurl: imageurl,
                                               time: dateTime,
                                               quantity: quantity,
@@ -223,8 +228,8 @@ class _DonatepageState extends State<Donatepage> {
                                                   return Skeletonizer(
                                                       enabled: true,
                                                       child: Container(
-                                                        color:
-                                                            Colors.grey.shade100,
+                                                        color: Colors
+                                                            .grey.shade100,
                                                         height: 90.h,
                                                         width: 120.w,
                                                       ));
@@ -240,7 +245,9 @@ class _DonatepageState extends State<Donatepage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                SizedBox(height: 10,),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
                                                 Text(foodname,
                                                     style: GoogleFonts.poppins(
                                                         fontWeight:
@@ -272,16 +279,23 @@ class _DonatepageState extends State<Donatepage> {
                                             width: 30.w,
                                           ),
                                           Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                             children: [
-                                              SizedBox(height: 30,),
-                                              Text("Qty:$quantity",style:GoogleFonts.poppins(color: Colors.black)),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Text("Qty:$quantity",
+                                                  style: GoogleFonts.poppins(
+                                                      color: Colors.black)),
                                               Text(
                                                 option,
-                                                style:
-                                                    TextStyle(color: Colors.black),
+                                                style: TextStyle(
+                                                    color: Colors.black),
                                               ),
-                                              SizedBox(height: 30,)
+                                              SizedBox(
+                                                height: 30,
+                                              )
                                             ],
                                           ),
                                         ],

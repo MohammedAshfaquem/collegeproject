@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,24 +9,30 @@ import 'package:intl/intl.dart';
 
 class Donate extends ChangeNotifier {
   bool _isLoading = false;
-  // other properties...
+  List<ItemModel> _itemlist = [];
+  String _dropdownvalue = 'Free';
+
+  String? selectedvalue;
+  String _email = '';
+  String _editname = '';
 
   bool get isLoading => _isLoading;
+  List<ItemModel> get itemlist => _itemlist;
+  String get dropdownvalue => _dropdownvalue;
+  String get email => _email;
+  String get eeditname => _editname;
 
   void setLoading(bool loading) {
     _isLoading = loading;
     notifyListeners();
   }
 
-  List<ItemModel> _itemlist = [];
-  List<ItemModel> get itemlist => _itemlist;
-  String _dropdownvalue = 'Free';
-  String get dropdownvalue => _dropdownvalue;
   final picker = ImagePicker();
   XFile? image;
   File? savedimage;
   String? imageurl;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   List<String> dropdowmitems = [
     'Bca',
     'Bcom CA',
@@ -37,13 +42,19 @@ class Donate extends ChangeNotifier {
     'Psychology',
     'Ba English'
   ];
-  String? selectedvalue;
+
   List<String> freeornot = ['Free', 'Price'];
   String? currentvalue;
-  String _email = '';
-  String get email => _email;
-  String _editname = '';
-  String get eeditname => _editname;
+
+  void coursecontroll(value) {
+    selectedvalue = value; // Update the selected value and notify listeners
+    notifyListeners();
+  }
+
+  void freeornotcontroll(nvalue) {
+    currentvalue = nvalue;
+    notifyListeners();
+  }
 
   Future<void> imagepickcamera() async {
     setLoading(true);
@@ -104,14 +115,9 @@ class Donate extends ChangeNotifier {
     notifyListeners();
   }
 
-  void coursecontroll(newvalue) {
-    selectedvalue = newvalue;
-    notifyListeners();
-  }
-
-  void freeornotcontroll(nvalue) {
-    currentvalue = nvalue;
-    notifyListeners();
+  set selectedCourse(String? course) {
+    selectedvalue = course;
+    notifyListeners(); // Notify listeners when the selected course changes
   }
 
   void reset() {
@@ -231,6 +237,7 @@ class Donate extends ChangeNotifier {
 
   Future<void> deleteFromMyDonations(int index) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
+
     try {
       // Reference to the specific document
       DocumentReference documentRef = _firestore.collection('users').doc(uid);
@@ -261,6 +268,7 @@ class Donate extends ChangeNotifier {
         transaction.update(documentRef, {'mydonations': donationsList});
       });
 
+      // Notify listeners to rebuild the UI
       notifyListeners();
       print('Item deleted successfully!');
     } catch (e) {
@@ -282,16 +290,19 @@ class Donate extends ChangeNotifier {
         CollectionReference collectionRef =
             FirebaseFirestore.instance.collection(collectionPath);
 
-        // Query to find documents where the field matches the user's UID
+        // Query to find documents where the field matches the donationId
         QuerySnapshot querySnapshot =
             await collectionRef.where(fieldName, isEqualTo: donationId).get();
-        print("valladhum nadakko");
-        print(uid);
+
         // Delete each document that matches the condition
         for (var doc in querySnapshot.docs) {
           await doc.reference.delete();
         }
+
         print('Documents successfully deleted');
+
+        // Notify listeners to rebuild the UI
+        notifyListeners();
       } else {
         print('No user is currently signed in');
       }

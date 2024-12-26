@@ -1,5 +1,4 @@
 import 'package:college_project/OnBoardingScreens/Dopescrees.dart';
-import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +15,6 @@ with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(Duration(seconds: 3),() {
@@ -28,7 +26,6 @@ with SingleTickerProviderStateMixin {
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
     overlays: SystemUiOverlay.values);
-    // TODO: implement dispose
     super.dispose();
 
   }

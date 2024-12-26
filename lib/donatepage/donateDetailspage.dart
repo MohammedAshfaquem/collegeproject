@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/category/quantitycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +13,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 // ignore: must_be_immutable
 class Detailspage extends StatefulWidget {
   var foodname;
-  var itemdes;
+  var description;
   var user;
   var cntctno;
   var course;
@@ -29,7 +29,7 @@ class Detailspage extends StatefulWidget {
     required this.lname,
     this.option,
     this.foodname,
-    this.itemdes,
+    this.description,
     this.user,
     this.cntctno,
     this.course,
@@ -45,7 +45,7 @@ class Detailspage extends StatefulWidget {
 }
 
 class _DetailspageState extends State<Detailspage> {
-  bool _isloading = true;
+  bool isloading = true;
   void updatefooddetails(donationId, quantity) async {
     print("donationId ;- $donationId  and quantity;- $quantity");
     final finalQuantity = int.parse(widget.quantity) - quantity;
@@ -80,7 +80,7 @@ class _DetailspageState extends State<Detailspage> {
     // Schedule the update after the current frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final categorycontroller =
-          Provider.of<CategoryController>(context, listen: false);
+          Provider.of<QuantityController>(context, listen: false);
       // Convert to int and update quantity
       categorycontroller.quantity =
           int.tryParse(widget.quantity) ?? 0; // Fallback to 0 if parsing fails
@@ -91,7 +91,7 @@ class _DetailspageState extends State<Detailspage> {
   Widget build(BuildContext context) {
     final now = new DateTime.now();
     final categorycontroller =
-        Provider.of<CategoryController>(context, listen: false);
+        Provider.of<QuantityController>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -127,15 +127,15 @@ class _DetailspageState extends State<Detailspage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        width: 500,
-                        height: 200,
+                        width: 500.w,
+                        height: 200.h,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) {
                             Future.microtask(
                               () {
                                 if (mounted) {
                                   setState(() {
-                                    _isloading = false;
+                                    isloading = false;
                                   });
                                 }
                               },
@@ -146,6 +146,8 @@ class _DetailspageState extends State<Detailspage> {
                             return Skeletonizer(
                               enabled: true,
                               child: Container(
+                                height: 200.h,
+                                width: 500.w,
                                 color: Colors.grey.shade100,
                               ),
                             );
@@ -298,7 +300,7 @@ class _DetailspageState extends State<Detailspage> {
                           height: 5,
                         ),
                         Text(
-                          "${widget.cntctno}",
+                          "${widget.course}",
                           style: GoogleFonts.poppins(
                               color: Theme.of(context).colorScheme.primary),
                         ),
@@ -324,27 +326,38 @@ class _DetailspageState extends State<Detailspage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "About details",
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      Text(
-                        "${widget.itemdes}",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "About details",
+                          style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 5),
+                          height: 200.h,
+                          child: Text(
+                            "${widget.description}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
             SizedBox(
-              height: 160.h,
+              height: 10.h,
             ),
             Row(
               children: [

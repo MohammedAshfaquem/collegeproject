@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/category/quantitycontroller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -44,7 +43,7 @@ class CategoryDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imagcontroller = Provider.of<Donate>(context, listen: false);
-    final categorycontroller = Provider.of<CategoryController>(context);
+    final categorycontroller = Provider.of<QuantityController>(context);
 
     return WillPopScope(
       onWillPop: () async {
@@ -86,9 +85,8 @@ class CategoryDetails extends StatelessWidget {
                           TextFormField(
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
-                            validator: (name) => name!.isEmpty
-                                ? 'Please enter your name'
-                                : null,
+                            validator: (name) =>
+                                name!.isEmpty ? 'Please enter your name' : null,
                             controller: foodnamecontroller,
                             decoration: InputDecoration(
                               hintText: 'Food Name',
@@ -190,21 +188,30 @@ class CategoryDetails extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(23),
                                 borderSide: BorderSide(color: Colors.black),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(23),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
                               ),
                             ),
                           ),
-                          Text("Pictures", style: TextStyle(color: Colors.black)),
+                          Text("Pictures",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
                           Row(
                             children: [
                               Column(
                                 children: [
                                   value.isLoading
                                       ? Container(
-                                          height: 50.h,
-                                          width: 50.h,
-                                          child: CircularProgressIndicator())
+                                          height: 60.h,
+                                          width: 60.h,
+                                          child: Center(
+                                              child:
+                                                  CircularProgressIndicator()))
                                       : value.imageurl == null
                                           ? GestureDetector(
                                               onTap: () async {
@@ -217,8 +224,8 @@ class CategoryDetails extends StatelessWidget {
                                                       BorderRadius.circular(17)
                                                           .w,
                                                 ),
-                                                height: 50.h,
-                                                width: 50.w,
+                                                height: 60.h,
+                                                width: 60.w,
                                                 child: Icon(Icons.add),
                                               ),
                                             )
@@ -227,28 +234,35 @@ class CategoryDetails extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(17),
                                               ),
-                                              height: 50.h,
-                                              width: 50.w,
-                                              child: CachedNetworkImage(
-                                                errorWidget:
-                                                    (context, url, error) {
-                                                  return Center(
-                                                      child: Icon(Icons.error,
-                                                          color: Colors.red));
-                                                },
-                                                placeholder: (context, url) =>
-                                                    Container(
-                                                        height: 50.h,
-                                                        width: 50.h,
-                                                        child:
-                                                            CircularProgressIndicator()),
-                                                imageUrl:
-                                                    value.imageurl.toString(),
+                                              height: 60.h,
+                                              width: 60.w,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  errorWidget:
+                                                      (context, url, error) {
+                                                    return Center(
+                                                        child: Icon(Icons.error,
+                                                            color: Colors.red));
+                                                  },
+                                                  placeholder: (context, url) =>
+                                                      Container(
+                                                          height: 60.h,
+                                                          width: 60.h,
+                                                          child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          )),
+                                                  imageUrl:
+                                                      value.imageurl.toString(),
+                                                ),
                                               ),
                                             ),
                                 ],
                               ),
-                              SizedBox(width: 60.w),
+                              SizedBox(width: 40.w),
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
@@ -265,8 +279,7 @@ class CategoryDetails extends StatelessWidget {
                                           color: Colors.black),
                                     ),
                                     IconButton(
-                                        onPressed:
-                                            categorycontroller.decrement,
+                                        onPressed: categorycontroller.decrement,
                                         icon: Icon(
                                           LineAwesomeIcons.minus_circle_solid,
                                           color: Colors.black,
@@ -277,8 +290,7 @@ class CategoryDetails extends StatelessWidget {
                                     ),
                                     IconButton(
                                         iconSize: 25,
-                                        onPressed:
-                                            categorycontroller.increment,
+                                        onPressed: categorycontroller.increment,
                                         icon: Icon(
                                           LineAwesomeIcons.plus_circle_solid,
                                           color: Colors.black,
@@ -322,7 +334,7 @@ class CategoryDetails extends StatelessWidget {
 
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return persondetails(
+                            return PersonDetails(
                               option: value.currentvalue == 'Free'
                                   ? "Free"
                                   : "Rs:" + pricecontroller.text.toString(),
@@ -334,8 +346,8 @@ class CategoryDetails extends StatelessWidget {
                             );
                           }));
                         } else {
-                          showCustomSnackBar(
-                              context, "Please fill in all the required fields.");
+                          showCustomSnackBar(context,
+                              "Please fill in all the required fields.");
                         }
                       },
                       child: Container(

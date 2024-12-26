@@ -25,12 +25,13 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-      bool isSearchFocused = false; // Shared state for navigation bar visibility
+  bool isSearchFocused = false; // Shared state for navigation bar visibility
   void updateNavigationBarVisibility(bool isFocused) {
     setState(() {
       isSearchFocused = isFocused;
     });
   }
+
   bool _isloading = true;
   Future<String> getdata() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -43,50 +44,51 @@ class _HomepageState extends State<Homepage> {
       return "No user";
     }
   }
-      Future<Widget> getimage() async {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot userdoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userdoc.exists) {
-        var data = userdoc.data() as Map<String, dynamic>;
-        return Skeletonizer(
-          enabled: _isloading,
-          child: Image.network(
-            data['image'] as String,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                Future.microtask(
-                  () {
-                    if (mounted) {
-                      setState(() {
-                        _isloading = false;
-                      });
-                    }
-                  },
-                );
 
-                return child;
-              } else {
-                return Container(
+  Future<Widget> getimage() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentSnapshot userdoc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userdoc.exists) {
+      var data = userdoc.data() as Map<String, dynamic>;
+      return Skeletonizer(
+        enabled: _isloading,
+        child: Image.network(
+          data['image'] as String,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              Future.microtask(
+                () {
+                  if (mounted) {
+                    setState(() {
+                      _isloading = false;
+                    });
+                  }
+                },
+              );
+
+              return child;
+            } else {
+              return Skeletonizer(
+                enabled: true,
+                child: Container(
                   color: Colors.grey.shade100,
-                );
-              }
-            },
-            fit: BoxFit.fill,
-          ),
-        );
-      } else {
-        return Image.asset(
-          "lib/images/avtar.avif",
-          color: Colors.red,
-        );
-      }
+                ),
+              );
+            }
+          },
+          fit: BoxFit.fill,
+        ),
+      );
+    } else {
+      return Image.asset(
+        "lib/images/profile.jpg",
+      );
     }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     List<imagemovingmodel> imagelist = [
       imagemovingmodel(
         image: 'lib/images/foodimage.jpg',
@@ -202,7 +204,7 @@ class _HomepageState extends State<Homepage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100).r,
                                   child: Image.asset(
-                                    "lib/images/avtar.avif",
+                                    "lib/images/profile.jpg",
                                   ),
                                 ),
                                 decoration: BoxDecoration(
@@ -246,7 +248,7 @@ class _HomepageState extends State<Homepage> {
                             },
                             height: 178.h,
                             autoPlay: true,
-                            autoPlayAnimationDuration: Duration(seconds: 3)),
+                            autoPlayAnimationDuration: Duration(seconds: 1)),
                         items: imagelist.map((i) {
                           return Builder(
                             builder: (BuildContext context) {
@@ -369,8 +371,8 @@ class _HomepageState extends State<Homepage> {
                                         onpressed: () {
                                           Navigator.maybePop(context);
                                         },
-                                                onSearchFocusChange: updateNavigationBarVisibility, // Pass callback
-
+                                        onSearchFocusChange:
+                                            updateNavigationBarVisibility, // Pass callback
                                       ),
                                     ));
                               },

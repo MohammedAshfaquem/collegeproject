@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Login/login.dart';
-import 'package:college_project/Login/loginorsignup.dart';
 import 'package:college_project/Login/signup.dart';
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +23,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   void startVerificationTimer() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
       await _auth.currentUser?.reload();
       if (_auth.currentUser?.emailVerified ?? false) {
         timer.cancel();
@@ -122,9 +121,14 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     MaterialPageRoute(
                       builder: (context) => RegisterPage(
                         showloginpage: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(showRegisterpage: (){
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => loginorsignup(),));
-                          }),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    LoginPage(showRegisterpage: () {
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => loginorsignup(),));
+                                }),
+                              ));
                         },
                       ),
                     ));

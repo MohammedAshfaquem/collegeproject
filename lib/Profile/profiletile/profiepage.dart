@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Profile/Editsprofile/editprofilepage.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
@@ -102,8 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     } else {
       return Image.asset(
-        "lib/images/avtar.avif",
-        color: Colors.red,
+        "lib/images/profile.jpg",
       );
     }
   }
@@ -214,9 +212,13 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    void showEditPopup() {
+    void showEditPopup() async {
       final imagcontroller = Provider.of<ImgController>(context, listen: false);
+      final TextEditingController fullnameController = TextEditingController();
 
+      // Initialize the controller with the current value from your state
+      String username = await getUsername();
+      fullnameController.text = username; //
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -242,49 +244,48 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (snapshot.hasData) {
                           return ClipRRect(
                             borderRadius: BorderRadius.circular(18),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 18, right: 18),
-                              child: Container(
-                                height: 150,
-                                width: 150,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100).w,
-                                  child: CachedNetworkImage(
-                                    errorWidget: (context, url, error) {
-                                      return Center(
-                                          child: Container(
-                                              child: snapshot.hasData
-                                                  ? snapshot.data
-                                                  : Image.asset(
-                                                      "lib/images/avtar.avif")));
-                                    },
-                                    placeholder: (context, url) => Container(
-                                        height: 50.h,
-                                        width: 50.h,
-                                        child: CircularProgressIndicator()),
-                                    imageUrl:
-                                        imagcontroller.imageurl.toString(),
-                                  ),
-                                ),
+                            child: Container(
+                              height: 150.h,
+                              width: 150.w,
+                              child: CachedNetworkImage(
+                                fit: BoxFit.fill,
+                                errorWidget: (context, url, error) {
+                                  return Center(
+                                      child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Container(
+                                        height: 150.h,
+                                        width: 150.w,
+                                        child: snapshot.hasData
+                                            ? snapshot.data
+                                            : Image.asset(
+                                                "lib/images/profile.jpg")),
+                                  ));
+                                },
+                                placeholder: (context, url) => Container(
+                                    height: 150.h,
+                                    width: 150.h,
+                                    child: Center(
+                                        child: CircularProgressIndicator())),
+                                imageUrl: imagcontroller.imageurl.toString(),
                               ),
                             ),
                           );
                         } else {
                           return Container(
-                            height: 150,
-                            width: 150,
+                            height: 150.h,
+                            width: 150.w,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image.asset(
-                                  "lib/images/avtar.avif",
+                                  "lib/images/profile.jpg",
                                 )),
                           );
                         }
                       },
                     ),
                     Positioned(
-                      right: 35,
+                      right: 15,
                       bottom: 0,
                       child: CircleAvatar(
                         radius: 15,
@@ -352,7 +353,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text("Cancel"),
               ),
               ElevatedButton(
@@ -452,7 +455,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           borderRadius:
                                               BorderRadius.circular(100),
                                           child: Image.asset(
-                                            "lib/images/avtar.avif",
+                                            "lib/images/profile.jpg",
                                           )),
                                       //
                                     ],
@@ -534,6 +537,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     CircleAvatar(
                       radius: 15,
+                      backgroundColor: Colors.black,
                       child: IconButton(
                         onPressed: () {
                           //  showimagepicker();\

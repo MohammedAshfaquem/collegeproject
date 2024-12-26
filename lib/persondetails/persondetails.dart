@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Category/categorycontroller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/Notification/sendnotification.dart';
+import 'package:college_project/category/quantitycontroller.dart';
 import 'package:college_project/donatepage/donatepage.dart';
 import 'package:college_project/Mainpage/mainpage.dart';
 import 'package:college_project/firestore.dart';
@@ -13,21 +11,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-class persondetails extends StatefulWidget {
-  persondetails({
-    super.key,
-    required this.foodname,
-    required this.description,
-    required this.category,
-    required this.images,
-    required this.option,
-    required this.quantity,
-  });
+// ignore: must_be_immutable
+class PersonDetails extends StatelessWidget {
   final String foodname;
   final String category;
   final String description;
@@ -35,11 +23,31 @@ class persondetails extends StatefulWidget {
   final String option;
   final String quantity;
 
-  @override
-  State<persondetails> createState() => _persondetailsState();
-}
+  PersonDetails({
+    super.key,
+    required this.foodname,
+    required this.category,
+    required this.description,
+    required this.images,
+    required this.option,
+    required this.quantity,
+  });
+  void showCustomSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
 
-class _persondetailsState extends State<persondetails> {
   @override
   Widget build(BuildContext context) {
     String generateRandomId({int length = 16}) {
@@ -53,9 +61,7 @@ class _persondetailsState extends State<persondetails> {
     final fnamecontroller = TextEditingController();
     final Lnamecontroller = TextEditingController();
     final Contactnocontroller = TextEditingController();
-    final categerycontroller = Provider.of<CategoryController>(
-      context,
-    );
+    final categerycontroller = Provider.of<QuantityController>(context);
     final donationId = generateRandomId();
 
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -79,16 +85,15 @@ class _persondetailsState extends State<persondetails> {
     }
 
     bool _isloading = true;
-
     final FireStoreService fireStoreService = FireStoreService();
     final FireStoreServivce fireStoreServivce = FireStoreServivce();
     final now = DateTime.now();
+    final _courseformkey = GlobalKey<FormState>();
 
-    final _formkey = GlobalKey<FormState>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
-          key: _formkey,
+          key: _courseformkey,
           child: Stack(
             children: [
               Column(
@@ -157,7 +162,7 @@ class _persondetailsState extends State<persondetails> {
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         validator: (name) => name!.isEmpty
-                            ? 'Please enter your  last name'
+                            ? 'Please enter your last name'
                             : null,
                         controller: Lnamecontroller,
                         decoration: InputDecoration(
@@ -190,39 +195,55 @@ class _persondetailsState extends State<persondetails> {
                         ),
                       ),
                       Consumer<Donate>(
-                        builder: (context, value, child) => Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.grey)),
-                            height: 60,
-                            width: 300,
-                            child: DropdownButtonFormField<String>(
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
-                              isExpanded: true,
-                              borderRadius: BorderRadius.circular(25),
-                              dropdownColor: Color(0xff247D7F),
-                              padding: EdgeInsets.all(10),
-                              value: value.selectedvalue,
-                              hint: Text("Select your course"),
-                              validator: (val) {
-                                if (val == null || val.isEmpty) {
-                                  return 'Please select your course'; // Error message if no value is selected
-                                }
-                                return null;
-                              },
-                              items: value.dropdowmitems.map(
-                                (String value) {
-                                  return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value,
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.black)));
+                          builder: (context, value, child) => Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.grey)),
+                              height: 60,
+                              width: 300,
+                              child: DropdownButton<String>(
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                isExpanded: true,
+                                borderRadius: BorderRadius.circular(25),
+                                dropdownColor: Color(0xff247D7F),
+                                padding: EdgeInsets.all(10),
+                                value: value.selectedvalue,
+                                hint: Text("Select your course"),
+                                // validator: (val) {
+                                //   if (val == null || val.isEmpty) {
+                                //     // Show the SnackBar if the value is empty or null
+                                //     ScaffoldMessenger.of(context).showSnackBar(
+                                //       SnackBar(
+                                //         content: Text(
+                                //           'Please select your course', // The error message
+                                //           style: TextStyle(color: Colors.white),
+                                //         ),
+                                //         backgroundColor: Colors
+                                //             .red, // Optional: Set background color
+                                //         duration: Duration(
+                                //             seconds:
+                                //                 2), // Duration of the SnackBar
+                                //       ),
+                                //     );
+                                //   }
+                                //   return null;
+                                // },
+                                items: value.dropdowmitems.map(
+                                  (String value) {
+                                    return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value,
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.black)));
+                                  },
+                                ).toList(),
+                                onChanged: (newValue) {
+                                  value.coursecontroll(
+                                      newValue); // This will update the selectedvalue
                                 },
-                              ).toList(),
-                              onChanged: value.coursecontroll,
-                            )),
-                      ),
+                              ))),
                       TextFormField(
                         maxLength: 10,
                         keyboardType: TextInputType.number,
@@ -275,99 +296,125 @@ class _persondetailsState extends State<persondetails> {
                 child: Consumer<Donate>(
                   builder: (context, value, child) => GestureDetector(
                     onTap: () async {
-                      if (_formkey.currentState!.validate()) {
-                        // value.addtile(
-                        //   ItemModel(
-                        //     image: images,
-                        //     category: category,
-                        //     foodname: foodname,
-                        //     description: description,
-                        //     date: DateTime.now(),
-                        //     lname: Lnamecontroller.text,
-                        //     fname: fnamecontroller.text,
-                        //     course: value.selectedvalue.toString(),
-                        //     cntctbo: Contactnocontroller.text,
-                        //     option: value.currentvalue.toString(),
-                        //   ),
-                        // );
+                      final now = DateTime.now();
+                      final int currentHour = now.hour;
+
+                      // Check if the current time is between 9:00 AM and 4:00 PM
+                      if (currentHour < 9) {
+                        // Show message if donation is attempted before 9:00 AM
                         QuickAlert.show(
                           context: context,
-                          type: QuickAlertType.confirm,
-                          title: 'Thankyou for your Donation',
-                          animType: QuickAlertAnimType.scale,
-                          showCancelBtn: true,
+                          type: QuickAlertType.warning,
+                          title: 'Donation Not Allowed Yet',
+                          text: 'Donations are only allowed after 9:00 AM.',
+                          confirmBtnText: 'OK',
                           onConfirmBtnTap: () {
-                            sendTopicNotificationv2(
-                                value.selectedvalue.toString());
-                            addItemToUser(
-                              ItemModel(
-                                image: widget.images,
-                                category: widget.category,
-                                foodname: widget.foodname,
-                                description: widget.description,
-                                date: DateTime.now(),
-                                lname: Lnamecontroller.text,
-                                fname: fnamecontroller.text,
-                                course: value.selectedvalue.toString(),
-                                cntctbo: Contactnocontroller.text,
-                                option: widget.option,
-                                donationId: donationId,
-                                quantity: widget.quantity,
-                              ),
-                            );
-                            fireStoreService.addNote(
+                            Navigator.pop(context);
+                          },
+                        );
+                      } else if (currentHour >= 16) {
+                        // Show message if donation is attempted after 4:00 PM
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.warning,
+                          title: 'Donation Not Allowed',
+                          text: 'Donations are not possible after 4:00 PM.',
+                          confirmBtnText: 'OK',
+                          onConfirmBtnTap: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      } else {
+                        // Proceed with donation if it's between 9:00 AM and 4:00 PM
+                        if (_courseformkey.currentState!.validate()) {
+                          if (value.selectedvalue == null ||
+                              value.selectedvalue!.isEmpty) {
+                            showCustomSnackBar(
+                                context, "Please select a course.");
+                            return;
+                          }
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.confirm,
+                            title: 'Thank you for your Donation!',
+                            animType: QuickAlertAnimType.scale,
+                            showCancelBtn: true,
+                            onConfirmBtnTap: () {
+                              // Process the donation logic here
+                              sendTopicNotificationv2(
+                                  value.selectedvalue.toString());
+                              addItemToUser(
+                                ItemModel(
+                                  image: images,
+                                  category: category,
+                                  foodname: foodname,
+                                  description: description,
+                                  date: DateTime.now(),
+                                  lname: Lnamecontroller.text,
+                                  fname: fnamecontroller.text,
+                                  course: value.selectedvalue.toString(),
+                                  cntctbo: Contactnocontroller.text,
+                                  option: option,
+                                  donationId: donationId,
+                                  quantity: quantity,
+                                ),
+                              );
+                              fireStoreService.addNote(
                                 fnamecontroller.text,
                                 Lnamecontroller.text,
                                 Contactnocontroller.text,
-                                widget.foodname,
+                                foodname,
                                 value.selectedvalue.toString(),
-                                widget.option,
-                                widget.description,
+                                option,
+                                description,
                                 value.imageurl.toString(),
                                 DateTime.now(),
                                 donationId.toString(),
-                                widget.quantity.toString());
-                            fireStoreServivce.addmydonation(
-                              fnamecontroller.text,
-                              Lnamecontroller.text,
-                              Contactnocontroller.text,
-                              widget.foodname,
-                              widget.option,
-                              value.currentvalue.toString(),
-                              widget.description,
-                              value.imageurl.toString(),
-                              DateTime.now(),
-                              donationId.toString(),
-                              widget.quantity.toString(),
-                            );
+                                quantity.toString(),
+                              );
+                              fireStoreServivce.addmydonation(
+                                fnamecontroller.text,
+                                Lnamecontroller.text,
+                                Contactnocontroller.text,
+                                foodname,
+                                option,
+                                value.currentvalue.toString(),
+                                description,
+                                value.imageurl.toString(),
+                                DateTime.now(),
+                                donationId.toString(),
+                                quantity.toString(),
+                              );
 
-                            value.image = null;
-                            fnamecontroller.clear();
-                            Contactnocontroller.clear();
-                            Lnamecontroller.clear();
-                            value.selectedvalue = null;
-                            value.currentvalue = null;
-                            value.clearImageCache();
-                            categerycontroller.reset();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Donatepage(
-                                  showbackbutton: true,
-                                  onpressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MainPage(),
+                              // Clear input fields and reset values after donation is processed
+                              value.image = null;
+                              fnamecontroller.clear();
+                              Contactnocontroller.clear();
+                              Lnamecontroller.clear();
+                              value.selectedvalue = null;
+                              value.currentvalue = null;
+                              value.clearImageCache();
+                              categerycontroller.reset();
+
+                              // Navigate to the donation page or main page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Donatepage(
+                                    showbackbutton: true,
+                                    onpressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MainPage(),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                        // That's it to display an alert, use other properties to customize.
+                              );
+                            },
+                          );
+                        }
                       }
-                      ;
                     },
                     child: Container(
                       child: Center(
