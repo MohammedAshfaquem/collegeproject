@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.bottomRight,
                       child: Image.asset(
                         "lib/images/bg1.png",
-                        height: 260,
+                        height: 260.h,
                       )),
 
                   // Positioned(

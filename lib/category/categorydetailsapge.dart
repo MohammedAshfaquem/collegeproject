@@ -3,6 +3,7 @@ import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/category/quantitycontroller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -18,6 +19,7 @@ class CategoryDetails extends StatelessWidget {
 
   final String category;
   final VoidCallback function;
+
   final foodnamecontroller = TextEditingController();
   final descriptioncontroller = TextEditingController();
   final pricecontroller = TextEditingController();
@@ -50,6 +52,7 @@ class CategoryDetails extends StatelessWidget {
         imagcontroller.clearImageCache();
         categorycontroller.reset();
         imagcontroller.reset();
+        imagcontroller.selectedvalue = null;
         return true;
       },
       child: Scaffold(
@@ -83,6 +86,12 @@ class CategoryDetails extends StatelessWidget {
                         children: [
                           Text('Title', style: TextStyle(color: Colors.grey)),
                           TextFormField(
+                            maxLength: 15,
+                            keyboardType: TextInputType.text,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(
+                                  r'[a-zA-Z\s]')), // Allows letters and spaces
+                            ],
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
                             validator: (name) =>
@@ -174,6 +183,11 @@ class CategoryDetails extends StatelessWidget {
                               ),
                             ),
                           TextFormField(
+                            keyboardType: TextInputType.text,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(
+                                  r'[a-zA-Z\s]')), // Allows letters and spaces
+                            ],
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary),
                             validator: (description) => description!.isEmpty

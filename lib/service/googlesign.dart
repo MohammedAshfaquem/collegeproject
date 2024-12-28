@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class GoogleSignin {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   getCurreuser() async {
     return await auth.currentUser;
   }
@@ -50,7 +50,7 @@ class GoogleSignin {
         Map<String, dynamic> userInfoMap = {
           "email": userDetails.email,
           "name": userDetails.displayName,
-          "id": userDetails.uid,
+          "uid": userDetails.uid,
           "image": userDetails.photoURL,
         };
 

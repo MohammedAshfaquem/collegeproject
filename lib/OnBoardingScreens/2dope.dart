@@ -19,19 +19,19 @@ class secounddope extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: 400,
-              width: 400,
+              height: 420.h,
+              width: 420.w,
               decoration: BoxDecoration(
                   color: Color.fromARGB(248, 253, 151, 207),
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(
-                        50,
+                        50.r,
                       ),
                       bottomRight: Radius.circular(50))),
             ),
             Positioned(
-              bottom: 280,
-              left: 145,
+              bottom: 290.h,
+              left: 155.w,
               child: Text("Explore",
                   style: GoogleFonts.poppins(
                       color: Theme.of(context).colorScheme.primary,
@@ -39,8 +39,8 @@ class secounddope extends StatelessWidget {
                       fontWeight: FontWeight.w700)),
             ),
             Positioned(
-              bottom: 240,
-              left: 160,
+              bottom: 250.h,
+              left: 170.w,
               child: Text("Together",
                   style: TextStyle(
                       color: Colors.grey,
@@ -48,50 +48,37 @@ class secounddope extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-              bottom: 210,
-              left: 130,
+              bottom: 220.h,
+              left: 140.w,
               child: Text("We All Are create. ",
                   style: TextStyle(color: Colors.grey, fontSize: 18.sp)),
             ),
             Positioned(
-              bottom: 180,
-              left: 120,
+              bottom: 190.h,
+              left: 130.w,
               child: Text("A Hunger Fee world.",
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w500)),
             ),
             SizedBox(
               height: 50.h,
             ),
             Positioned(
-              top: 70,
-              right:50,
+              top: 70.h,
+              right: 50.w,
               child: Image.asset(
                 "lib/images/donbox.png",
                 height: 300.h,
               ),
             ),
-
-            // TextButton(
-            //     onPressed: () {
-            //       dopecontroller.updatepage(3);
-            //     },
-            //     style: ButtonStyle(
-            //         backgroundColor:
-            //             WidgetStatePropertyAll(Colors.grey.shade200)),
-            //     child: Text(
-            //       "Skip",
-            //       style: TextStyle(
-            //           fontSize: 16, fontWeight: FontWeight.w600),
-            //     )),
             SizedBox(
-              width: 130,
+              width: 130.w,
             ),
             Positioned(
-              bottom: 70,
-              right: 30,
+              bottom: 70.h,
+              right: 30.w,
               child: GestureDetector(
                 onTap: () => dopecontroller.updatepage(2),
                 child: Container(
@@ -101,7 +88,7 @@ class secounddope extends StatelessWidget {
                       color: Color(0xff247D7F),
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
-              LineAwesomeIcons.angle_right_solid,
+                    LineAwesomeIcons.angle_right_solid,
                     size: 30.sp,
                     color: Colors.white,
                   ),

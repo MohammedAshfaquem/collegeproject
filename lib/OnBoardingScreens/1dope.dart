@@ -19,8 +19,8 @@ class firstdope extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: 400,
-              width: 400,
+              height: 420.h,
+              width: 420.w,
               decoration: BoxDecoration(
                   color: Color.fromARGB(251, 151, 253, 175),
                   borderRadius: BorderRadius.only(
@@ -30,8 +30,8 @@ class firstdope extends StatelessWidget {
                       bottomRight: Radius.circular(50))),
             ),
             Positioned(
-              bottom: 280,
-              left: 75,
+              bottom: 300.h,
+              left: 75.w,
               child: Text("Making a Donation",
                   style: GoogleFonts.poppins(
                       color: Theme.of(context).colorScheme.primary,
@@ -39,8 +39,8 @@ class firstdope extends StatelessWidget {
                       fontWeight: FontWeight.w700)),
             ),
             Positioned(
-              bottom: 240,
-              left: 130,
+              bottom: 250.h,
+              left: 140.w,
               child: Text("It is the ultimate",
                   style: TextStyle(
                       color: Colors.grey,
@@ -48,14 +48,14 @@ class firstdope extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-              bottom: 210,
-              left:90,
+              bottom: 220.h,
+              left: 90.w,
               child: Text("sign of soldarity .Action Speak",
                   style: TextStyle(color: Colors.grey, fontSize: 18.sp)),
             ),
             Positioned(
-              bottom: 180,
-              left: 120,
+              bottom: 190.h,
+              left: 130.w,
               child: Text("Louder Than Words",
                   style: TextStyle(
                       color: Colors.grey,
@@ -66,32 +66,19 @@ class firstdope extends StatelessWidget {
               height: 50.h,
             ),
             Positioned(
-              top: 20,
-              right: -100,
+              top: 20.h,
+              right: -110.w,
               child: Image.asset(
                 "lib/images/Donatekid.png",
                 height: 350.h,
               ),
             ),
-
-            // TextButton(
-            //     onPressed: () {
-            //       dopecontroller.updatepage(3);
-            //     },
-            //     style: ButtonStyle(
-            //         backgroundColor:
-            //             WidgetStatePropertyAll(Colors.grey.shade200)),
-            //     child: Text(
-            //       "Skip",
-            //       style: TextStyle(
-            //           fontSize: 16, fontWeight: FontWeight.w600),
-            //     )),
             SizedBox(
-              width: 130,
+              width: 130.w,
             ),
             Positioned(
-              bottom: 70,
-              right: 30,
+              bottom: 70.h,
+              right: 30.w,
               child: GestureDetector(
                 onTap: () => dopecontroller.updatepage(1),
                 child: Container(
@@ -101,7 +88,7 @@ class firstdope extends StatelessWidget {
                       color: Color(0xff247D7F),
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
-                   LineAwesomeIcons.angle_right_solid,
+                    LineAwesomeIcons.angle_right_solid,
                     size: 30.sp,
                     color: Colors.white,
                   ),

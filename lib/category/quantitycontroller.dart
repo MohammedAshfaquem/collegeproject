@@ -20,6 +20,7 @@ class QuantityController extends ChangeNotifier {
 
   void reset() {
     _quantity = 1;
+    print("quantity reset");
     notifyListeners();
   }
 

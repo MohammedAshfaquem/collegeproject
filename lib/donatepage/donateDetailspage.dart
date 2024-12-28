@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
 import 'package:college_project/category/quantitycontroller.dart';
+import 'package:college_project/eachChatScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,12 +11,13 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 // ignore: must_be_immutable
 class Detailspage extends StatefulWidget {
   var foodname;
   var description;
-  var user;
+  var firstname;
   var cntctno;
   var course;
   var imageurl;
@@ -24,13 +27,15 @@ class Detailspage extends StatefulWidget {
   var quantity;
   var donationId;
   var userimage;
+  var uid;
+  var username;
   Detailspage({
     super.key,
     required this.lname,
     this.option,
     this.foodname,
     this.description,
-    this.user,
+    this.firstname,
     this.cntctno,
     this.course,
     this.imageurl,
@@ -38,6 +43,8 @@ class Detailspage extends StatefulWidget {
     required this.quantity,
     required this.donationId,
     required this.userimage,
+    required this.uid,
+    required this.username,
   });
 
   @override
@@ -177,7 +184,239 @@ class _DetailspageState extends State<Detailspage> {
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
-                trailing: Container(
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Text(
+                    "${widget.option}",
+                    style:
+                        GoogleFonts.poppins(color: Colors.blue, fontSize: 15),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 10, bottom: 10)
+                  .w,
+              child: Container(
+                height: 85.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: CircleAvatar(
+                        radius: 30,
+                        child: Image.network(
+                          widget.userimage,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'lib/images/profile.jpg', // Replace with your asset path
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: 130,
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            '${widget.firstname} ${widget.lname}',
+                            style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "${widget.cntctno}",
+                          style: GoogleFonts.poppins(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // ZIMKit().connectUser(
+                        //   id: FirebaseAuth.instance.currentUser!.uid,
+                        //   name:
+                        //       FirebaseAuth.instance.currentUser!.displayName ??
+                        //           "",
+                        // );
+
+                        try {
+                          User? user = FirebaseAuth.instance.currentUser;
+                          if (user != null) {
+                            ZIMKit().connectUser(
+                              id: user.uid,
+                              name: user.displayName ?? "Unknown",
+                            );
+                            print("Zego connected successfully!");
+                          } else {
+                            print(
+                                "User is not authenticated, cannot connect to Zego.");
+                          }
+                        } catch (e) {
+                          print("Error connecting to Zego: $e");
+                        }
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EachChatScreen(
+                                conversationId: widget.uid,
+                                conversationName: widget.username,
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xff247D7F),
+                            borderRadius: BorderRadius.circular(100)),
+                        height: 50,
+                        width: 50,
+                        child: Icon(
+                          Icons.chat,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.h,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        FlutterPhoneDirectCaller.callNumber(
+                            "${widget.cntctno}");
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xff247D7F),
+                            borderRadius: BorderRadius.circular(100)),
+                        height: 50,
+                        width: 50,
+                        child: Icon(
+                          Icons.call,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 35.r, top: 5.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "About details",
+                          style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 5),
+                          height: 200.h,
+                          child: Text(
+                            "${widget.description}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.confirm,
+                      title: "Please confirm your order",
+                      animType: QuickAlertAnimType.scale,
+                      showCancelBtn: true,
+                      onConfirmBtnTap: () {
+                        updatefooddetails(
+                            widget.donationId, categorycontroller.quantity);
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 60.h,
+                    width: 230,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: 1,
+                        ),
+                        Icon(
+                          Icons.card_travel,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Buy',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23.sp),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        )
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15).w,
+                        color: Color(0xff247D7F)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
                   width: 105,
                   height: 50,
                   child: Row(
@@ -241,219 +480,6 @@ class _DetailspageState extends State<Detailspage> {
                         ),
                       )
                     ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 10, bottom: 10)
-                  .w,
-              child: Container(
-                height: 85.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: Image.network(
-                          widget.userimage,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'lib/images/avtar.avif', // Replace with your asset path
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: 130,
-                          child: Text(
-                            overflow: TextOverflow.ellipsis,
-                            '${widget.user} ${widget.lname}',
-                            style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "${widget.course}",
-                          style: GoogleFonts.poppins(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 60.w,
-                    ),
-                    Text(
-                      "${widget.option}",
-                      style:
-                          GoogleFonts.poppins(color: Colors.blue, fontSize: 15),
-                    ),
-                    SizedBox(
-                      width: 10.h,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 35.r, top: 5.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "About details",
-                          style: GoogleFonts.poppins(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 5),
-                          height: 200.h,
-                          child: Text(
-                            "${widget.description}",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 10,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  height: 60.h,
-                  width: 230,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // Icon(
-                      //   Icons.call,
-                      //   color: Colors.white,
-                      // ),
-                      Text(
-                        '${widget.cntctno}',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.sp),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      TextButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStatePropertyAll(Colors.white)),
-                          onPressed: () {
-                            FlutterPhoneDirectCaller.callNumber(
-                                "${widget.cntctno}");
-                          },
-                          child: Text(
-                            "call",
-                            style: GoogleFonts.poppins(
-                                color: Color(0xff247D7F),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17.sp),
-                          ))
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10).w,
-                      color: Color(0xff247D7F)),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    QuickAlert.show(
-                      context: context,
-                      type: QuickAlertType.confirm,
-                      title: "Please confirm your order",
-                      animType: QuickAlertAnimType.scale,
-                      showCancelBtn: true,
-                      onConfirmBtnTap: () {
-                        updatefooddetails(
-                            widget.donationId, categorycontroller.quantity);
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 60.h,
-                    width: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          width: 1,
-                        ),
-                        Icon(
-                          Icons.card_travel,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          'Buy',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23.sp),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15).w,
-                        color: Color(0xff247D7F)),
                   ),
                 ),
               ],

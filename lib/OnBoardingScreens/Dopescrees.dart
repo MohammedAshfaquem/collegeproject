@@ -6,14 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class Dopescreens extends StatefulWidget {
+class Dopescreens extends StatelessWidget {
   const Dopescreens({super.key});
 
-  @override
-  State<Dopescreens> createState() => _DopescreensState();
-}
-
-class _DopescreensState extends State<Dopescreens> {
   @override
   Widget build(BuildContext context) {
     final dopecontroller = Provider.of<DopeController>(context, listen: false);

@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
 class FireStoreServivce {
   var now = DateTime.now();
   final CollectionReference mydonation =
       FirebaseFirestore.instance.collection('mydonations');
+              User? user = FirebaseAuth.instance.currentUser;
+
   Future<void> addmydonation(
       String fname,
       String lname,
@@ -34,6 +37,7 @@ class FireStoreServivce {
       'time': DateFormat.jm().format(now),
       "donationid":donationId,
       "quantity":quantity,
+      'uid':user!.uid,
       
     });
   }

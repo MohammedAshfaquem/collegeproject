@@ -41,18 +41,6 @@ final bool cheight;
               style: GoogleFonts.poppins(color: Theme.of(context).colorScheme.surface, fontSize: 12),
             ),
           ),
-
-          /*Positioned(
-            bottom: 18,
-            left: 30,
-            child: Container(
-              child: Center(child: Text("Next",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
-              decoration: BoxDecoration(
-                  color: Color(0xff247D7F), borderRadius: BorderRadius.circular(50)),
-              height: 60,
-              width: 350,
-            ),
-          )*/
           Positioned(
               top: 180.h,
               left: 10.w,

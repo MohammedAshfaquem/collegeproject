@@ -176,7 +176,8 @@ class _DonatepageState extends State<Donatepage> {
                                 String quantity = data['quantity'] ?? '';
                                 String donationid = data['donationid'] ?? '';
                                 String userimage = data['userimage'] ?? '';
-
+                                String uid = data['uid'] ?? '';
+                                String username = data['username'] ?? '';
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 15),
                                   child: GestureDetector(
@@ -185,19 +186,20 @@ class _DonatepageState extends State<Donatepage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Detailspage(
-                                              userimage: userimage,
-                                              cntctno: number,
-                                              course: course,
-                                              lname: lname,
-                                              foodname: foodname,
-                                              user: fname,
-                                              option: option,
-                                              description: description,
-                                              imageurl: imageurl,
-                                              time: dateTime,
-                                              quantity: quantity,
-                                              donationId: donationid,
-                                            ),
+                                                userimage: userimage,
+                                                cntctno: number,
+                                                course: course,
+                                                lname: lname,
+                                                foodname: foodname,
+                                                firstname: fname,
+                                                option: option,
+                                                description: description,
+                                                imageurl: imageurl,
+                                                time: dateTime,
+                                                quantity: quantity,
+                                                donationId: donationid,
+                                                uid: uid,
+                                                username:username),
                                           ));
                                     },
                                     child: Container(
@@ -254,13 +256,7 @@ class _DonatepageState extends State<Donatepage> {
                                                             FontWeight.w500,
                                                         color: Colors.black,
                                                         fontSize: 19.sp)),
-                                                // Text(
-                                                //   course,
-                                                //   style: TextStyle(
-                                                //       fontWeight:
-                                                //           FontWeight.w500,
-                                                //       color: Colors.black),
-                                                // ),
+                                             
                                                 Text(
                                                   dateTime.toString(),
                                                   style: TextStyle(

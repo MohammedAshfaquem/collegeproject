@@ -9,6 +9,7 @@ import 'package:college_project/editcontroller.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:college_project/theme/themeprovider.dart';
+import 'package:college_project/zegocloud.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 final navigatorkey = GlobalKey<NavigatorState>();
 bool isshow = true;
@@ -33,8 +35,12 @@ void main() async {
   Notificationhandler.requestnotification();
   FirebaseMessaging.instance.subscribeToTopic('Ashfaque');
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+   ZIMKit().init(
+      appID: ZegoCloudConstants.zegocloudAppId,
+      appSign: ZegoCloudConstants.zegocloudAppSign
+    );
   runApp(
+   
     MultiProvider(
       providers: [
         ChangeNotifierProvider(

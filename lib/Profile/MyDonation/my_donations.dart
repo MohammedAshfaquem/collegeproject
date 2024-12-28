@@ -71,21 +71,6 @@ class MyDonations extends StatelessWidget {
                             const EdgeInsets.only(left: 25, right: 25, top: 15),
                         child: GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => Detailspage(
-                            //         cntctno: number,
-                            //         course: course,
-                            //         lname: lname,
-                            //         foodname: foodname,
-                            //         user: fname,
-                            //         option: option,
-                            //         itemdes: itemdes,
-                            //         imageurl: imageurl,
-                            //         time: dateTime,
-                            //       ),
-                            //     ));
                           },
                           child: Container(
                             decoration: BoxDecoration(

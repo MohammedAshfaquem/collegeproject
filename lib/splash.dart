@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
+class Splah extends StatefulWidget {
+  const Splah({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<Splah> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash>
+class _SplashState extends State<Splah>
 with SingleTickerProviderStateMixin {
 
   @override

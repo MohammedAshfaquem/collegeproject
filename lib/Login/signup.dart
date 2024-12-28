@@ -118,6 +118,7 @@ class _RegisterpageState extends State<RegisterPage> {
           'emailVerified': false,
           'createdAt': FieldValue.serverTimestamp(), // Store creation time
           'password': regconfirmpasscontroller.text,
+          'uid': uid,
         });
 
         Navigator.pushReplacement(

@@ -4,6 +4,7 @@ import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
 import 'package:college_project/Profile/Supports/supportpage.dart';
 import 'package:college_project/auth/auth_gate.dart';
+import 'package:college_project/chatsScreen.dart';
 import 'package:college_project/imagecontroller.dart';
 import 'package:college_project/theme/themeprovider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -554,7 +555,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(height: 50),
             SizedBox(height: widget.height ? 65 : 35),
             // ProfilePageModel(
             //   onTap: () {
@@ -571,6 +571,21 @@ class _ProfilePageState extends State<ProfilePage> {
             //   colors: Theme.of(context).colorScheme.surface,
             //   icon: Icons.person,
             // ),
+
+            ProfilePageModel(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatsScreen()),
+                );
+              },
+              text: "chat page",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.chat,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
             ProfilePageModel(
               onTap: () {
                 Navigator.push(

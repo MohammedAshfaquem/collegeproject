@@ -9,6 +9,7 @@ import 'package:college_project/firestore.dart';
 import 'package:college_project/firestoremydonations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -123,6 +124,13 @@ class PersonDetails extends StatelessWidget {
                         style: TextStyle(color: Colors.grey),
                       ),
                       TextFormField(
+                        maxLength: 10,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z]')), // Only allows letters
+                        ],
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         validator: (name) => name!.isEmpty
@@ -159,6 +167,13 @@ class PersonDetails extends StatelessWidget {
                         ),
                       ),
                       TextFormField(
+                        maxLength: 10,
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Zs]')), // Only allows letters
+                        ],
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         validator: (name) => name!.isEmpty
@@ -211,25 +226,6 @@ class PersonDetails extends StatelessWidget {
                                 padding: EdgeInsets.all(10),
                                 value: value.selectedvalue,
                                 hint: Text("Select your course"),
-                                // validator: (val) {
-                                //   if (val == null || val.isEmpty) {
-                                //     // Show the SnackBar if the value is empty or null
-                                //     ScaffoldMessenger.of(context).showSnackBar(
-                                //       SnackBar(
-                                //         content: Text(
-                                //           'Please select your course', // The error message
-                                //           style: TextStyle(color: Colors.white),
-                                //         ),
-                                //         backgroundColor: Colors
-                                //             .red, // Optional: Set background color
-                                //         duration: Duration(
-                                //             seconds:
-                                //                 2), // Duration of the SnackBar
-                                //       ),
-                                //     );
-                                //   }
-                                //   return null;
-                                // },
                                 items: value.dropdowmitems.map(
                                   (String value) {
                                     return DropdownMenuItem<String>(
@@ -245,8 +241,13 @@ class PersonDetails extends StatelessWidget {
                                 },
                               ))),
                       TextFormField(
+                        keyboardType: TextInputType
+                            .number, // Brings up the numeric keyboard
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Ensures only digits are allowed
+                        ],
                         maxLength: 10,
-                        keyboardType: TextInputType.number,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         validator: (name) => name!.isEmpty || name.length < 10
@@ -312,7 +313,7 @@ class PersonDetails extends StatelessWidget {
                             Navigator.pop(context);
                           },
                         );
-                      } else if (currentHour >= 16) {
+                      } else if (currentHour >= 24) {
                         // Show message if donation is attempted after 4:00 PM
                         QuickAlert.show(
                           context: context,
@@ -342,7 +343,8 @@ class PersonDetails extends StatelessWidget {
                             onConfirmBtnTap: () {
                               // Process the donation logic here
                               sendTopicNotificationv2(
-                                  value.selectedvalue.toString());
+                                value.selectedvalue.toString(),
+                              );
                               addItemToUser(
                                 ItemModel(
                                   image: images,
@@ -395,6 +397,7 @@ class PersonDetails extends StatelessWidget {
                               value.currentvalue = null;
                               value.clearImageCache();
                               categerycontroller.reset();
+                              
 
                               // Navigate to the donation page or main page
                               Navigator.push(

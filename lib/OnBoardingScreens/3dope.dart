@@ -1,4 +1,3 @@
-
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,19 +18,19 @@ class thirddope extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: 400,
-              width: 400,
+              height: 420.h,
+              width: 420.w,
               decoration: BoxDecoration(
                   color: Color.fromARGB(248, 187, 151, 253),
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(
-                        50,
+                        50.r,
                       ),
                       bottomRight: Radius.circular(50))),
             ),
             Positioned(
-              bottom: 280,
-              left: 125,
+              bottom: 290.h,
+              left: 135.w,
               child: Text("Welcome!",
                   style: GoogleFonts.poppins(
                       color: Theme.of(context).colorScheme.primary,
@@ -39,8 +38,8 @@ class thirddope extends StatelessWidget {
                       fontWeight: FontWeight.w700)),
             ),
             Positioned(
-              bottom: 240,
-              left: 170,
+              bottom: 250.h,
+              left: 180.w,
               child: Text("Alone",
                   style: TextStyle(
                       color: Colors.grey,
@@ -48,60 +47,46 @@ class thirddope extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-              bottom: 210,
-              left: 120,
+              bottom: 220.h,
+              left: 130.w,
               child: Text("We can do so little",
                   style: TextStyle(color: Colors.grey, fontSize: 18.sp)),
             ),
             Positioned(
-              bottom: 180,
-              left: 170,
+              bottom: 190.h,
+              left: 170.w,
               child: Text("Together",
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-              bottom: 150,
-              left: 120,
+              bottom: 160.h,
+              left: 130.w,
               child: Text("We can do so much",
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w500)),
             ),
-
             SizedBox(
               height: 50.h,
             ),
             Positioned(
-              top: 70,
-              right: 50,
+              top: 70.h,
+              right: 50.w,
               child: Image.asset(
                 "lib/images/findfoodlap.png",
                 height: 300.h,
               ),
             ),
-
-            // TextButton(
-            //     onPressed: () {
-            //       dopecontroller.updatepage(3);
-            //     },
-            //     style: ButtonStyle(
-            //         backgroundColor:
-            //             WidgetStatePropertyAll(Colors.grey.shade200)),
-            //     child: Text(
-            //       "Skip",
-            //       style: TextStyle(
-            //           fontSize: 16, fontWeight: FontWeight.w600),
-            //     )),
             SizedBox(
-              width: 130,
+              width: 130.w,
             ),
             Positioned(
-              bottom: 70,
-              right: 30,
+              bottom: 70.h,
+              right: 30.w,
               child: GestureDetector(
                 onTap: () async {
                   final pref = await SharedPreferences.getInstance();

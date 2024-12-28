@@ -1,5 +1,6 @@
 import 'package:college_project/Category/categorydetailsapge.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/category/quantitycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,12 +20,16 @@ class categorymodels extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imagcontroller = Provider.of<Donate>(context, listen: false);
+    final quantitycontroller =
+        Provider.of<QuantityController>(context, listen: false);
     return GestureDetector(
       onTap: () {
+        quantitycontroller.reset();
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CategoryDetails (
-              image:image ,
+            builder: (context) => CategoryDetails(
+                  image: image,
                   category: category,
+                
                   function: () => imagcontroller.clearImageCache(),
                 )));
       },
@@ -41,13 +46,17 @@ class categorymodels extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 35.h,),
+                SizedBox(
+                  height: 35.h,
+                ),
                 Text(categoryno,
                     style: GoogleFonts.poppins(
                         color: Color(0xff247D7F),
                         fontSize: 17.sp,
                         fontWeight: FontWeight.w500)),
-                        SizedBox(height: 20.h,),
+                SizedBox(
+                  height: 20.h,
+                ),
                 Text(
                   category,
                   style: GoogleFonts.poppins(
@@ -56,7 +65,7 @@ class categorymodels extends StatelessWidget {
                       fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
-                  height:0.h,
+                  height: 0.h,
                 ),
               ],
             ),

@@ -18,7 +18,7 @@ class ProfilePageModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
       child: ListTile(
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -36,10 +36,9 @@ class ProfilePageModel extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        title: Text(
-          text,
-          style:GoogleFonts.poppins( color: colors, fontWeight: FontWeight.w500, fontSize: 17)
-        ),
+        title: Text(text,
+            style: GoogleFonts.poppins(
+                color: colors, fontWeight: FontWeight.w500, fontSize: 17)),
         trailing: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
