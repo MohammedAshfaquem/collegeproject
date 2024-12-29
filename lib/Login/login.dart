@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) => AlertDialog(
           title: Text(
             e.toString(),
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
       );
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: Container(
-          height: 800.h,
+          height: 830.h,
           width: 420.w,
           color: Colors.white,
           child: Column(

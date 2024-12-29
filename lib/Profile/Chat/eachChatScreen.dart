@@ -86,8 +86,7 @@ class _EachChatScreenState extends State<EachChatScreen> {
           return Padding(
               padding: EdgeInsets.only(
                 top: 6,
-                right: 10,
-                left: 15,
+                left: 10,
               ),
               child: defaultWidget);
         },

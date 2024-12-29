@@ -1,6 +1,6 @@
-import 'package:college_project/Category/categorydetailsapge.dart';
-import 'package:college_project/Donatepage/donate_controller.dart';
-import 'package:college_project/category/quantitycontroller.dart';
+import 'package:college_project/Category/food_details.dart';
+import 'package:college_project/Donate/donate_controller.dart';
+import 'package:college_project/Category/quantity_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

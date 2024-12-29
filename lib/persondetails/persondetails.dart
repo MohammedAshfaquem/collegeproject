@@ -1,12 +1,13 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Donate/donate_controller.dart';
 import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/Main%20Page/mainpage.dart';
 import 'package:college_project/Notification/sendnotification.dart';
-import 'package:college_project/category/quantitycontroller.dart';
-import 'package:college_project/donatepage/donatepage.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
-import 'package:college_project/firestore.dart';
-import 'package:college_project/firestoremydonations.dart';
+import 'package:college_project/Category/quantity_controller.dart';
+import 'package:college_project/Donate/available_foods.dart';
+import 'package:college_project/Donate/firestore.dart';
+import 'package:college_project/Profile/MyDonation/firestoremydonations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -106,7 +107,7 @@ class PersonDetails extends StatelessWidget {
                   Container(
                     height: 600.h,
                     width: 550.w,
-                    color: Colors.grey.shade200,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ],
               ),
@@ -131,8 +132,7 @@ class PersonDetails extends StatelessWidget {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'[a-zA-Z]')), // Only allows letters
                         ],
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
+                        style: TextStyle(color: Colors.black),
                         validator: (name) => name!.isEmpty
                             ? 'Please enter your first name'
                             : null,
@@ -143,9 +143,8 @@ class PersonDetails extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary), // When the field is focused
+                                color:
+                                    Colors.black), // When the field is focused
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(23),
@@ -174,8 +173,7 @@ class PersonDetails extends StatelessWidget {
                           FilteringTextInputFormatter.allow(
                               RegExp(r'[a-zA-Zs]')), // Only allows letters
                         ],
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
+                        style: TextStyle(color: Colors.black),
                         validator: (name) => name!.isEmpty
                             ? 'Please enter your last name'
                             : null,
@@ -186,9 +184,8 @@ class PersonDetails extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary), // When the field is focused
+                                color:
+                                    Colors.black), // When the field is focused
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(23),
@@ -217,9 +214,7 @@ class PersonDetails extends StatelessWidget {
                               height: 60,
                               width: 300,
                               child: DropdownButton<String>(
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
+                                style: TextStyle(color: Colors.black),
                                 isExpanded: true,
                                 borderRadius: BorderRadius.circular(25),
                                 dropdownColor: Color(0xff247D7F),
@@ -248,8 +243,7 @@ class PersonDetails extends StatelessWidget {
                               .digitsOnly, // Ensures only digits are allowed
                         ],
                         maxLength: 10,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
+                        style: TextStyle(color: Colors.black),
                         validator: (name) => name!.isEmpty || name.length < 10
                             ? 'Please enter your Phone no'
                             : null,
@@ -260,9 +254,8 @@ class PersonDetails extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(23),
                             borderSide: BorderSide(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary), // When the field is focused
+                                color:
+                                    Colors.black), // When the field is focused
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -288,7 +281,7 @@ class PersonDetails extends StatelessWidget {
                   width: 350.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25).w,
-                      color: Theme.of(context).colorScheme.surface),
+                      color: Colors.white),
                 ),
               ),
               Positioned(
@@ -313,7 +306,7 @@ class PersonDetails extends StatelessWidget {
                             Navigator.pop(context);
                           },
                         );
-                      } else if (currentHour >= 24) {
+                      } else if (currentHour >= 16) {
                         // Show message if donation is attempted after 4:00 PM
                         QuickAlert.show(
                           context: context,
@@ -397,7 +390,6 @@ class PersonDetails extends StatelessWidget {
                               value.currentvalue = null;
                               value.clearImageCache();
                               categerycontroller.reset();
-                              
 
                               // Navigate to the donation page or main page
                               Navigator.push(

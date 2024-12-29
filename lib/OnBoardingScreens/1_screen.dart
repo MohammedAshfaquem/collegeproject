@@ -1,16 +1,18 @@
-import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
+import 'package:college_project/OnBoardingScreens/onboarding_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class firstdope extends StatelessWidget {
-  const firstdope({super.key});
+class FirstScreen
+ extends StatelessWidget {
+  const FirstScreen
+  ({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dopecontroller = Provider.of<DopeController>(context, listen: false);
+    final dopecontroller = Provider.of<OnBoardingController>(context, listen: false);
     return Scaffold(
       body: Container(
         height: 825.h,

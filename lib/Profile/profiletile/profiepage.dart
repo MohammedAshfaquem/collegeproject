@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Edit%20Image/image_controller.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
 import 'package:college_project/Profile/PasswordReset/passreset.dart';
-import 'package:college_project/Profile/Supports/supportpage.dart';
+import 'package:college_project/Profile/Support/supportpage.dart';
+import 'package:college_project/Profile/theme/themeprovider.dart';
 import 'package:college_project/auth/auth_gate.dart';
-import 'package:college_project/chatsScreen.dart';
-import 'package:college_project/imagecontroller.dart';
-import 'package:college_project/theme/themeprovider.dart';
+import 'package:college_project/Profile/Chat/chatsScreen.dart';
+import 'package:college_project/getdata.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:college_project/Profile/profiletile/profiletile.dart';
+import 'package:college_project/Profile/ProfileTile/profiletile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -35,33 +36,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool _isloading = true;
   late TextEditingController fullnameController;
-  Future<String> getUsername() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    DocumentSnapshot userdoc =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    if (userdoc.exists) {
-      var data = userdoc.data() as Map<String, dynamic>;
-      return data['name'] as String;
-    } else {
-      return "No user";
-    }
-  }
-
-  Future<String> getemail() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    DocumentSnapshot userdoc =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    if (userdoc.exists) {
-      var data = userdoc.data() as Map<String, dynamic>;
-      return data['email'] as String;
-    } else {
-      return "No user";
-    }
-  }
+  final getdata = GetData();
 
   Future<void> _setUsername() async {
     try {
-      String username = await getUsername();
+      String username = await getdata.getUsername();
       fullnameController.text = username; // Set the text of the controller
     } catch (e) {
       print("Error: $e");
@@ -122,252 +101,176 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final imagcontroller = Provider.of<ImgController>(context);
-    void showimagepicker() {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Card(
-            semanticContainer: true,
-            margin: EdgeInsets.all(25),
-            child: Container(
-              height: 160,
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      imagcontroller.imagepickgallery();
-                      Navigator.of(context).pop();
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 70.h,
-                          width: 350.w,
-                          decoration: BoxDecoration(
-                              color: Color(0xff247D7F),
-                              borderRadius: BorderRadius.circular(22)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image.asset(
-                                'lib/images/gallery.png',
-                                height: 50.h,
-                              ),
-                              Text(
-                                "Choose image",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17.sp,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                width: 70,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      imagcontroller.imagepickcamera();
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      height: 70.h,
-                      width: 350.w,
-                      decoration: BoxDecoration(
-                          color: Color(0xff247D7F),
-                          borderRadius: BorderRadius.circular(22)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset(
-                            'lib/images/camerapick.png',
-                            height: 50.h,
-                          ),
-                          Text(
-                            "Take photo",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            width: 90,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
     void showEditPopup() async {
-      final imagcontroller = Provider.of<ImgController>(context, listen: false);
       final TextEditingController fullnameController = TextEditingController();
 
       // Initialize the controller with the current value from your state
-      String username = await getUsername();
+      String username = await getdata.getUsername();
       fullnameController.text = username; //
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(10),
             ),
             title: Text(
               "Edit Profile",
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                  color: Theme.of(context).colorScheme.primary),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  children: [
-                    FutureBuilder(
-                      future: getimage(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(18),
-                            child: Container(
+            content: Consumer<ImageController>(
+              builder: (context, value, child) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    children: [
+                      FutureBuilder(
+                        future: getimage(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Container(
+                                height: 150.h,
+                                width: 150.w,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) {
+                                    return Center(
+                                        child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                          height: 150.h,
+                                          width: 150.w,
+                                          child: snapshot.hasData
+                                              ? snapshot.data
+                                              : Image.asset(
+                                                  "lib/images/profile.jpg")),
+                                    ));
+                                  },
+                                  placeholder: (context, url) => Container(
+                                      height: 150.h,
+                                      width: 150.h,
+                                      child: Center(
+                                          child: CircularProgressIndicator())),
+                                  imageUrl: value.imageurl.toString(),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container(
                               height: 150.h,
                               width: 150.w,
-                              child: CachedNetworkImage(
-                                fit: BoxFit.fill,
-                                errorWidget: (context, url, error) {
-                                  return Center(
-                                      child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Container(
-                                        height: 150.h,
-                                        width: 150.w,
-                                        child: snapshot.hasData
-                                            ? snapshot.data
-                                            : Image.asset(
-                                                "lib/images/profile.jpg")),
-                                  ));
-                                },
-                                placeholder: (context, url) => Container(
-                                    height: 150.h,
-                                    width: 150.h,
-                                    child: Center(
-                                        child: CircularProgressIndicator())),
-                                imageUrl: imagcontroller.imageurl.toString(),
-                              ),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.asset(
+                                    "lib/images/profile.jpg",
+                                  )),
+                            );
+                          }
+                        },
+                      ),
+                      Positioned(
+                        right: 15.r,
+                        bottom: 0,
+                        child: CircleAvatar(
+                          radius: 15.r,
+                          child: IconButton(
+                            onPressed: () {
+                              value.showimagepicker(context);
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Theme.of(context).colorScheme.surface,
+                              size: 15,
                             ),
-                          );
-                        } else {
-                          return Container(
-                            height: 150.h,
-                            width: 150.w,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.asset(
-                                  "lib/images/profile.jpg",
-                                )),
-                          );
-                        }
-                      },
-                    ),
-                    Positioned(
-                      right: 15,
-                      bottom: 0,
-                      child: CircleAvatar(
-                        radius: 15,
-                        child: IconButton(
-                          onPressed: () {
-                            showimagepicker();
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: 15,
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                TextField(
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
-                  obscureText: false,
-                  controller: fullnameController,
-                  decoration: InputDecoration(
-                    labelText: "Full Name",
-                    labelStyle: TextStyle(color: Colors.black),
-                    disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: const Color.fromARGB(255, 255, 14, 14))),
-                    focusColor: Theme.of(context).colorScheme.primary,
-                    prefixIcon: Icon(
-                      Icons.person_2_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    hintStyle:
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  TextField(
+                    style:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15).w,
-                      borderSide: BorderSide(
+                    obscureText: false,
+                    controller: fullnameController,
+                    decoration: InputDecoration(
+                      labelText: "Full Name",
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 255, 14, 14))),
+                      focusColor: Theme.of(context).colorScheme.primary,
+                      prefixIcon: Icon(
+                        Icons.person_2_outlined,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary), // When the field is focused
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: const Color.fromARGB(
-                              255, 255, 0, 0)), // When the field is not focused
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                          color: Colors.grey), // When the field is not focused
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15).w,
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary), // When the field is focused
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 255, 0,
+                                0)), // When the field is not focused
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                            color:
+                                Colors.grey), // When the field is not focused
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-              ],
+                ],
+              ),
             ),
             actions: [
               TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xff247D7F),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Cancel"),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  imagcontroller.updateImage();
-                  imagcontroller
-                      .updateusername(fullnameController.text.toString());
+              Consumer<ImageController>(
+                builder: (context, value, child) => TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xff247D7F),
+                  ),
+                  onPressed: () async {
+                    value.updateImage();
+                    value.updateusername(fullnameController.text.toString());
 
-                  Navigator.pop(context);
-                },
-                child: Text("Update"),
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
             ],
           );
@@ -478,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FutureBuilder(
-                              future: getUsername(),
+                              future: getdata.getUsername(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return Text(
@@ -504,7 +407,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
                               }),
                           FutureBuilder(
-                              future: getemail(),
+                              future: getdata.getemail(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return Container(
@@ -556,23 +459,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: widget.height ? 65 : 35),
-            // ProfilePageModel(
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => EditProfilePage(
-            //           username: getUsername(),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            //   text: "Edit Profile",
-            //   colors: Theme.of(context).colorScheme.surface,
-            //   icon: Icons.person,
-            // ),
-
-            ProfilePageModel(
+            ProfilePageTile(
               onTap: () {
                 Navigator.push(
                   context,
@@ -586,7 +473,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 10.h,
             ),
-            ProfilePageModel(
+            ProfilePageTile(
               onTap: () {
                 Navigator.push(
                   context,
@@ -602,7 +489,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 10.h,
             ),
-            ProfilePageModel(
+            ProfilePageTile(
               onTap: () {
                 Navigator.push(
                   context,
@@ -618,7 +505,6 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 10.h,
             ),
-
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
               child: ListTile(
@@ -657,8 +543,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 10.h,
             ),
-
-            ProfilePageModel(
+            ProfilePageTile(
               onTap: () {
                 Navigator.push(
                   context,
@@ -674,8 +559,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 10.h,
             ),
-
-            ProfilePageModel(
+            ProfilePageTile(
               onTap: () {
                 QuickAlert.show(
                   context: context,

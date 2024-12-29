@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DopeController extends ChangeNotifier {
+class OnBoardingController extends ChangeNotifier {
   int _selectedindex = 0;
   int get selectedindex => _selectedindex;
   PageController controller = PageController();

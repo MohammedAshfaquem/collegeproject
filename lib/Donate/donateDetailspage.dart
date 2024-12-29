@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Donatepage/donate_controller.dart';
-import 'package:college_project/category/quantitycontroller.dart';
-import 'package:college_project/eachChatScreen.dart';
+import 'package:college_project/Category/quantity_controller.dart';
+import 'package:college_project/Donate/donate_controller.dart';
+import 'package:college_project/Profile/Chat/eachChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -242,7 +242,7 @@ class _DetailspageState extends State<Detailspage> {
                             style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary),
+                                color: Colors.black),
                           ),
                         ),
                         SizedBox(
@@ -250,8 +250,7 @@ class _DetailspageState extends State<Detailspage> {
                         ),
                         Text(
                           "${widget.cntctno}",
-                          style: GoogleFonts.poppins(
-                              color: Theme.of(context).colorScheme.primary),
+                          style: GoogleFonts.poppins(color: Colors.black),
                         ),
                       ],
                     ),
@@ -351,7 +350,8 @@ class _DetailspageState extends State<Detailspage> {
                             "${widget.description}",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 10,
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary),
                           ),
                         ),
                       ],
@@ -380,6 +380,15 @@ class _DetailspageState extends State<Detailspage> {
                         updatefooddetails(
                             widget.donationId, categorycontroller.quantity);
                         Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green,
+                            content: Text('Order confirmed!'),
+                            duration: Duration(
+                                seconds:
+                                    2), // Duration the snackbar will be visible
+                          ),
+                        );
                       },
                     );
                   },

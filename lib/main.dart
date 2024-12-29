@@ -1,15 +1,14 @@
-import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Donatepage/donate_controller.dart';
+import 'package:college_project/Carousal%20Slider/imagecontroller.dart';
+import 'package:college_project/Donate/donate_controller.dart';
 import 'package:college_project/Notification/notificationHandler.dart';
-import 'package:college_project/OnBoardingScreens/Dopescrees.dart';
-import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
-import 'package:college_project/category/quantitycontroller.dart';
-import 'package:college_project/donatepage/donatepage.dart';
-import 'package:college_project/editcontroller.dart';
-import 'package:college_project/imagecontroller.dart';
-import 'package:college_project/auth/auth_gate.dart';
-import 'package:college_project/theme/themeprovider.dart';
-import 'package:college_project/zegocloud.dart';
+import 'package:college_project/OnBoardingScreens/onboarding_screens.dart';
+import 'package:college_project/OnBoardingScreens/onboarding_controller.dart';
+import 'package:college_project/Profile/theme/themeprovider.dart';
+import 'package:college_project/Category/quantity_controller.dart';
+import 'package:college_project/Donate/available_foods.dart';
+import 'package:college_project/Edit%20Image/image_controller.dart';
+import 'package:college_project/Auth/auth_gate.dart';
+import 'package:college_project/Profile/Chat/zegocloud.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +34,10 @@ void main() async {
   Notificationhandler.requestnotification();
   FirebaseMessaging.instance.subscribeToTopic('Ashfaque');
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-   ZIMKit().init(
+  ZIMKit().init(
       appID: ZegoCloudConstants.zegocloudAppId,
-      appSign: ZegoCloudConstants.zegocloudAppSign
-    );
+      appSign: ZegoCloudConstants.zegocloudAppSign);
   runApp(
-   
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -53,13 +50,10 @@ void main() async {
           create: (context) => SlideImageController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => DopeController(),
+          create: (context) => OnBoardingController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => EditController(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ImgController(),
+          create: (context) => ImageController(),
         ),
         ChangeNotifierProvider(
           create: (context) => QuantityController(),

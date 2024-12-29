@@ -1,12 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_project/Home%20Page/donate_card.dart';
 import 'package:college_project/category/category_page.dart';
-import 'package:college_project/donatepage/donatepage.dart';
-import 'package:college_project/About%20us/feedbackmodel.dart';
-import 'package:college_project/Carousalslider2/imagecontroller.dart';
-import 'package:college_project/Carousalslider2/imagemovingmodel.dart';
-import 'package:college_project/Profile/profiletile/profiepage.dart';
+import 'package:college_project/Donate/available_foods.dart';
+import 'package:college_project/Home%20Page/feedbackmodel.dart';
+import 'package:college_project/Carousal%20Slider/imagecontroller.dart';
+import 'package:college_project/Carousal%20Slider/imagemovingmodel.dart';
+import 'package:college_project/Profile/ProfileTile/profiepage.dart';
+import 'package:college_project/getdata.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,17 +77,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   bool _isloading = true;
-  Future<String> getdata() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    DocumentSnapshot userdoc =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    if (userdoc.exists) {
-      var data = userdoc.data() as Map<String, dynamic>;
-      return data['name'] as String;
-    } else {
-      return "No user";
-    }
-  }
+
 
   Future<Widget> getimage() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -131,6 +123,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final getdata = GetData();
     List<imagemovingmodel> imagelist = [
       imagemovingmodel(
         image: 'lib/images/foodimage.jpg',
@@ -176,7 +169,7 @@ class _HomepageState extends State<Homepage> {
                                       fontWeight: FontWeight.w600,
                                     )),
                                 FutureBuilder(
-                                    future: getdata(),
+                                    future: getdata.getUsername(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return Container(
@@ -283,7 +276,7 @@ class _HomepageState extends State<Homepage> {
                                     fontWeight: FontWeight.w600,
                                   )),
                               FutureBuilder(
-                                  future: getdata(),
+                                  future: getdata.getUsername(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       return Container(
@@ -508,45 +501,26 @@ class _HomepageState extends State<Homepage> {
                               ),
                               Row(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
+                                  DonateCard(
+                                      onTap: () {
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 CategoryDonate(
                                               cheight: true,
                                             ),
-                                          ));
-                                    },
-                                    child: Container(
-                                      height: 200.h,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xff247D7F),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      width: 180.w,
-                                      child: Column(
-                                        children: [
-                                          Image.asset(
-                                            'lib/images/foodelivary.png',
-                                            height: 150.h,
                                           ),
-                                          Text("Donate Food",
-                                              style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                  fontSize: 17.sp,
-                                                  fontWeight: FontWeight.w500)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                        );
+                                      },
+                                      text: "Donate",
+                                      imageurl: 'lib/images/foodelivary.png'),
                                   SizedBox(
                                     width: 10.w,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
+                                  DonateCard(
+                                      onTap: () {
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Donatepage(
@@ -557,32 +531,11 @@ class _HomepageState extends State<Homepage> {
                                               onSearchFocusChange:
                                                   updateNavigationBarVisibility, // Pass callback
                                             ),
-                                          ));
-                                    },
-                                    child: Container(
-                                      height: 200.h,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xff247D7F),
-                                          borderRadius:
-                                              BorderRadius.circular(20).w),
-                                      width: 180.w,
-                                      child: Column(
-                                        children: [
-                                          Image.asset(
-                                            'lib/images/search.png',
-                                            height: 150.h,
                                           ),
-                                          Text(
-                                            "Find Food",
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 17.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                        );
+                                      },
+                                      text: "Find Food",
+                                      imageurl: 'lib/images/search.png'),
                                 ],
                               ),
                             ],
@@ -609,44 +562,25 @@ class _HomepageState extends State<Homepage> {
                             ),
                             Row(
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
+                                DonateCard(
+                                    onTap: () {
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => CategoryDonate(
                                             cheight: true,
                                           ),
-                                        ));
-                                  },
-                                  child: Container(
-                                    height: 200.h,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xff247D7F),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    width: 180.w,
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'lib/images/foodelivary.png',
-                                          height: 150.h,
                                         ),
-                                        Text("Donate Food",
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 17.sp,
-                                                fontWeight: FontWeight.w500)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                      );
+                                    },
+                                    text: "Donate",
+                                    imageurl: 'lib/images/foodelivary.png'),
                                 SizedBox(
                                   width: 10.w,
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
+                                DonateCard(
+                                    onTap: () {
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Donatepage(
@@ -657,32 +591,11 @@ class _HomepageState extends State<Homepage> {
                                             onSearchFocusChange:
                                                 updateNavigationBarVisibility, // Pass callback
                                           ),
-                                        ));
-                                  },
-                                  child: Container(
-                                    height: 200.h,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xff247D7F),
-                                        borderRadius:
-                                            BorderRadius.circular(20).w),
-                                    width: 180.w,
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'lib/images/search.png',
-                                          height: 150.h,
                                         ),
-                                        Text(
-                                          "Find Food",
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              fontSize: 17.sp,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                      );
+                                    },
+                                    text: "Find Food",
+                                    imageurl: 'lib/images/search.png'),
                               ],
                             ),
                           ],

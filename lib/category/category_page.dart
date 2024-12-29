@@ -1,5 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:college_project/category/categorymodel.dart';
+import 'package:college_project/Category/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

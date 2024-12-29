@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
-import 'package:college_project/imagecontroller.dart';
-import 'package:college_project/service/database.dart';
+import 'package:college_project/Edit%20Image/image_controller.dart';
+import 'package:college_project/Google%20Service/database.dart';
+import 'package:college_project/Main%20Page/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,7 +15,7 @@ class GoogleSignin {
   }
 
   signInWithGoogle(BuildContext context) async {
-    final image = Provider.of<ImgController>(context, listen: false);
+    final image = Provider.of<ImageController>(context, listen: false);
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount? googleSignInAccount =

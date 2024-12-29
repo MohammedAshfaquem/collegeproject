@@ -1,5 +1,5 @@
-import 'package:college_project/eachChatScreen.dart';
-import 'package:college_project/getUsres.dart';
+import 'package:college_project/Profile/Chat/eachChatScreen.dart';
+import 'package:college_project/Profile/Chat/getUsers.dart';
 import 'package:flutter/material.dart';
 
 class FindChats extends StatelessWidget {

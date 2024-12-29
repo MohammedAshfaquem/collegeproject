@@ -1,4 +1,4 @@
-import 'package:college_project/theme/darktheme.dart';
+import 'package:college_project/Profile/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider with ChangeNotifier {

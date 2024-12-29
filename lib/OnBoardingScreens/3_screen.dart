@@ -1,16 +1,17 @@
-import 'package:college_project/OnBoardingScreens/dopcontroller.dart';
+import 'package:college_project/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class secounddope extends StatelessWidget {
-  const secounddope({super.key});
+class ThirdScreen
+ extends StatelessWidget {
+  const ThirdScreen
+  ({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dopecontroller = Provider.of<DopeController>(context, listen: false);
     return Scaffold(
       body: Container(
         height: 825.h,
@@ -22,7 +23,7 @@ class secounddope extends StatelessWidget {
               height: 420.h,
               width: 420.w,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(248, 253, 151, 207),
+                  color: Color.fromARGB(248, 187, 151, 253),
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(
                         50.r,
@@ -31,8 +32,8 @@ class secounddope extends StatelessWidget {
             ),
             Positioned(
               bottom: 290.h,
-              left: 155.w,
-              child: Text("Explore",
+              left: 135.w,
+              child: Text("Welcome!",
                   style: GoogleFonts.poppins(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 27.sp,
@@ -40,6 +41,21 @@ class secounddope extends StatelessWidget {
             ),
             Positioned(
               bottom: 250.h,
+              left: 180.w,
+              child: Text("Alone",
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500)),
+            ),
+            Positioned(
+              bottom: 220.h,
+              left: 130.w,
+              child: Text("We can do so little",
+                  style: TextStyle(color: Colors.grey, fontSize: 18.sp)),
+            ),
+            Positioned(
+              bottom: 190.h,
               left: 170.w,
               child: Text("Together",
                   style: TextStyle(
@@ -48,15 +64,9 @@ class secounddope extends StatelessWidget {
                       fontWeight: FontWeight.w500)),
             ),
             Positioned(
-              bottom: 220.h,
-              left: 140.w,
-              child: Text("We All Are create. ",
-                  style: TextStyle(color: Colors.grey, fontSize: 18.sp)),
-            ),
-            Positioned(
-              bottom: 190.h,
+              bottom: 160.h,
               left: 130.w,
-              child: Text("A Hunger Fee world.",
+              child: Text("We can do so much",
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 18.sp,
@@ -69,7 +79,7 @@ class secounddope extends StatelessWidget {
               top: 70.h,
               right: 50.w,
               child: Image.asset(
-                "lib/images/donbox.png",
+                "lib/images/findfoodlap.png",
                 height: 300.h,
               ),
             ),
@@ -80,7 +90,12 @@ class secounddope extends StatelessWidget {
               bottom: 70.h,
               right: 30.w,
               child: GestureDetector(
-                onTap: () => dopecontroller.updatepage(2),
+                onTap: () async {
+                  final pref = await SharedPreferences.getInstance();
+                  await pref.setBool("ON_BOARDING", false);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => AuthGate()));
+                },
                 child: Container(
                   height: 60.h,
                   width: 60.w,

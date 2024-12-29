@@ -1,6 +1,6 @@
-import 'package:college_project/donatepage/donatepage.dart';
-import 'package:college_project/Homepage/homepage.dart';
-import 'package:college_project/Profile/profiletile/profiepage.dart';
+import 'package:college_project/Donate/available_foods.dart';
+import 'package:college_project/Home%20Page/homepage.dart';
+import 'package:college_project/Profile/ProfileTile/profiepage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -95,28 +95,21 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                     child: Image.asset(
                       'lib/images/home (1).png',
                       height: 28,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
-                  // Container(
-                  //   child: Image.asset(
-                  //     'lib/images/donate.png',
-                  //     height: 28,
-                  //     color: Theme.of(context).colorScheme.primary,
-                  //   ),
-                  // ),
                   Container(
                     child: Image.asset(
                       'lib/images/find.png',
                       height: 28,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   Container(
                     child: Image.asset(
                       'lib/images/user.png',
                       height: 28,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ]),

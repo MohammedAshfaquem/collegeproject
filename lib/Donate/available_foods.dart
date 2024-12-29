@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
-import 'package:college_project/donatepage/donateDetailspage.dart';
-import 'package:college_project/firestore.dart';
+import 'package:college_project/Donate/donateDetailspage.dart';
+import 'package:college_project/Donate/firestore.dart';
+import 'package:college_project/Main%20Page/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

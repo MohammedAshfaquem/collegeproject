@@ -1,6 +1,6 @@
 
 import 'package:college_project/Login/emailverification.dart';
-import 'package:college_project/Mainpage/mainpage.dart';
+import 'package:college_project/Main%20Page/mainpage.dart';
 import 'package:college_project/auth/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:college_project/Donatepage/donate_controller.dart';
-import 'package:college_project/category/quantitycontroller.dart';
+import 'package:college_project/Category/quantity_controller.dart';
+import 'package:college_project/Donate/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +19,6 @@ class CategoryDetails extends StatelessWidget {
 
   final String category;
   final VoidCallback function;
-
   final foodnamecontroller = TextEditingController();
   final descriptioncontroller = TextEditingController();
   final pricecontroller = TextEditingController();
@@ -45,7 +44,9 @@ class CategoryDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imagcontroller = Provider.of<Donate>(context, listen: false);
-    final categorycontroller = Provider.of<QuantityController>(context);
+    final categorycontroller = Provider.of<QuantityController>(
+      context,
+    );
 
     return WillPopScope(
       onWillPop: () async {
@@ -68,10 +69,9 @@ class CategoryDetails extends StatelessWidget {
                       color: Color(0xff247D7F),
                     ),
                     Container(
-                      height: 600.h,
-                      width: 550.w,
-                      color: Colors.grey[200],
-                    ),
+                        height: 600.h,
+                        width: 550.w,
+                        color: Theme.of(context).colorScheme.secondary),
                   ],
                 ),
                 Positioned(
@@ -92,8 +92,7 @@ class CategoryDetails extends StatelessWidget {
                               FilteringTextInputFormatter.allow(RegExp(
                                   r'[a-zA-Z\s]')), // Allows letters and spaces
                             ],
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Colors.black),
                             validator: (name) =>
                                 name!.isEmpty ? 'Please enter your name' : null,
                             controller: foodnamecontroller,
@@ -134,13 +133,8 @@ class CategoryDetails extends StatelessWidget {
                               items: value.freeornot.map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
-                                  ),
+                                  child: Text(value,
+                                      style: TextStyle(color: Colors.black)),
                                 );
                               }).toList(),
                               onChanged: value.freeornotcontroll,
@@ -148,13 +142,16 @@ class CategoryDetails extends StatelessWidget {
                           ),
                           if (value.currentvalue == 'Price')
                             TextFormField(
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter
+                                    .digitsOnly, // Ensures only digits are allowed
+                              ],
                               validator: (value) =>
                                   value!.isEmpty ? 'Price required' : null,
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               maxLength: 3,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
+                              style: TextStyle(color: Colors.black),
                               controller: pricecontroller,
                               decoration: InputDecoration(
                                 errorBorder: OutlineInputBorder(
@@ -188,8 +185,7 @@ class CategoryDetails extends StatelessWidget {
                               FilteringTextInputFormatter.allow(RegExp(
                                   r'[a-zA-Z\s]')), // Allows letters and spaces
                             ],
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Colors.black),
                             validator: (description) => description!.isEmpty
                                 ? 'Description is required'
                                 : null,
@@ -224,8 +220,8 @@ class CategoryDetails extends StatelessWidget {
                                           height: 60.h,
                                           width: 60.h,
                                           child: Center(
-                                              child:
-                                                  CircularProgressIndicator()))
+                                              child: CircularProgressIndicator(
+                                                  color: Colors.black)))
                                       : value.imageurl == null
                                           ? GestureDetector(
                                               onTap: () async {
@@ -267,7 +263,10 @@ class CategoryDetails extends StatelessWidget {
                                                           width: 60.h,
                                                           child: Center(
                                                             child:
-                                                                CircularProgressIndicator(),
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
                                                           )),
                                                   imageUrl:
                                                       value.imageurl.toString(),
@@ -320,9 +319,8 @@ class CategoryDetails extends StatelessWidget {
                     height: 520.h,
                     width: 350.w,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25).w,
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
+                        borderRadius: BorderRadius.circular(25).w,
+                        color: Colors.white),
                   ),
                 ),
                 Positioned(

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Login/emailverification.dart';
 import 'package:college_project/Login/registerformfieldmodel.dart';
-import 'package:college_project/service/googlesign.dart';
+import 'package:college_project/Google%20Service/googlesign.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,12 +83,14 @@ class _RegisterpageState extends State<RegisterPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(
-            "Name is required",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            "Fill the form",
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold),
           ),
           content: Text(
-            "Please enter your name to continue.",
-            style: TextStyle(color: Colors.black),
+            "Fill the form to continue.",
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
           actions: <Widget>[
             TextButton(
