@@ -2,6 +2,7 @@ import 'package:college_project/Profile/Chat/eachChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -60,6 +61,30 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     tileColor: Colors.white,
                     title: defaultWidget,
                   )),
+            );
+          },
+          
+          emptyBuilder: (context, defaultWidget) {
+            return Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 190,
+                  ),
+                  Container(
+                    height: 200,
+                    child: Lottie.asset("lib/Animations/emtypage.json",
+                        repeat: false, fit: BoxFit.fill),
+                  ),
+                  Text(
+                    "No Data Dound!",
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  ),
+                ],
+              ),
             );
           },
           lastMessageTimeBuilder: (context, messageTime, defaultWidget) {

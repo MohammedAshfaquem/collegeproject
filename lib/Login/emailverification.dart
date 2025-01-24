@@ -21,6 +21,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     super.initState();
     startVerificationTimer();
   }
+  
 
   void startVerificationTimer() {
     _timer = Timer.periodic(Duration(seconds: 3), (timer) async {
@@ -39,7 +40,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
 
     // Set a timeout to delete the user if not verified in 10 minutes
-    Timer(Duration(minutes: 10), () async {
+    Timer(Duration(minutes: 3), () async {
       if (_auth.currentUser != null && !_auth.currentUser!.emailVerified) {
         try {
           await _auth.currentUser!.delete();
@@ -104,6 +105,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             ),
             GestureDetector(
               onTap: () async {
+                print("Resend  E-mail link");
                 await _auth.currentUser?.sendEmailVerification();
               },
               child: Text(

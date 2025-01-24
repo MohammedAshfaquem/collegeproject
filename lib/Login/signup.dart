@@ -209,28 +209,11 @@ class _RegisterpageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 20,top: 20),
-                    //   child: Align(
-                    //     alignment: Alignment.bottomLeft,
-                    //     child: Text(
-                    //       "Enter your details",
-                    //       style: GoogleFonts.poppins(
-                    //           fontSize: 25,
-                    //           color: Colors.black,
-                    //           fontWeight: FontWeight.w600),
-                    //     ),
-                    //   ),
-                    // ),
                     Padding(
                       padding: EdgeInsets.only(left: 20.h),
                       child: Column(
                         children: [
-                          // Registerfield(
-                          //     controller: regnamecontroller,
-                          //     hintText: "Name",
-                          //     icon: Icons.person,
-                          //     obscuretext: false),
+                        
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: TextFormField(
@@ -240,7 +223,7 @@ class _RegisterpageState extends State<RegisterPage> {
                                     ? "Please fill this field"
                                     : "";
                               },
-                              obscureText: _ispassobscured,
+                              obscureText: false,
                               controller: regnamecontroller,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
@@ -257,6 +240,7 @@ class _RegisterpageState extends State<RegisterPage> {
                                 errorBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15).r),
                                 hintText: "Name",
+                                
                                 hintStyle: TextStyle(color: Colors.black),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15).r,
@@ -486,7 +470,7 @@ class _RegisterpageState extends State<RegisterPage> {
                                             height: 30.h,
                                           )),
                                       Text(
-                                        "Sign up with Google",
+                                        "Continue with Google",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,

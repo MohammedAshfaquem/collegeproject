@@ -186,20 +186,21 @@ class _DonatepageState extends State<Donatepage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => Detailspage(
-                                                userimage: userimage,
-                                                cntctno: number,
-                                                course: course,
-                                                lname: lname,
-                                                foodname: foodname,
-                                                firstname: fname,
-                                                option: option,
-                                                description: description,
-                                                imageurl: imageurl,
-                                                time: dateTime,
-                                                quantity: quantity,
-                                                donationId: donationid,
-                                                uid: uid,
-                                                username:username),
+                                              userimage: userimage,
+                                              cntctno: number,
+                                              course: course,
+                                              lname: lname,
+                                              foodname: foodname,
+                                              firstname: fname,
+                                              option: option,
+                                              description: description,
+                                              imageurl: imageurl,
+                                              time: dateTime,
+                                              quantity: quantity,
+                                              donationId: donationid,
+                                              uid: uid,
+                                              username: username,
+                                            ),
                                           ));
                                     },
                                     child: Container(
@@ -256,7 +257,6 @@ class _DonatepageState extends State<Donatepage> {
                                                             FontWeight.w500,
                                                         color: Colors.black,
                                                         fontSize: 19.sp)),
-                                             
                                                 Text(
                                                   dateTime.toString(),
                                                   style: TextStyle(

@@ -4,6 +4,7 @@ import 'package:college_project/Donate/donate_controller.dart';
 import 'package:college_project/Profile/Chat/eachChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -218,7 +219,7 @@ class _DetailspageState extends State<Detailspage> {
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                              'lib/images/profile.jpg', // Replace with your asset path
+                              'lib/images/profile.jpg',
                               fit: BoxFit.cover,
                             );
                           },
@@ -370,27 +371,31 @@ class _DetailspageState extends State<Detailspage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    QuickAlert.show(
-                      context: context,
-                      type: QuickAlertType.confirm,
-                      title: "Please confirm your order",
-                      animType: QuickAlertAnimType.scale,
-                      showCancelBtn: true,
-                      onConfirmBtnTap: () {
-                        updatefooddetails(
-                            widget.donationId, categorycontroller.quantity);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text('Order confirmed!'),
-                            duration: Duration(
-                                seconds:
-                                    2), // Duration the snackbar will be visible
-                          ),
-                        );
-                      },
-                    );
+                    final currentuserid =
+                        FirebaseAuth.instance.currentUser!.uid;
+                    if (currentuserid == widget.uid) {
+                      IconSnackBar.show(context,
+                          label: "You cannot buy your own donated food.",
+                          snackBarType: SnackBarType.alert);
+                    } else {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.confirm,
+                        title: "Please confirm your order",
+                        animType: QuickAlertAnimType.scale,
+                        showCancelBtn: true,
+                        onConfirmBtnTap: () {
+                          updatefooddetails(
+                              widget.donationId, categorycontroller.quantity);
+                          Navigator.pop(context);
+
+                          IconSnackBar.show(context,
+                              duration: Duration(seconds: 2),
+                              snackBarType: SnackBarType.success,
+                              label: 'Your order has been confirmed.');
+                        },
+                      );
+                    }
                   },
                   child: Container(
                     height: 60.h,

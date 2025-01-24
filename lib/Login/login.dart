@@ -1,3 +1,4 @@
+import 'package:college_project/Google%20Service/googlesign.dart';
 import 'package:college_project/auth/auth_service.dart';
 import 'package:college_project/Login/forgetpage.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   //   ),
                   // ),
                   Positioned(
-                    top: 180.h,
+                    top: 140.h,
                     left: 20.w,
                     child: Align(
                       alignment: Alignment.bottomLeft,
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Positioned(
-                    top: 225.h,
+                    top:180.h,
                     left: 20.w,
                     child: Align(
                       alignment: Alignment.bottomLeft,
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 50.h,
+                        height: 20.h,
                       ),
 
                       Align(
@@ -290,7 +291,81 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(
-                        height: 65.h,
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 2.h,
+                            width: 150.w,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 20.h,
+                          ),
+                          Text(
+                            "OR",
+                            style: GoogleFonts.poppins(
+                                fontSize: 15.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 15.w,
+                          ),
+                          Container(
+                            height: 2.h,
+                            color: Colors.grey,
+                            width: 160.w,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15.w,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          GoogleSignin().signInWithGoogle(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 20.r),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            height: 55.h,
+                            width: 390.w,
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(100).w,
+                                      child: Image.asset(
+                                        'lib/images/google.png',
+                                        height: 30.h,
+                                      )),
+                                  Text(
+                                    "Continue with Google",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

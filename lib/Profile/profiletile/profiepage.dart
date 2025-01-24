@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Edit%20Image/image_controller.dart';
 import 'package:college_project/Profile/MyDonation/my_donations.dart';
-import 'package:college_project/Profile/PasswordReset/passreset.dart';
-import 'package:college_project/Profile/Support/supportpage.dart';
+import 'package:college_project/Profile/Settings/settings.dart';
 import 'package:college_project/Profile/theme/themeprovider.dart';
 import 'package:college_project/auth/auth_gate.dart';
 import 'package:college_project/Profile/Chat/chatsScreen.dart';
@@ -304,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: [
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 18, right: 18),
@@ -458,7 +457,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(height: widget.height ? 65 : 35),
+            SizedBox(height: widget.height ? 85 : 55),
+              ProfilePageTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Settingspage(),
+                  ),
+                );
+              },
+              text: "Settings",
+              colors: Theme.of(context).colorScheme.surface,
+              icon: Icons.settings,
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
             ProfilePageTile(
               onTap: () {
                 Navigator.push(
@@ -471,7 +486,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.chat,
             ),
             SizedBox(
-              height: 10.h,
+              height: 15.h,
             ),
             ProfilePageTile(
               onTap: () {
@@ -484,26 +499,10 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               text: "My Donations",
               colors: Theme.of(context).colorScheme.surface,
-              icon: Icons.call,
+              icon: Icons.food_bank,
             ),
             SizedBox(
-              height: 10.h,
-            ),
-            ProfilePageTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PassResetPage(),
-                  ),
-                );
-              },
-              text: "Reset Password",
-              colors: Theme.of(context).colorScheme.surface,
-              icon: Icons.lock,
-            ),
-            SizedBox(
-              height: 10.h,
+              height: 15.h,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
@@ -540,24 +539,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             focusColor: Colors.white,
                           ))),
             ),
+          
             SizedBox(
-              height: 10.h,
-            ),
-            ProfilePageTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SupportPage(),
-                  ),
-                );
-              },
-              text: "Support",
-              colors: Theme.of(context).colorScheme.surface,
-              icon: Icons.call,
-            ),
-            SizedBox(
-              height: 10.h,
+              height: 15.h,
             ),
             ProfilePageTile(
               onTap: () {
@@ -568,10 +552,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   confirmBtnText: 'Yes',
                   cancelBtnText: 'No',
                   showCancelBtn: true,
-                  confirmBtnColor: Colors.green,
+                  confirmBtnColor: Colors.red,
                   onCancelBtnTap: () => Navigator.pop(context),
                   onConfirmBtnTap: () {
-                    //
                     FirebaseAuth.instance.signOut();
                     Navigator.pop(context);
                     Navigator.push(

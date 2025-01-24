@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -12,27 +13,27 @@ class SupportPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        leading: IconButton(
+        backgroundColor: Color(0xff247D7F),
+        centerTitle: true,
+        title: Text(
+          "Support",
+          style: GoogleFonts.poppins(
+              color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+         leading: IconButton(
           onPressed: () {
             Navigator.maybePop(context);
           },
           icon: Icon(
+            
             LineAwesomeIcons.angle_left_solid,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        title: Text(
-          ' Support',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        centerTitle: true,
       ),
       body: Column(
         children: [
+          SizedBox(height: 10.h,),
           Image.asset(
             "lib/images/support.png",
             height: 300,

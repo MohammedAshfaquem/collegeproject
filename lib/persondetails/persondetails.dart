@@ -11,6 +11,7 @@ import 'package:college_project/Profile/MyDonation/firestoremydonations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -306,7 +307,7 @@ class PersonDetails extends StatelessWidget {
                             Navigator.pop(context);
                           },
                         );
-                      } else if (currentHour >= 16) {
+                      } else if (currentHour >= 24) {
                         // Show message if donation is attempted after 4:00 PM
                         QuickAlert.show(
                           context: context,
@@ -323,8 +324,13 @@ class PersonDetails extends StatelessWidget {
                         if (_courseformkey.currentState!.validate()) {
                           if (value.selectedvalue == null ||
                               value.selectedvalue!.isEmpty) {
-                            showCustomSnackBar(
-                                context, "Please select a course.");
+                            // showCustomSnackBar(
+                            //     context, "Please select a course.");
+                                   IconSnackBar.show(context,
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.red,
+                                snackBarType: SnackBarType.alert,
+                                label: 'Please select a course.');
                             return;
                           }
                           QuickAlert.show(
@@ -406,6 +412,19 @@ class PersonDetails extends StatelessWidget {
                                   ),
                                 ),
                               );
+                              IconSnackBar.show(context,
+                                  duration: Duration(seconds: 2),
+                                  snackBarType: SnackBarType.success,
+                                  label: 'Food donation was successful.');
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   SnackBar(
+                              //     backgroundColor: Colors.green,
+                              //     content: Text('Food donated Succefully!'),
+                              //     duration: Duration(
+                              //         seconds:
+                              //             2), // Duration the snackbar will be visible
+                              //   ),
+                              // );
                             },
                           );
                         }

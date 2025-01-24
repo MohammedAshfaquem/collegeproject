@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Home%20Page/donate_card.dart';
-import 'package:college_project/category/category_page.dart';
+import 'package:college_project/Category/category_page.dart';
 import 'package:college_project/Donate/available_foods.dart';
 import 'package:college_project/Home%20Page/feedbackmodel.dart';
 import 'package:college_project/Carousal%20Slider/imagecontroller.dart';

@@ -4,6 +4,7 @@ import 'package:college_project/Donate/donate_controller.dart';
 import 'package:college_project/persondetails/persondetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -103,12 +104,17 @@ class CategoryDetails extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(23),
                                 borderSide: BorderSide(color: Colors.black),
                               ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(23),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(23),
-                                borderSide: BorderSide(color: Colors.black),
+                                borderSide:
+                                    BorderSide(color: Colors.red.shade900),
                               ),
                             ),
                           ),
@@ -198,9 +204,14 @@ class CategoryDetails extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(23),
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              errorBorder: OutlineInputBorder(
+                              focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(23),
                                 borderSide: BorderSide(color: Colors.black),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(23),
+                                borderSide:
+                                    BorderSide(color: Colors.red.shade900),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey),
@@ -332,15 +343,24 @@ class CategoryDetails extends StatelessWidget {
                         if (_formkey.currentState!.validate()) {
                           if (value.currentvalue == null ||
                               value.currentvalue!.isEmpty) {
-                            showCustomSnackBar(
-                                context, "Please select an option.");
+                            // showCustomSnackBar(
+                            //     context, "Please select an option.");
+                            IconSnackBar.show(context,
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.red,
+                                snackBarType: SnackBarType.alert,
+                                label: 'Please select an option.');
                             return;
                           }
-
                           if (value.imageurl == null ||
                               value.imageurl!.isEmpty) {
-                            showCustomSnackBar(
-                                context, "Please select an image.");
+                            // showCustomSnackBar(
+                            //     context, "Please select an image.");
+                            IconSnackBar.show(context,
+                                duration: Duration(seconds: 2),
+                                backgroundColor: Colors.red,
+                                snackBarType: SnackBarType.alert,
+                                label: 'Please select an image');
                             return;
                           }
 
@@ -358,8 +378,13 @@ class CategoryDetails extends StatelessWidget {
                             );
                           }));
                         } else {
-                          showCustomSnackBar(context,
-                              "Please fill in all the required fields.");
+                          // showCustomSnackBar(context,
+                          //     "Please fill in all the required fields.");
+                          IconSnackBar.show(context,
+                              duration: Duration(seconds: 2),
+                              snackBarType: SnackBarType.alert,
+                              backgroundColor: Colors.red,
+                              label: 'Please fill in all the required fields.');
                         }
                       },
                       child: Container(
