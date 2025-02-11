@@ -272,7 +272,7 @@ class _HomepageState extends State<Homepage> {
                                   style: GoogleFonts.poppins(
                                     color:
                                         Theme.of(context).colorScheme.primary,
-                                    fontSize: 20.sp,
+                                    fontSize: 18.sp,
                                     fontWeight: FontWeight.w600,
                                   )),
                               FutureBuilder(

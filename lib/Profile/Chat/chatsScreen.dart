@@ -52,6 +52,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ),
         body: ZIMKitConversationListView(
           theme: ThemeData(),
+          
           itemBuilder: (context, conversation, defaultWidget) {
             return Padding(
               padding: const EdgeInsets.only(top: 3),
@@ -87,6 +88,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
               ),
             );
           },
+
+
           lastMessageTimeBuilder: (context, messageTime, defaultWidget) {
             return defaultWidget;
           },

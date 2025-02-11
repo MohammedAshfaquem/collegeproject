@@ -1,5 +1,5 @@
 class ZegoCloudConstants {
-  static int zegocloudAppId = 1514442047;
+  static int zegocloudAppId = 861636338;
   static String zegocloudAppSign =
-      "2cf60a7303460c949d80fc13d226a088133aa7605ce7000227d52894d9b2bd3d";
+      "6fdce258462b4546e5008b10ce6541c271acd48b5db33c0794711057c8252aa6";
 }

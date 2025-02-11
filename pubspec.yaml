@@ -67,6 +67,8 @@ dependencies:
   zego_zimkit: ^1.18.13
   flutter_icon_snackbar: ^1.2.1
   flutter_rating_bar: ^4.0.1
+  workmanager: ^0.5.2
+  onesignal_flutter: ^5.2.9
  
 
 dev_dependencies:
