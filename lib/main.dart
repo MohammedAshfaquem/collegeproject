@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:college_project/bg.dart';
 import 'package:flutter/material.dart';
 import 'package:college_project/Carousal%20Slider/imagecontroller.dart';
 import 'package:college_project/Donate/donate_controller.dart';
@@ -26,59 +25,20 @@ import 'package:workmanager/workmanager.dart';
 final navigatorkey = GlobalKey<NavigatorState>();
 bool isshow = true;
 
-// ✅ WorkManager Background Task
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    if (task == "dailyTask") {
-      await Firebase.initializeApp();
-      await deleteNotesCollection();
-    }
-    return Future.value(true);
-  });
-}
-
-// ✅ Function to Delete All Documents in the "notes" Collection
-Future<void> deleteNotesCollection() async {
-  try {
-    var collection = FirebaseFirestore.instance.collection('notes');
-    var snapshots = await collection.get();
-    for (var doc in snapshots.docs) {
-      await doc.reference.delete();
-    }
-    print("✅ All documents in 'notes' collection deleted successfully!");
-  } catch (e) {
-    print("❌ Error deleting notes collection: $e");
-  }
-}
-
-// Firebase Background Message Handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Initialize WorkManager BEFORE runApp()
-  await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-
-  // ✅ Register Periodic Task to Run at 4:00 PM
-  await Workmanager().registerPeriodicTask(
-    'dailyTask',
-    'dailyTask',
-    frequency: Duration(hours: 24), // Runs every 24 hours
-    initialDelay: getDelayUntilNext4PM(), // Delay until next 4:00 PM
-    existingWorkPolicy: ExistingWorkPolicy.replace,
-  );
+  await Firebase.initializeApp();
+  await _initializeWorkManager();
+  await _scheduleDailyTask();
 
   final pref = await SharedPreferences.getInstance();
   isshow = pref.getBool("ON_BOARDING") ?? true;
-  await Firebase.initializeApp();
+
   Notificationhandler.requestnotification();
   FirebaseMessaging.instance.subscribeToTopic('Ashfaque');
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   ZIMKit().init(
     appID: ZegoCloudConstants.zegocloudAppId,
     appSign: ZegoCloudConstants.zegocloudAppSign,
@@ -113,14 +73,70 @@ void main() async {
   FlutterNativeSplash.remove();
 }
 
-// ✅ Function to Calculate Delay Until Next 4:00 PM
+// ✅ Initialize WorkManager
+Future<void> _initializeWorkManager() async {
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
+}
+
+// ✅ WorkManager Background Task
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    if (task == "dailyTask") {
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp();
+      await deleteFoodDonations();
+      await _scheduleDailyTask(); // Reschedule after completion
+    }
+    return Future.value(true);
+  });
+}
+
+// ✅ Function to Delete All Food Donations at 4:00 PM
+Future<void> deleteFoodDonations() async {
+  try {
+    var collection = FirebaseFirestore.instance.collection('notes');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+    print("✅ All food donations deleted successfully!");
+  } catch (e) {
+    print("❌ Error deleting food donations: $e");
+  }
+}
+
+// ✅ Schedule Task for 4:00 PM Daily
+Future<void> _scheduleDailyTask() async {
+  final delay = getDelayUntilNext4PM();
+
+  await Workmanager().registerOneOffTask(
+    'dailyTask',
+    'dailyTask',
+    initialDelay: delay,
+    existingWorkPolicy: ExistingWorkPolicy.replace, // Ensures only one task runs
+  );
+
+  print("✅ Task scheduled to run in: $delay");
+}
+
+// ✅ Calculate Delay Until 4:00 PM
 Duration getDelayUntilNext4PM() {
   DateTime now = DateTime.now();
-  DateTime next4PM = DateTime(now.year, now.month, now.day, 16, 00, 0); // 4:00 PM
+  DateTime next4PM = DateTime(now.year, now.month, now.day, 6, 0, 0); // 4:00 PM
 
   if (now.isAfter(next4PM)) {
-    next4PM = next4PM.add(Duration(days: 1)); // Schedule for tomorrow if already past 4 PM
+    next4PM = next4PM.add(Duration(days: 1)); // Move to next day
   }
 
   return next4PM.difference(now);
+}
+
+// ✅ Firebase Background Message Handler
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
 }

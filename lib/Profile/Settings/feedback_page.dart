@@ -6,6 +6,7 @@ import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class ComplaintPage extends StatefulWidget {
   @override
@@ -136,19 +137,11 @@ class _ComplaintPageState extends State<ComplaintPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 60),
-                child: Image.asset(
-                  'lib/images/update-concept-illustration.png',
-                  height: 250.h,
-                ),
-              ),
+             
+              Center(child: Lottie.asset("lib/Animations/reportbug.json",height: 300)),
               Text(
                 "Submit Your Complaint",
-                style:GoogleFonts.poppins(
+                style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 23,
                     fontWeight: FontWeight.bold),

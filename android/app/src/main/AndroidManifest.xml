@@ -29,6 +29,7 @@
 
 
 
+
 <queries>
   <!-- If your app checks for SMS support -->
   <intent>
