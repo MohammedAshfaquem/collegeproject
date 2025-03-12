@@ -7,7 +7,7 @@ import 'package:college_project/Notification/sendnotification.dart';
 import 'package:college_project/Category/quantity_controller.dart';
 import 'package:college_project/Donate/available_foods.dart';
 import 'package:college_project/Donate/firestore.dart';
-import 'package:college_project/Profile/MyDonation/firestoremydonations.dart';
+import 'package:college_project/Profile/AllDonation/firestoremydonations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +77,7 @@ class PersonDetails extends StatelessWidget {
 
         // Update the document with the new field
         await userRef.update({
-          'mydonations': FieldValue.arrayUnion(
+          'Alldonations': FieldValue.arrayUnion(
               [itemModel.toMap()]), // Adding the itemModel as a field
         });
 
@@ -326,7 +326,7 @@ class PersonDetails extends StatelessWidget {
                               value.selectedvalue!.isEmpty) {
                             // showCustomSnackBar(
                             //     context, "Please select a course.");
-                                   IconSnackBar.show(context,
+                            IconSnackBar.show(context,
                                 duration: Duration(seconds: 2),
                                 backgroundColor: Colors.red,
                                 snackBarType: SnackBarType.alert,

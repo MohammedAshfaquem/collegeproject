@@ -12,8 +12,8 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class MyDonations extends StatelessWidget {
-  const MyDonations({super.key});
+class AllDonations extends StatelessWidget {
+  const AllDonations({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class MyDonations extends StatelessWidget {
       print(userdoc.id);
       if (userdoc.exists) {
         var data = userdoc.data() as Map<String, dynamic>;
-        print(data['mydonations']);
-        return data['mydonations'] as List?;
+        print(data['Alldonations']);
+        return data['Alldonations'] as List?;
       }
       return null;
     }
@@ -172,7 +172,7 @@ class MyDonations extends StatelessWidget {
                                       print(item['donationid']);
                                       donatecontroller
                                           .deleteFromAvailbleDanations(
-                                              'notes',
+                                              'Donations',
                                               'donationid',
                                               index,
                                               item['donationid']);

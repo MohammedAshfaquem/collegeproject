@@ -5,13 +5,13 @@ import 'package:college_project/Profile/Chat/eachChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 // ignore: must_be_immutable
@@ -58,7 +58,7 @@ class _DetailspageState extends State<Detailspage> {
     print("donationId ;- $donationId  and quantity;- $quantity");
     final finalQuantity = int.parse(widget.quantity) - quantity;
     // Reference to the Firestore collection
-    CollectionReference notes = FirebaseFirestore.instance.collection('notes');
+    CollectionReference notes = FirebaseFirestore.instance.collection('Donations');
 
     try {
       // Query to find documents where donationId matches
@@ -81,6 +81,28 @@ class _DetailspageState extends State<Detailspage> {
       print("Failed to update quantity: $e");
     }
   }
+  
+    Future<void> makePhoneCall() async {
+      try {
+        // Sanitize the phone number
+        String phoneNumber = widget.cntctno.replaceAll(RegExp(r'[^0-9]'), '');
+
+        final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+
+        if (await canLaunchUrl(phoneUri)) {
+          await launchUrl(phoneUri);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Could not launch dialer.')),
+          );
+        }
+      } catch (e) {
+        print("Error making phone call: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
 
   @override
   void initState() {
@@ -305,10 +327,7 @@ class _DetailspageState extends State<Detailspage> {
                       width: 10.h,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        FlutterPhoneDirectCaller.callNumber(
-                            "${widget.cntctno}");
-                      },
+                      onTap: makePhoneCall,
                       child: Container(
                         decoration: BoxDecoration(
                             color: Color(0xff247D7F),

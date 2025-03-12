@@ -68,7 +68,7 @@ class _SettingspageState extends State<Settingspage> {
     try {
       // Query the donations collection where the 'userId' field matches the current user's UID
       var donationsSnapshot = await _firestore
-          .collection('notes')
+          .collection('Donations')
           .where('uid', isEqualTo: userId)
           .get();
 

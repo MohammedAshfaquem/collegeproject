@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class FireStoreServivce {
   var now = DateTime.now();
   final CollectionReference mydonation =
-      FirebaseFirestore.instance.collection('mydonations');
+      FirebaseFirestore.instance.collection('Alldonations');
               User? user = FirebaseAuth.instance.currentUser;
 
   Future<void> addmydonation(

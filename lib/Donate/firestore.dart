@@ -10,7 +10,7 @@ class FireStoreService {
   String? userimage = FirebaseAuth.instance.currentUser?.photoURL;
 
   final CollectionReference notes =
-      FirebaseFirestore.instance.collection('notes');
+      FirebaseFirestore.instance.collection('Donations');
   Future<void> addNote(
       String fname,
       String lname,

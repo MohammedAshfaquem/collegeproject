@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:college_project/Carousal%20Slider/imagecontroller.dart';
 import 'package:college_project/Donate/donate_controller.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-import 'package:workmanager/workmanager.dart';
 
 // Global Key for Navigation
 final navigatorkey = GlobalKey<NavigatorState>();
@@ -29,8 +27,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  await _initializeWorkManager();
-  await _scheduleDailyTask();
 
   final pref = await SharedPreferences.getInstance();
   isshow = pref.getBool("ON_BOARDING") ?? true;
@@ -69,70 +65,7 @@ void main() async {
       ),
     ),
   );
-
   FlutterNativeSplash.remove();
-}
-
-// ✅ Initialize WorkManager
-Future<void> _initializeWorkManager() async {
-  await Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
-}
-
-// ✅ WorkManager Background Task
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    if (task == "dailyTask") {
-      WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
-      await deleteFoodDonations();
-      await _scheduleDailyTask(); // Reschedule after completion
-    }
-    return Future.value(true);
-  });
-}
-
-// ✅ Function to Delete All Food Donations at 4:00 PM
-Future<void> deleteFoodDonations() async {
-  try {
-    var collection = FirebaseFirestore.instance.collection('notes');
-    var snapshots = await collection.get();
-    for (var doc in snapshots.docs) {
-      await doc.reference.delete();
-    }
-    print("✅ All food donations deleted successfully!");
-  } catch (e) {
-    print("❌ Error deleting food donations: $e");
-  }
-}
-
-// ✅ Schedule Task for 4:00 PM Daily
-Future<void> _scheduleDailyTask() async {
-  final delay = getDelayUntilNext4PM();
-
-  await Workmanager().registerOneOffTask(
-    'dailyTask',
-    'dailyTask',
-    initialDelay: delay,
-    existingWorkPolicy: ExistingWorkPolicy.replace, // Ensures only one task runs
-  );
-
-  print("✅ Task scheduled to run in: $delay");
-}
-
-// ✅ Calculate Delay Until 4:00 PM
-Duration getDelayUntilNext4PM() {
-  DateTime now = DateTime.now();
-  DateTime next4PM = DateTime(now.year, now.month, now.day, 6, 0, 0); // 4:00 PM
-
-  if (now.isAfter(next4PM)) {
-    next4PM = next4PM.add(Duration(days: 1)); // Move to next day
-  }
-
-  return next4PM.difference(now);
 }
 
 // ✅ Firebase Background Message Handler

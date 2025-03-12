@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:college_project/Edit%20Image/image_controller.dart';
-import 'package:college_project/Profile/MyDonation/my_donations.dart';
+import 'package:college_project/Profile/AllDonation/my_donations.dart';
 import 'package:college_project/Profile/Settings/settings.dart';
 import 'package:college_project/Profile/theme/themeprovider.dart';
 import 'package:college_project/auth/auth_gate.dart';
@@ -493,7 +493,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyDonations(),
+                    builder: (context) => AllDonations(),
                   ),
                 );
               },

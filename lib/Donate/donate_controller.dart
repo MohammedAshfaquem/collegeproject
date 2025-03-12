@@ -254,7 +254,7 @@ class Donate extends ChangeNotifier {
 
         // Get the current list of donations
         List<dynamic> donationsList =
-            docSnapshot.get('mydonations') as List<dynamic>;
+            docSnapshot.get('Alldonations') as List<dynamic>;
 
         // Ensure the index is within bounds
         if (index < 0 || index >= donationsList.length) {
@@ -265,7 +265,7 @@ class Donate extends ChangeNotifier {
         donationsList.removeAt(index);
 
         // Update the document with the new list
-        transaction.update(documentRef, {'mydonations': donationsList});
+        transaction.update(documentRef, {'Alldonations': donationsList});
       });
 
       // Notify listeners to rebuild the UI

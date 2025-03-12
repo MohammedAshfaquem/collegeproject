@@ -78,7 +78,6 @@ class _HomepageState extends State<Homepage> {
 
   bool _isloading = true;
 
-
   Future<Widget> getimage() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot userdoc =

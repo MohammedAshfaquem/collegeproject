@@ -152,7 +152,7 @@ void showimagepicker(BuildContext context) {
         .doc(uid)
         .update({'image': newImageUrl});
 FirebaseFirestore.instance
-        .collection('notes')
+        .collection('Donations')
         .doc(uid)
         .update({'userimage': newImageUrl});
     notifyListeners();

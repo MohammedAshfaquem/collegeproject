@@ -41,7 +41,7 @@ class GoogleSignin {
       if (userDoc.exists) {
         // User exists, use the stored image URL from Firebase
         final updatedProfilePhotoUrl = userDoc.data()?['image'];
-        final updatedMyDonations = userDoc.data()?['mydonations'];
+        final updatedMyDonations = userDoc.data()?['Alldonations'];
 
         // Optionally update the ImgController with the stored image URL
         image.imageurl = updatedProfilePhotoUrl;
